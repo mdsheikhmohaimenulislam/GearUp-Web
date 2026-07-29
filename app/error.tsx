@@ -23,6 +23,8 @@ export default function Error({
           () => unstable_retry()
         }
       >
+
+        
         Try again
       </button>
     </div>
