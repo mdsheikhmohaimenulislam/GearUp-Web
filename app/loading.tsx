@@ -1,9 +1,9 @@
-import React from 'react'
+import GlobalLoading from "@/components/shared/GlobalLoading";
 
-const GlobalLoading = () => {
-  return (
-    <div>GlobalLoading</div>
-  )
+
+export default function Loading() {
+  return <GlobalLoading
+  text="Fetching data..."
+  fullScreen={false}
+/>
 }
-
-export default GlobalLoading
