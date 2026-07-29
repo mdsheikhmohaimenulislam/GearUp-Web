@@ -3,6 +3,7 @@ import { Geist, Geist_Mono, Instrument_Sans } from "next/font/google";
 import "./globals.css";
 import { cn } from "@/lib/utils";
 import { ThemeProvider } from "@/components/theme/theme-provider";
+import { Toaster } from "sonner";
 
 const instrumentSansHeading = Instrument_Sans({
   subsets: ["latin"],
@@ -32,6 +33,7 @@ export default function RootLayout({
   return (
     <html
       lang="en"
+      suppressHydrationWarning
       className={cn(
         "h-full",
         "antialiased",
@@ -40,9 +42,10 @@ export default function RootLayout({
         instrumentSansHeading.variable,
       )}
     >
-      <body className="min-h-full flex flex-col">
-         <ThemeProvider defaultTheme="light" storageKey="theme">
+      <body suppressHydrationWarning className="min-h-full flex flex-col">
+        <ThemeProvider defaultTheme="light" storageKey="theme">
           {children}
+          <Toaster position="top-right" richColors />
         </ThemeProvider>
       </body>
     </html>
