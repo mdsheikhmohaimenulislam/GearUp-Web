@@ -30,7 +30,7 @@ export default function CustomerDashboard({ user }: CustomerDashboardProps) {
       title: "Profile",
       value: "View",
       icon: User,
-      href: "/profile",
+      href: "/customerDashboard/profile",
     },
   ];
 
