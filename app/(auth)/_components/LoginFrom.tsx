@@ -1,99 +1,110 @@
-"use client";
+// "use client";
 
-import { useState } from "react";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Eye, EyeOff, Router } from "lucide-react";
-import { loginAction } from "../_actions/authAction";
-import { toast } from "sonner";
-import { useRouter } from "next/navigation";
+// import { useState } from "react";
+// import { useForm } from "react-hook-form";
+// import { z } from "zod";
 
-export default function LoginForm() {
-  const [loading, setLoading] = useState(false);
-  const [showPassword, setShowPassword] = useState(false);
-  const router = useRouter();
+// import { zodResolver } from "@hookform/resolvers/zod";
 
-  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
+// import { Button } from "@/components/ui/button";
+// import { Input } from "@/components/ui/input";
 
-    const formData = new FormData(e.currentTarget);
+// import { Eye, EyeOff } from "lucide-react";
+// import { toast } from "sonner";
+// import { useRouter } from "next/navigation";
 
-    const data = {
-      email: formData.get("email") as string,
-      password: formData.get("password") as string,
-    };
+// import { loginAction } from "../_actions/authAction";
+// import { loginSchema } from "../_actions/zodSchema";
 
-    try {
-      const result = await loginAction(data);
+// type LoginValues = z.infer<typeof loginSchema>;
 
-      
-      if (result.success) {
-        toast.success(result.message || "Login Successful");
+// export default function LoginForm() {
+//   const [loading, setLoading] = useState(false);
+//   const [showPassword, setShowPassword] = useState(false);
 
-        router.push("/");
-      } else {
-        toast.error(result.message || "Login Failed");
-      }
-    } catch (error) {
-      console.log(error);
+//   const router = useRouter();
 
-      toast.error("Something went wrong!");
-    }
-  };
+//   const form = useForm<LoginValues>({
+//     resolver: zodResolver(loginSchema),
 
-  return (
-    <div className="flex min-h-screen items-center justify-center">
-      <form
-        onSubmit={handleSubmit}
-        className="w-full max-w-md space-y-5 rounded-lg border p-6 shadow"
-      >
-        <h2 className="text-center text-2xl font-bold">Login</h2>
+//     defaultValues: {
+//       email: "",
+//       password: "",
+//     },
+//   });
 
-        <div>
-          <label className="mb-1 block">Email</label>
+//   const onSubmit = async (values: LoginValues) => {
+//     try {
+//       setLoading(true);
 
-          <Input
-            type="email"
-            name="email"
-            placeholder="Enter your email"
-            autoComplete="off"
-            suppressHydrationWarning
-            className="w-full rounded border px-3 py-2"
-            required
-          />
-        </div>
+//       const result = await loginAction(values);
 
-        <div>
-          <label className="mb-1 block">Password</label>
+//       if (result.success) {
+//         toast.success(result.message || "Login Successful");
 
-          <div className="relative">
-            <Input
-              type={showPassword ? "text" : "password"}
-              name="password"
-              placeholder="Enter your password"
-              autoComplete="off"
-              className="w-full rounded border px-3 py-2 pr-10"
-              required
-            />
+//         router.push("/");
+//       } else {
+//         toast.error(result.message || "Login Failed");
+//       }
+//     } catch (error) {
+//       console.log(error);
 
-            <button
-              type="button"
-              onClick={() => setShowPassword(!showPassword)}
-              className="absolute right-3 top-1/2 -translate-y-1/2 cursor-pointer"
-            >
-              {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
-            </button>
-          </div>
-        </div>
+//       toast.error("Something went wrong!");
+//     } finally {
+//       setLoading(false);
+//     }
+//   };
 
-        <Button
-          type="submit"
-          disabled={loading}
-          className="w-full cursor-pointer"
-        >
-          {loading ? "Loading..." : "Login"}
-        </Button>
-      </form>
-    </div>
-  );
-}
+//   return (
+//     <div className="flex min-h-screen items-center justify-center">
+//       <form
+//         onSubmit={form.handleSubmit(onSubmit)}
+//         className="w-full max-w-md space-y-5 rounded-lg border p-6 shadow"
+//       >
+//         <h2 className="text-center text-2xl font-bold">Login</h2>
+
+//         <div>
+//           <label className="mb-1 block">Email</label>
+
+//           <Input
+//             type="email"
+//             placeholder="Enter your email"
+//             {...form.register("email")}
+//           />
+
+//           <p className="text-sm text-red-500">
+//             {form.formState.errors.email?.message}
+//           </p>
+//         </div>
+
+//         <div>
+//           <label className="mb-1 block">Password</label>
+
+//           <div className="relative">
+//             <Input
+//               type={showPassword ? "text" : "password"}
+//               placeholder="Enter your password"
+//               {...form.register("password")}
+//             />
+
+//             <button
+//               type="button"
+//               onClick={() => setShowPassword(!showPassword)}
+//               className="absolute right-3 top-1/2 -translate-y-1/2"
+//             >
+//               {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
+//             </button>
+//           </div>
+
+//           <p className="text-sm text-red-500">
+//             {form.formState.errors.password?.message}
+//           </p>
+//         </div>
+
+//         <Button type="submit" disabled={loading} className="w-full">
+//           {loading ? "Loading..." : "Login"}
+//         </Button>
+//       </form>
+//     </div>
+//   );
+// }
