@@ -59,12 +59,19 @@ export interface JwtPayload {
 
 export type Gear = {
   id: string;
-  name: string;
+  title: string;
   description: string;
-  pricePerDay: number;
+  brand: string;
+  pricePerDay: string;
   quantityTotal: number;
   quantityAvailable: number;
   images: string[];
+  isActive: boolean;
+
+  category?: {
+    id: string;
+    name: string;
+  };
 };
 
 export type Category = {
@@ -131,4 +138,17 @@ export type CreateReviewData = {
   gearId: string;
   rating: number;
   comment: string;
+};
+
+export type GearQuery = {
+  search?: string;
+  brand?: string;
+  slug?: string;
+  price?: number;
+  maxPrice?: number;
+  minPrice?: number;
+  page?: number;
+  sortBy?: string;
+  sortOrder?: "asc" | "desc";
+  tags?: string[];
 };
