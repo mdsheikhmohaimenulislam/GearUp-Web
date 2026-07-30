@@ -264,6 +264,8 @@ export default async function GearPage({
 
 
 
+
+
                     {/* <p>
                       Provider:
                       <span className="font-semibold">
