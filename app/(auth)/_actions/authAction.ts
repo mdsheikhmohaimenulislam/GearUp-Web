@@ -18,9 +18,10 @@ export const loginAction = async (data: {
 };
 
 export const registerAction = async (values: RegisterValues) => {
+
   try {
     const res = await fetch(
-      `${process.env.BACKEND_API_URL}/api/auth/register`,
+      `${process.env.BACKEND_APP_URL}/api/auth/register`,
       {
         method: "POST",
         headers: {
@@ -31,8 +32,9 @@ export const registerAction = async (values: RegisterValues) => {
       },
     );
 
-    const result = await res.json();
 
+    const result = await res.json();
+console.log(result);
     if (!res.ok) {
       return {
         success: false,

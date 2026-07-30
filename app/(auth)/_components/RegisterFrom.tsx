@@ -31,12 +31,14 @@ import { toast } from "sonner";
 import { registerAction } from "../_actions/authAction";
 import { registerSchema } from "../_actions/zodSchema";
 import { Eye, EyeOff } from "lucide-react";
+import { useRouter } from "next/navigation";
 
 type RegisterValues = z.infer<typeof registerSchema>;
 
 export default function RegisterForm() {
   const [loading, setLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
+  const router = useRouter();
 
   const form = useForm<RegisterValues>({
     resolver: zodResolver(registerSchema),
@@ -60,7 +62,7 @@ export default function RegisterForm() {
       if (result.success) {
         toast.success(result.message);
 
-        form.reset();
+        router.push("/");
       } else {
         toast.error(result.message);
       }
