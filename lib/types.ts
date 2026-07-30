@@ -30,3 +30,22 @@ export interface IUser {
     };
   };
 }
+
+
+export type CustomerUser = {
+  id: string;
+  name: string;
+  email: string;
+  address: string;
+  photoUrl: string | null;
+  phone: string;
+  role: "CUSTOMER" | "PROVIDER" | "ADMIN";
+  status: "ACTIVE" | "INACTIVE";
+  createdAt: string;
+  updatedAt: string;
+};
+
+
+export type CustomerDashboardProps = {
+  user: CustomerUser;
+};

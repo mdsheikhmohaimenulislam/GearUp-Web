@@ -8,63 +8,92 @@ type LoginPayload = {
   password: string;
 };
 
-export const loginAction = async (payload: LoginPayload) => {
-  const apiUrl = process.env.BACKEND_API_URL || "http://localhost:5000";
 
-  const res = await fetch(`${apiUrl}/api/auth/login`, {
-    method: "POST",
-    headers: {
-      "content-type": "application/json",
-    },
-    body: JSON.stringify(payload),
-  });
+export async function loginAction(values: LoginPayload) {
 
-  const result = await res.json();
+  console.log(values);
 
-  if (result.success) {
+  const res = await fetch(
+    `${process.env.BACKEND_API_URL}/api/auth/login`,
+    {
+      method: "POST",
+      headers:{
+        "Content-Type":"application/json"
+      },
+      body:JSON.stringify(values)
+    }
+  );
+
+
+  const data = await res.json();
+
+
+  console.log("LOGIN RESPONSE:", data);
+
+
+
+  if(data.success){
+
+    console.log(
+      "ACCESS TOKEN FROM BACKEND:",
+      data.data.accessToken
+    );
+
+
     const cookieStore = await cookies();
 
-    cookieStore.set("accessToken", result.data.accessToken, {
-      httpOnly: true,
-      maxAge: 60 * 60 * 24,
-      sameSite: "lax",
-    });
+
+    cookieStore.set(
+      "accessToken",
+      data.data.accessToken,
+      {
+        httpOnly:true,
+        secure:false,
+        sameSite:"lax",
+        path:"/",
+      }
+    );
+
+
+    console.log(
+      "COOKIE SET DONE"
+    );
+
   }
 
-  return result;
-};
 
-export const registerAction = async (values: RegisterValues) => {
+  return data;
+}
+
+
+
+export async function registerAction(values: RegisterValues) {
   try {
-    const apiUrl = process.env.BACKEND_APP_URL || "http://localhost:5000";
+    console.log("REGISTER DATA:", values);
 
-    const res = await fetch(`${apiUrl}/api/auth/register`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(values),
-      cache: "no-store",
-    });
+    const res = await fetch(
+      `${process.env.BACKEND_API_URL}/api/auth/register`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(values),
+      }
+    );
 
-    const result = await res.json();
+    const data = await res.json();
 
-    if (!res.ok) {
-      return {
-        success: false,
-        message: result.message || "Registration failed",
-      };
-    }
+    console.log("REGISTER RESPONSE:", data);
 
-    return {
-      success: true,
-      message: result.message || "Registration successful",
-      data: result.data,
-    };
-  } catch {
+    return data;
+
+  } catch (error) {
+    console.log("REGISTER ERROR:", error);
+
     return {
       success: false,
       message: "Something went wrong",
     };
   }
-};
+}

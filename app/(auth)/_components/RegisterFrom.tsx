@@ -30,6 +30,7 @@ import { toast } from "sonner";
 
 import { registerAction } from "../_actions/authAction";
 import { registerSchema } from "../_actions/zodSchema";
+
 import { Eye, EyeOff } from "lucide-react";
 import { useRouter } from "next/navigation";
 
@@ -38,6 +39,7 @@ type RegisterValues = z.infer<typeof registerSchema>;
 export default function RegisterForm() {
   const [loading, setLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
+
   const router = useRouter();
 
   const form = useForm<RegisterValues>({
@@ -49,6 +51,7 @@ export default function RegisterForm() {
       password: "",
       phone: "",
       address: "",
+      profilePhoto: "",
       role: "CUSTOMER",
     },
   });
@@ -59,14 +62,18 @@ export default function RegisterForm() {
 
       const result = await registerAction(values);
 
+      console.log(result);
+
       if (result.success) {
         toast.success(result.message);
-
-        router.push("/");
+        setTimeout(() => {
+          router.push("/login");
+        }, 1000);
+        router.refresh();
       } else {
         toast.error(result.message);
       }
-    } catch {
+    } catch (error) {
       toast.error("Registration failed");
     } finally {
       setLoading(false);
@@ -80,6 +87,8 @@ export default function RegisterForm() {
 
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+            {/* Name */}
+
             <FormField
               control={form.control}
               name="name"
@@ -95,6 +104,8 @@ export default function RegisterForm() {
                 </FormItem>
               )}
             />
+
+            {/* Email */}
 
             <FormField
               control={form.control}
@@ -116,6 +127,8 @@ export default function RegisterForm() {
               )}
             />
 
+            {/* Password */}
+
             <FormField
               control={form.control}
               name="password"
@@ -130,10 +143,11 @@ export default function RegisterForm() {
                         placeholder="Enter your password"
                         {...field}
                       />
+
                       <button
                         type="button"
                         onClick={() => setShowPassword(!showPassword)}
-                        className="absolute right-3 top-1/2 -translate-y-1/2 cursor-pointer"
+                        className="absolute right-3 top-1/2 -translate-y-1/2"
                       >
                         {showPassword ? (
                           <EyeOff size={20} />
@@ -148,6 +162,8 @@ export default function RegisterForm() {
                 </FormItem>
               )}
             />
+
+            {/* Phone */}
 
             <FormField
               control={form.control}
@@ -165,6 +181,8 @@ export default function RegisterForm() {
               )}
             />
 
+            {/* Address */}
+
             <FormField
               control={form.control}
               name="address"
@@ -180,6 +198,29 @@ export default function RegisterForm() {
                 </FormItem>
               )}
             />
+
+            {/* Profile Photo URL */}
+
+            <FormField
+              control={form.control}
+              name="profilePhoto"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Profile Photo URL</FormLabel>
+
+                  <FormControl>
+                    <Input
+                      placeholder="https://example.com/image.jpg"
+                      {...field}
+                    />
+                  </FormControl>
+
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+
+            {/* Role */}
 
             <FormField
               control={form.control}
@@ -207,11 +248,7 @@ export default function RegisterForm() {
               )}
             />
 
-            <Button
-              type="submit"
-              className="w-full cursor-pointer"
-              disabled={loading}
-            >
+            <Button type="submit" className="w-full" disabled={loading}>
               {loading ? "Creating Account..." : "Register"}
             </Button>
           </form>
