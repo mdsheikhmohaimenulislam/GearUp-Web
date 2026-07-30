@@ -110,6 +110,7 @@ export default function Hero() {
               src={coverImage}
               alt="Outdoor adventure gear"
               fill
+              sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
               className="object-cover"
               priority
             />
@@ -118,7 +119,9 @@ export default function Hero() {
           {/* Floating Card */}
 
           <div className="absolute bottom-5 left-5 rounded-xl border bg-background/90 p-4 shadow-lg backdrop-blur">
-            <p className="text-sm text-muted-foreground dark:text-green-600">Available Today</p>
+            <p className="text-sm text-muted-foreground dark:text-green-600">
+              Available Today
+            </p>
 
             <h3 className="text-xl font-bold">100+ Gear Ready</h3>
           </div>

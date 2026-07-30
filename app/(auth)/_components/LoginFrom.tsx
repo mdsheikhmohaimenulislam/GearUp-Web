@@ -46,9 +46,7 @@ export default function LoginForm() {
       } else {
         toast.error(result.message || "Login Failed");
       }
-    } catch (error) {
-      console.log(error);
-
+    } catch {
       toast.error("Something went wrong!");
     } finally {
       setLoading(false);

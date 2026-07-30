@@ -1,40 +1,54 @@
 "use server";
 
 import { RegisterValues } from "@/lib/types";
+import { cookies } from "next/headers";
 
-export const loginAction = async (data: {
+type LoginPayload = {
   email: string;
   password: string;
-}) => {
-  const res = await fetch(`${process.env.BACKEND_APP_URL}/api/auth/login`, {
+};
+
+export const loginAction = async (payload: LoginPayload) => {
+  const apiUrl = process.env.BACKEND_API_URL || "http://localhost:5000";
+
+  const res = await fetch(`${apiUrl}/api/auth/login`, {
     method: "POST",
     headers: {
-      "Content-Type": "application/json",
+      "content-type": "application/json",
     },
-    body: JSON.stringify(data),
+    body: JSON.stringify(payload),
   });
 
-  return await res.json();
+  const result = await res.json();
+
+  if (result.success) {
+    const cookieStore = await cookies();
+
+    cookieStore.set("accessToken", result.data.accessToken, {
+      httpOnly: true,
+      maxAge: 60 * 60 * 24,
+      sameSite: "lax",
+    });
+  }
+
+  return result;
 };
 
 export const registerAction = async (values: RegisterValues) => {
-
   try {
-    const res = await fetch(
-      `${process.env.BACKEND_APP_URL}/api/auth/register`,
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(values),
-        cache: "no-store",
-      },
-    );
+    const apiUrl = process.env.BACKEND_APP_URL || "http://localhost:5000";
 
+    const res = await fetch(`${apiUrl}/api/auth/register`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(values),
+      cache: "no-store",
+    });
 
     const result = await res.json();
-console.log(result);
+
     if (!res.ok) {
       return {
         success: false,
@@ -47,9 +61,7 @@ console.log(result);
       message: result.message || "Registration successful",
       data: result.data,
     };
-  } catch (error) {
-    console.log("Register Action Error:", error);
-
+  } catch {
     return {
       success: false,
       message: "Something went wrong",

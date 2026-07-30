@@ -7,15 +7,15 @@ const verifyToken = (token: string, secret: string) => {
       success: true,
       data: verifiedToken,
     };
-  } catch (error:unknown) {
-            console.log("Token verification failed:", error);
-        return {
-            success: false,
-            error: error instanceof Error ? error.message : "Invalid or expired token",
-        }
+  } catch (error: unknown) {
+    return {
+      success: false,
+      error:
+        error instanceof Error ? error.message : "Invalid or expired token",
+    };
   }
 };
 
 export const jwtUtils = {
-    verifyToken
-}
+  verifyToken,
+};

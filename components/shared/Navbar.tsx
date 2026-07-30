@@ -1,17 +1,20 @@
 "use client";
 
 import Link from "next/link";
-import Image from "next/image";
 import { Menu, LogOut, User } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 import { ModeToggle } from "@/components/theme/mode-toggle";
 
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
+import { IUser } from "@/lib/types";
 
-export default function Navbar() {
-  // পরে auth context / server session থেকে আসবে
-  const user = null;
+type NavbarProps = {
+  user: IUser;
+};
+
+export default function Navbar({ user }: NavbarProps) {
+  const currentUser = user?.data;
 
   const navLinks = [
     {
@@ -29,7 +32,7 @@ export default function Navbar() {
   ];
 
   const logoutHandler = () => {
-    console.log("logout");
+    // Logout action can be wired up later.
   };
 
   return (
@@ -66,7 +69,7 @@ export default function Navbar() {
         <div className="hidden items-center gap-3 md:flex">
           <ModeToggle />
 
-          {user ? (
+          {currentUser ? (
             <>
               {/* Avatar */}
               <Button variant="ghost" size="icon" className="rounded-full">
@@ -114,8 +117,16 @@ export default function Navbar() {
                   </Link>
                 ))}
 
-                {user ? (
+                {currentUser ? (
                   <>
+                    <Button
+                      variant="ghost"
+                      size="icon"
+                      className="rounded-full"
+                    >
+                      <User />
+                    </Button>
+
                     <Button
                       variant="outline"
                       onClick={logoutHandler}
@@ -131,7 +142,7 @@ export default function Navbar() {
                       <Link href="/login">Login</Link>
                     </Button>
 
-                    <Button asChild variant="outline">
+                    <Button asChild>
                       <Link href="/register">Register</Link>
                     </Button>
                   </>

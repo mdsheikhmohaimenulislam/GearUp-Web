@@ -66,9 +66,7 @@ export default function RegisterForm() {
       } else {
         toast.error(result.message);
       }
-    } catch (error) {
-      console.log(error);
-
+    } catch {
       toast.error("Registration failed");
     } finally {
       setLoading(false);
