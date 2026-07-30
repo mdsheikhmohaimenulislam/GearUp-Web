@@ -31,7 +31,6 @@ export interface IUser {
   };
 }
 
-
 export type CustomerUser = {
   id: string;
   name: string;
@@ -45,12 +44,9 @@ export type CustomerUser = {
   updatedAt: string;
 };
 
-
 export type CustomerDashboardProps = {
   user: CustomerUser;
 };
-
-
 
 export interface JwtPayload {
   id: string;
@@ -60,3 +56,79 @@ export interface JwtPayload {
   iat?: number;
   exp?: number;
 }
+
+export type Gear = {
+  id: string;
+  name: string;
+  description: string;
+  pricePerDay: number;
+  quantityTotal: number;
+  quantityAvailable: number;
+  images: string[];
+};
+
+export type Category = {
+  id: string;
+  name: string;
+  description?: string | null;
+  createdAt?: string;
+  updatedAt?: string;
+};
+
+export type CreateCategoryData = {
+  name: string;
+  description?: string;
+};
+
+export type UpdateCategoryData = {
+  name?: string;
+  description?: string;
+};
+
+export type UserStatus = "ACTIVE" | "BLOCKED";
+
+export type UpdateUserData = {
+  status?: UserStatus;
+  role?: "CUSTOMER" | "PROVIDER" | "ADMIN";
+};
+
+export type CreatePaymentData = {
+  orderId: string;
+  amount: number;
+  paymentMethod: "STRIPE";
+};
+
+export type ConfirmPaymentData = {
+  paymentId: string;
+  transactionId: string;
+  status: "SUCCESS" | "FAILED";
+};
+
+export type CreateGearData = {
+  name: string;
+  description: string;
+  brand: string;
+  categoryId: string;
+  pricePerDay: number;
+  quantityTotal: number;
+  images: string[];
+};
+
+export type UpdateGearData = Partial<CreateGearData>;
+
+export type UpdateOrderStatusData = {
+  status: "PENDING" | "CONFIRMED" | "CANCELLED" | "COMPLETED";
+};
+
+export type CreateRentalData = {
+  gearId: string;
+  startDate: string;
+  endDate: string;
+  quantity: number;
+};
+
+export type CreateReviewData = {
+  gearId: string;
+  rating: number;
+  comment: string;
+};
