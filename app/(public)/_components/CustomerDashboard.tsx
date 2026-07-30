@@ -91,10 +91,6 @@ export default function CustomerDashboard({ user }: CustomerDashboardProps) {
           <Button variant="outline" asChild>
             <Link href="/rents">My Rentals</Link>
           </Button>
-
-          <Button variant="outline" asChild>
-            <Link href="/profile">Update Profile</Link>
-          </Button>
         </div>
       </div>
     </div>

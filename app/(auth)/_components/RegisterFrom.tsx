@@ -66,6 +66,18 @@ export default function RegisterForm() {
 
       if (result.success) {
         toast.success(result.message);
+        const role = result.data.user.role;
+
+        if (role === "CUSTOMER") {
+          router.push("/dashboard");
+        } else if (role === "PROVIDER") {
+          router.push("/providerDashboard");
+        } else if (role === "ADMIN") {
+          router.push("/adminDashboard");
+        } else {
+          router.push("/");
+        }
+
         setTimeout(() => {
           router.push("/login");
         }, 1000);

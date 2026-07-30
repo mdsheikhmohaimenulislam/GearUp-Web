@@ -1,46 +1,97 @@
 import { NextRequest, NextResponse } from "next/server";
+import { jwtDecode } from "jwt-decode";
+import { JwtPayload } from "./lib/types";
 
-const AUTH_ROUTES = ["/login", "/register"];
 
-const PUBLIC_ROUTES = [
-  "/",
-  "/gear",
-  "/categories",
-  "/me",
+const AUTH_ROUTES = [
   "/login",
   "/register",
 ];
 
-const PROTECTED_ROUTES = [
-  "/dashboard",
-  "/provider-dashboard",
-  "/admin-dashboard",
-  "/profile",
-  "/orders",
-];
 
-export async function middleware(request: NextRequest) {
+
+export function middleware(request: NextRequest) {
+
+
   const pathname = request.nextUrl.pathname;
 
-  const accessToken = request.cookies.get("accessToken")?.value;
 
-  const isProtectedRoute = PROTECTED_ROUTES.some(
-    (route) => pathname === route || pathname.startsWith(route + "/"),
-  );
+  const accessToken =
+    request.cookies.get("accessToken")?.value;
 
-  // token নাই protected page এ গেলে login
-  if (!accessToken && isProtectedRoute) {
-    return NextResponse.redirect(new URL("/login", request.url));
+
+
+
+  if(
+    accessToken &&
+    AUTH_ROUTES.includes(pathname)
+  ){
+
+
+    const user:JwtPayload = jwtDecode(accessToken);
+
+
+
+    if(user.role === "CUSTOMER"){
+
+      return NextResponse.redirect(
+        new URL(
+          "/dashboard",
+          request.url
+        )
+      );
+
+    }
+
+
+
+    if(user.role === "PROVIDER"){
+
+      return NextResponse.redirect(
+        new URL(
+          "/providerDashboard",
+          request.url
+        )
+      );
+
+    }
+
+
+
+
+    if(user.role === "ADMIN"){
+
+      return NextResponse.redirect(
+        new URL(
+          "/adminDashboard",
+          request.url
+        )
+      );
+
+    }
+
+
   }
 
-  // token থাকলে login/register এ যেতে দিবে না
-  if (accessToken && AUTH_ROUTES.includes(pathname)) {
-    return NextResponse.redirect(new URL("/dashboard", request.url));
-  }
+
+
 
   return NextResponse.next();
+
+
 }
 
+
+
+
 export const config = {
-  matcher: ["/((?!api|_next/static|favicon.ico|_next/image|.*\\.png$).*)"],
+
+  matcher: [
+
+    "/login",
+
+    "/register",
+
+  ],
+
 };

@@ -1,5 +1,6 @@
 "use server";
 
+import { serverUrl } from "@/lib/serverUrl";
 import { RegisterValues } from "@/lib/types";
 import { cookies } from "next/headers";
 
@@ -14,7 +15,7 @@ export async function loginAction(values: LoginPayload) {
   console.log(values);
 
   const res = await fetch(
-    `${process.env.BACKEND_API_URL}/api/auth/login`,
+    `${serverUrl}/api/auth/login`,
     {
       method: "POST",
       headers:{
@@ -72,7 +73,7 @@ export async function registerAction(values: RegisterValues) {
     console.log("REGISTER DATA:", values);
 
     const res = await fetch(
-      `${process.env.BACKEND_API_URL}/api/auth/register`,
+      `${serverUrl}/api/auth/register`,
       {
         method: "POST",
         headers: {

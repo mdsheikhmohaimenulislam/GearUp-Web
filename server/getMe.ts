@@ -1,5 +1,6 @@
 "use server";
 
+import { serverUrl } from "@/lib/serverUrl";
 import { cookies } from "next/headers";
 
 export const getMe = async () => {
@@ -22,7 +23,7 @@ const accessToken = cookieStore.get("accessToken")?.value;
 
 
   const res = await fetch(
-    `${process.env.BACKEND_API_URL}/api/auth/me`,
+    `${serverUrl}/api/auth/me`,
     {
       method:"GET",
       headers:{

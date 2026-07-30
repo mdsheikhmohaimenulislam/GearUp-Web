@@ -49,3 +49,14 @@ export type CustomerUser = {
 export type CustomerDashboardProps = {
   user: CustomerUser;
 };
+
+
+
+export interface JwtPayload {
+  id: string;
+  name: string;
+  email: string;
+  role: "CUSTOMER" | "PROVIDER" | "ADMIN";
+  iat?: number;
+  exp?: number;
+}
