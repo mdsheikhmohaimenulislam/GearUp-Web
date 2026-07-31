@@ -285,7 +285,7 @@ export default async function GearPage({
                 </div>
 
                   <Link
-                    href={`/gear/${gear.id}`}
+                    href={`/gear/${gear.id}?redirect=true`}
                     className="block text-center w-full mt-4  bg-green-700 text-white py-2 hover:bg-green-600"
                   >
 

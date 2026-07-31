@@ -13,7 +13,7 @@ const SingleGearPage = async ({ params }: Props) => {
   const accessToken = cookieStore.get("accessToken")?.value;
 
   if (!accessToken) {
-    redirect("/login");
+    redirect(`/login?redirect=/gear/${id}`);
   }
 
   const response = await getSingleGear(id);
@@ -78,7 +78,7 @@ const SingleGearPage = async ({ params }: Props) => {
             </p>
           </div>
                             <Link
-                    href={`/gear/${gear.id}`}
+                    href={``}
                     className="block text-center w-full mt-4  bg-green-700 text-white py-2 hover:bg-green-600"
                   >
 
