@@ -1,17 +1,30 @@
-// import Navbar from "@/components/shared/Navbar";
+
+import ProviderSidebar from "@/components/shared/ProviderSidebar";
 // import { getMe } from "@/server/getMe";
-// import React from "react";
 
-// const DashboardLayout = async ({ children }: { children: React.ReactNode }) => {
-//   const user = await getMe();
-//   console.log(user);
+export default async function ProviderDashboardLayout({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
 
-//   return (
-//     <div>
-//       <Navbar user={user} />
-//       {children}
-//     </div>
-//   );
-// };
+  // const user = await getMe();
 
-// export default DashboardLayout;
+  return (
+    <div>
+
+  
+
+      <div className="flex">
+
+        <ProviderSidebar />
+
+        <main className="flex-1 p-6">
+          {children}
+        </main>
+
+      </div>
+
+    </div>
+  );
+}
