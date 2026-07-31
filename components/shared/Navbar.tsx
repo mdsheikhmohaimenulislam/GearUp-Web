@@ -1,9 +1,9 @@
 "use client";
 
 import Link from "next/link";
-import { Menu, LogOut, User } from "lucide-react";
+import { Menu, User } from "lucide-react";
 import { useRouter } from "next/navigation";
-import { toast } from "sonner";
+
 
 import { Button } from "@/components/ui/button";
 import { ModeToggle } from "@/components/theme/mode-toggle";
@@ -19,8 +19,8 @@ import {
 } from "@/components/ui/dropdown-menu";
 
 import { IUser } from "@/lib/types";
-import { logout } from "@/server/logout";
 import Image from "next/image";
+import LogoutButton from './LogoutButton';
 
 type NavbarProps = {
   user: IUser;
@@ -76,14 +76,7 @@ export default function Navbar({ user }: NavbarProps) {
     }
   };
 
-  const handleLogout = async () => {
-    await logout();
 
-    toast.success("User Logged Out Successfully!");
-
-    router.push("/login");
-    router.refresh();
-  };
 
   return (
     <header className="sticky top-0 z-50 border-b bg-background/80 backdrop-blur">
@@ -140,11 +133,8 @@ export default function Navbar({ user }: NavbarProps) {
                   <User className="mr-2 h-4 w-4" />
                   Dashboard
                 </DropdownMenuItem>
-
-                <DropdownMenuItem onClick={handleLogout}>
-                  <LogOut className="mr-2 h-4 w-4" />
-                  Logout
-                </DropdownMenuItem>
+{/* logout */}
+<LogoutButton/>
               </DropdownMenuContent>
             </DropdownMenu>
           ) : (
@@ -187,10 +177,8 @@ export default function Navbar({ user }: NavbarProps) {
                       Dashboard
                     </Button>
 
-                    <Button variant="outline" onClick={handleLogout}>
-                      <LogOut className="mr-2 h-4 w-4" />
-                      Logout
-                    </Button>
+{/* logout */}
+<LogoutButton/>
                   </>
                 ) : (
                   <Button asChild>
