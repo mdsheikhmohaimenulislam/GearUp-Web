@@ -2,6 +2,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { getMyGears } from "@/server/provider.service";
 import { Gear } from "@/lib/types";
+import { Edit, Trash2 } from "lucide-react";
 
 export default async function MyGearsPage() {
 
@@ -171,37 +172,45 @@ export default async function MyGearsPage() {
                   <div className="flex gap-3 pt-4">
 
 
-                    <Link
-                      href={`/providerDashboard/gears/${gear.id}/edit`}
-                      className="
-                      flex-1
-                      text-center
-                      bg-green-600
-                      text-white
-                      py-2
-                      rounded-md
-                      hover:bg-green-700
-                      "
-                    >
-                      Edit
-                    </Link>
+<Link
+  href={`/providerDashboard/gears/${gear.id}/edit`}
+  className="
+  flex-1
+  flex
+  items-center
+  justify-center
+  gap-2
+  bg-green-600
+  text-white
+  py-2
+  rounded-md
+  hover:bg-green-700
+  "
+>
+  <Edit size={17} />
+  Edit
+</Link>
 
 
 
-                    <Link
-                      href={`/providerDashboard/gears/${gear.id}/delete`}
-                      className="
-                      flex-1
-                      text-center
-                      bg-red-600
-                      text-white
-                      py-2
-                      rounded-md
-                      hover:bg-red-700
-                      "
-                    >
-                      Delete
-                    </Link>
+<Link
+  href={`/providerDashboard/gears/${gear.id}/delete`}
+  className="
+  flex-1
+  flex
+  items-center
+  justify-center
+  gap-2
+  bg-red-600
+  text-white
+  py-2
+  rounded-md
+  hover:bg-red-700
+  "
+>
+  <Trash2 size={17} />
+  Delete
+</Link>
 
 
                   </div>

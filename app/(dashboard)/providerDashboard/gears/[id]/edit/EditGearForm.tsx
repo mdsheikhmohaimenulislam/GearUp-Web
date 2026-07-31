@@ -11,11 +11,45 @@ type Gear = {
   quantityAvailable: number;
 };
 
-export default function EditGearForm({ gear }: { gear: Gear }) {
-  const { handleSubmit, loading } = useUpdateGear(gear.id);
+
+export default function EditGearForm({
+  gear,
+}: {
+  gear: Gear;
+}) {
+
+
+  const {
+    handleSubmit,
+    loading
+  } = useUpdateGear(gear.id);
+
+
 
   return (
-    <div className="max-w-3xl mx-auto">
+
+    <div className="max-w-3xl mx-auto space-y-8">
+
+
+      {/* Header */}
+
+      <div>
+
+        <h1 className="text-3xl font-bold">
+          Edit Gear
+        </h1>
+
+
+        <p className="text-gray-500 mt-2">
+          Update your gear details and keep your inventory information accurate.
+        </p>
+
+      </div>
+
+
+
+      {/* Form */}
+
       <form
         onSubmit={handleSubmit}
         className="
@@ -28,10 +62,14 @@ export default function EditGearForm({ gear }: { gear: Gear }) {
         dark:bg-black
         "
       >
-        {/* Title */}
+
 
         <div>
-          <label className="text-sm font-medium">Gear Title</label>
+
+          <label className="text-sm font-medium">
+            Gear Title
+          </label>
+
 
           <input
             name="title"
@@ -48,12 +86,17 @@ export default function EditGearForm({ gear }: { gear: Gear }) {
             focus:ring-green-600
             "
           />
+
         </div>
 
-        {/* Description */}
+
 
         <div>
-          <label className="text-sm font-medium">Description</label>
+
+          <label className="text-sm font-medium">
+            Description
+          </label>
+
 
           <textarea
             name="description"
@@ -71,12 +114,18 @@ export default function EditGearForm({ gear }: { gear: Gear }) {
             focus:ring-green-600
             "
           />
+
         </div>
 
-        {/* Price */}
+
+
 
         <div>
-          <label className="text-sm font-medium">Price Per Day (৳)</label>
+
+          <label className="text-sm font-medium">
+            Price Per Day (৳)
+          </label>
+
 
           <input
             name="pricePerDay"
@@ -94,19 +143,21 @@ export default function EditGearForm({ gear }: { gear: Gear }) {
             focus:ring-green-600
             "
           />
+
         </div>
 
-        {/* Quantity */}
 
-        <div
-          className="
-        grid
-        md:grid-cols-2
-        gap-5
-        "
-        >
+
+
+        <div className="grid md:grid-cols-2 gap-5">
+
+
           <div>
-            <label className="text-sm font-medium">Total Quantity</label>
+
+            <label className="text-sm font-medium">
+              Total Quantity
+            </label>
+
 
             <input
               name="quantityTotal"
@@ -124,10 +175,18 @@ export default function EditGearForm({ gear }: { gear: Gear }) {
               focus:ring-green-600
               "
             />
+
           </div>
 
+
+
+
           <div>
-            <label className="text-sm font-medium">Available Quantity</label>
+
+            <label className="text-sm font-medium">
+              Available Quantity
+            </label>
+
 
             <input
               name="quantityAvailable"
@@ -145,10 +204,15 @@ export default function EditGearForm({ gear }: { gear: Gear }) {
               focus:ring-green-600
               "
             />
+
           </div>
+
+
         </div>
 
-        {/* Button */}
+
+
+
 
         <button
           disabled={loading}
@@ -164,9 +228,20 @@ export default function EditGearForm({ gear }: { gear: Gear }) {
           disabled:opacity-50
           "
         >
-          {loading ? "Updating..." : "Update Gear"}
+
+          {
+            loading
+            ? "Updating..."
+            : "Update Gear"
+          }
+
         </button>
+
+
       </form>
+
+
     </div>
+
   );
 }
