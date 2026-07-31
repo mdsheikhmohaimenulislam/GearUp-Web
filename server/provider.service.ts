@@ -1,10 +1,10 @@
 import { serverUrl } from "@/lib/serverUrl";
+import { cookies } from "next/headers";
 import {
   CreateGearData,
   UpdateGearData,
   UpdateOrderStatusData,
 } from "@/lib/types";
-import { cookies } from "next/headers";
 
 export const getMyGears = async () => {
   const cookieStore = await cookies();
@@ -70,7 +70,13 @@ export const deleteGear = async (id: string) => {
 };
 
 export const getProviderOrders = async () => {
+  const cookieStore = await cookies();
+
+  const token = cookieStore.get("accessToken")?.value;
   const res = await fetch(`${serverUrl}/api/provider/orders`, {
+    headers: {
+      Cookie: `accessToken=${token}`,
+    },
     credentials: "include",
     cache: "no-store",
   });
@@ -82,10 +88,14 @@ export const updateOrderStatus = async (
   id: string,
   data: UpdateOrderStatusData,
 ) => {
+  const cookieStore = await cookies();
+
+  const token = cookieStore.get("accessToken")?.value;
   const res = await fetch(`${serverUrl}/api/provider/orders/${id}`, {
     method: "PATCH",
     headers: {
       "Content-Type": "application/json",
+      Cookie: `accessToken=${token}`,
     },
     credentials: "include",
     body: JSON.stringify(data),

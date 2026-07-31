@@ -105,10 +105,6 @@ export type ConfirmPaymentData = {
 
 export type UpdateGearData = Partial<CreateGearData>;
 
-export type UpdateOrderStatusData = {
-  status: "PENDING" | "CONFIRMED" | "CANCELLED" | "COMPLETED";
-};
-
 export type CreateRentalData = {
   gearId: string;
   startDate: string;
@@ -173,9 +169,7 @@ export type CreateGearData = {
   images: string[];
 };
 
-
 export interface UpdateGear {
-
   title?: string;
 
   description?: string;
@@ -185,5 +179,27 @@ export interface UpdateGear {
   quantityTotal?: number;
 
   quantityAvailable?: number;
-
 }
+
+export type UpdateOrderStatusData = {
+  status: "CONFIRMED" | "PICKED_UP" | "RETURNED" | "CANCELLED";
+};
+
+export type ProviderOrder = {
+  id: string;
+  quantity: number;
+  status: string;
+
+  totalPrice?: number;
+
+  customer?: {
+    name: string;
+    email: string;
+  };
+
+  gear?: {
+    title: string;
+    images?: string[];
+    pricePerDay?: number;
+  };
+};
