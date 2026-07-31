@@ -59,7 +59,7 @@ export default function Navbar({ user }: NavbarProps) {
 
     switch (userRole) {
       case "CUSTOMER":
-        router.push("/dashboard");
+        router.push("/customerDashboard");
         break;
 
       case "PROVIDER":

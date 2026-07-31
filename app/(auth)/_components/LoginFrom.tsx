@@ -57,7 +57,7 @@ export default function LoginForm() {
         const role = decoded.role;
 
         if (role === "CUSTOMER") {
-          router.replace("/dashboard");
+          router.replace("/customerDashboard");
         } else if (role === "PROVIDER") {
           router.replace("/providerDashboard");
         } else if (role === "ADMIN") {

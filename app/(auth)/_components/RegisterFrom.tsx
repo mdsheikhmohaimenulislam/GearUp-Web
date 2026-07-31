@@ -69,7 +69,7 @@ export default function RegisterForm() {
         const role = result.data.user.role;
 
         if (role === "CUSTOMER") {
-          router.push("/dashboard");
+          router.push("/customerDashboard");
         } else if (role === "PROVIDER") {
           router.push("/providerDashboard");
         } else if (role === "ADMIN") {

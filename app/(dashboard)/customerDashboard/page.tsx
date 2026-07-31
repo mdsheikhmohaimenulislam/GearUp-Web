@@ -1,27 +1,47 @@
-
+import AdminDashboard from "@/app/(public)/_components/(admin)/AdminDashboard";
 import CustomerDashboard from "@/app/(public)/_components/CustomerDashboard";
-import { getMe } from "@/server/getMe";
-
-
-export default async function CustomerDashboardPage(){
-
-
-  const user = await getMe();
 
 
 
-  return (
-
-    <div className="container mx-auto py-10 px-4">
+export default async function DashboardPage() {
 
 
+  // temporary test
+  const user = {
+    id: "1",
+    name: "loi2",
+    email: "loi6@gmail.com",
+    role: "CUSTOMER",
+  };
+
+
+
+  if (user.role === "CUSTOMER") {
+
+    return (
       <CustomerDashboard
-        user={user.data}
+        user={user}
       />
+    );
+
+  }
 
 
-    </div>
 
-  );
+
+
+  if (user.role === "ADMIN") {
+
+    return (
+      <AdminDashboard
+        user={user}
+      />
+    );
+
+  }
+
+
+
+  return null;
 
 }
