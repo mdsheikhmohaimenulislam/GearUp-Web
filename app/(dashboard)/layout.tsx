@@ -1,30 +1,22 @@
+import DashboardSidebar from "@/components/shared/DashboardSidebar";
 
-import ProviderSidebar from "@/components/shared/ProviderSidebar";
-// import { getMe } from "@/server/getMe";
+import { getMe } from "@/server/getMe";
 
 export default async function ProviderDashboardLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
-
-  // const user = await getMe();
+  const user = await getMe();
+  const role = user.data.role;
 
   return (
     <div>
-
-  
-
       <div className="flex">
+        <DashboardSidebar role={role} />
 
-        <ProviderSidebar />
-
-        <main className="flex-1 p-6">
-          {children}
-        </main>
-
+        <main className="flex-1 p-6">{children}</main>
       </div>
-
     </div>
   );
 }

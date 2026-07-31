@@ -55,15 +55,15 @@ export default function CustomerDashboard({
     <div className="space-y-8">
 
 
-      <div>
-        <h1 className="text-3xl font-bold">
-          Customer Dashboard
-        </h1>
+<div className="text-center sm:text-left">
+  <h1 className="text-2xl font-bold">
+    Customer Dashboard
+  </h1>
 
-        <p className="text-gray-500 mt-2">
-          Welcome back, {user.name}
-        </p>
-      </div>
+  <p className="text-gray-500 mt-2">
+    Welcome back, {user.name}
+  </p>
+</div>
 
 
 
