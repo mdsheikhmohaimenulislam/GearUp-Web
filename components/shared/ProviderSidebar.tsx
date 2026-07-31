@@ -7,18 +7,10 @@ import {
   PlusCircle,
   Package,
   ShoppingCart,
-  Menu,
-  X,
 } from "lucide-react";
-import { useState } from "react";
-
 
 export default function ProviderSidebar() {
-
   const pathname = usePathname();
-
-  const [open, setOpen] = useState(false);
-
 
   const menus = [
     {
@@ -43,181 +35,72 @@ export default function ProviderSidebar() {
     },
   ];
 
-
-
   return (
-    <>
+    <aside
+      className="
+      w-64
+      min-h-screen
 
+      border-r
+      p-5
 
-      {/* Mobile Button */}
-
-      <button
-        onClick={() => setOpen(true)}
+      bg-white
+      dark:bg-black
+      "
+    >
+      <Link
+        href="/"
         className="
-        md:hidden
-        fixed
-        top-4
-        left-4
-        z-50
-        p-2
-        rounded-md
-        border
-        text-green-700
-        bg-white
+        text-xl
+        font-bold
+        mb-8
+        block
         "
       >
-        <Menu size={22}/>
-      </button>
+        Provider Dashboard
+      </Link>
+
+      <nav className="space-y-2">
+        {menus.map((menu) => {
+          const Icon = menu.icon;
+
+          const active =
+            pathname === menu.href ||
+            (menu.href !== "/providerDashboard" &&
+              pathname.startsWith(menu.href + "/"));
+
+          return (
+            <Link
+              key={menu.href}
+              href={menu.href}
+              className={`
+                flex
+                items-center
+                gap-3
+
+                px-4
+                py-3
+
+                rounded-md
+
+                transition
 
 
-
-
-      {/* Overlay */}
-
-      {
-        open && (
-
-          <div
-            onClick={() => setOpen(false)}
-            className="
-            fixed
-            inset-0
-            bg-black/40
-            z-40
-            md:hidden
-            "
-          />
-
-        )
-      }
-
-
-
-
-      {/* Sidebar */}
-
-      <aside
-        className={`
-        fixed
-        md:static
-        top-0
-        left-0
-        z-50
-
-        w-64
-        min-h-screen
-
-        border-r
-        p-5
-        bg-white
-        dark:bg-black
-
-        transition-transform
-        duration-300
-
-        ${
-          open
-          ? "translate-x-0"
-          : "-translate-x-full md:translate-x-0"
-        }
-        `}
-      >
-
-
-        {/* Close Button */}
-
-        <button
-          onClick={() => setOpen(false)}
-          className="
-          md:hidden
-          absolute
-          right-4
-          top-4
-          "
-        >
-          <X size={22}/>
-        </button>
-
-
-
-
-        <Link
-          href="/"
-          className="
-          text-xl
-          font-bold
-          mb-8
-          block
-          "
-        >
-          Provider Dashboard
-        </Link>
-
-
-
-
-        <nav className="space-y-2">
-
-          {
-            menus.map((menu)=>{
-
-
-              const Icon = menu.icon;
-
-              const active =
-                pathname === menu.href;
-
-
-
-              return (
-
-                <Link
-                  key={menu.href}
-                  href={menu.href}
-                  onClick={() => setOpen(false)}
-                  className={`
-                  flex
-                  items-center
-                  gap-3
-
-                  px-4
-                  py-2
-                  rounded-md
-
-                  transition
-
-
-                  ${
-                    active
+                ${
+                  active
                     ? "bg-green-700 text-white"
-                    : "dark:hover:bg-black hover:bg-gray-300 "
-                  }
+                    : "hover:bg-gray-100 dark:hover:bg-gray-800"
+                }
 
-                  `}
-                >
+                `}
+            >
+              <Icon size={20} />
 
-                  <Icon size={20}/>
-
-                  <span>
-                    {menu.name}
-                  </span>
-
-
-                </Link>
-
-              );
-
-
-            })
-          }
-
-
-        </nav>
-
-
-      </aside>
-
-
-    </>
+              <span>{menu.name}</span>
+            </Link>
+          );
+        })}
+      </nav>
+    </aside>
   );
 }

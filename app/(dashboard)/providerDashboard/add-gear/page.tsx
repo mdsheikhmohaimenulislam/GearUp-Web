@@ -180,7 +180,7 @@ py-3
           </div>
         </div>
 
-        <div>
+        <div >
           <label className="text-sm font-medium">Category</label>
 
           <select
@@ -190,11 +190,12 @@ py-3
       rounded-md
       px-4
       py-3
+      dark:bg-black
       w-full
       mt-2
     "
           >
-            <option value="">Select Category</option>
+            <option >Select Category</option>
 
             {categories.map((cat) => (
               <option key={cat.id} value={cat.id}>

@@ -37,15 +37,14 @@ export async function createGea(data: CreateGearData) {
 }
 
 export const updateGear = async (id: string, data: UpdateGearData) => {
-
-    const cookieStore = await cookies();
+  const cookieStore = await cookies();
 
   const token = cookieStore.get("accessToken")?.value;
 
   const res = await fetch(`${serverUrl}/api/provider/gear/${id}`, {
     method: "PUT",
     headers: {
-            "Content-Type": "application/json",
+      "Content-Type": "application/json",
       Cookie: `accessToken=${token}`,
     },
     credentials: "include",
@@ -56,8 +55,14 @@ export const updateGear = async (id: string, data: UpdateGearData) => {
 };
 
 export const deleteGear = async (id: string) => {
+  const cookieStore = await cookies();
+
+  const token = cookieStore.get("accessToken")?.value;
   const res = await fetch(`${serverUrl}/api/provider/gear/${id}`, {
     method: "DELETE",
+    headers: {
+      Cookie: `accessToken=${token}`,
+    },
     credentials: "include",
   });
 
