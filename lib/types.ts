@@ -203,3 +203,17 @@ export type ProviderOrder = {
     pricePerDay?: number;
   };
 };
+
+export type ProviderDashboardOrder = {
+  id: string;
+  status: string;
+  totalPrice?: number;
+
+  gear?: {
+    title: string;
+  };
+
+  customer?: {
+    name: string;
+  };
+};
