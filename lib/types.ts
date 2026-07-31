@@ -103,16 +103,6 @@ export type ConfirmPaymentData = {
   status: "SUCCESS" | "FAILED";
 };
 
-export type CreateGearData = {
-  name: string;
-  description: string;
-  brand: string;
-  categoryId: string;
-  pricePerDay: number;
-  quantityTotal: number;
-  images: string[];
-};
-
 export type UpdateGearData = Partial<CreateGearData>;
 
 export type UpdateOrderStatusData = {
@@ -171,3 +161,29 @@ export type Category = {
 export type GearFilterProps = {
   categories: Category[];
 };
+
+export type CreateGearData = {
+  title: string;
+  description: string;
+  brand: string;
+  categoryId: string;
+  pricePerDay: number;
+  quantityTotal: number;
+  quantityAvailable: number;
+  images: string[];
+};
+
+
+export interface UpdateGear {
+
+  title?: string;
+
+  description?: string;
+
+  pricePerDay?: number;
+
+  quantityTotal?: number;
+
+  quantityAvailable?: number;
+
+}
