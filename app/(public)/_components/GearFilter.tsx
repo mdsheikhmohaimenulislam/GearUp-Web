@@ -77,7 +77,7 @@ export default function GearFilter({ categories }: GearFilterProps) {
       <select
         value={category}
         onChange={(e) => setCategory(e.target.value)}
-        className="border rounded-md px-4 py-2"
+        className="border rounded-md px-4 py-2 dark:bg-black cursor-pointer"
       >
         <option value="">All Category</option>
 
@@ -119,11 +119,11 @@ export default function GearFilter({ categories }: GearFilterProps) {
       <select
         value={sortOrder}
         onChange={(e) => setSortOrder(e.target.value)}
-        className="border rounded-md px-4 py-2"
+        className="border rounded-md px-4 py-2 dark:bg-black cursor-pointer"
       >
-        <option value="desc">Descending ↓</option>
+        <option   value="desc">Descending ↓</option>
 
-        <option value="asc">Ascending ↑</option>
+        <option  value="asc">Ascending ↑</option>
       </select>
     </div>
   );

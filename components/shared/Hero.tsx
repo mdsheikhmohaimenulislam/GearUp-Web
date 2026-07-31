@@ -119,7 +119,7 @@ export default function Hero() {
           {/* Floating Card */}
 
           <div className="absolute bottom-5 left-5 rounded-xl border bg-background/90 p-4 shadow-lg backdrop-blur">
-            <p className="text-sm text-muted-foreground dark:text-green-600">
+            <p className="text-sm font-bold text-green-900 dark:text-green-600">
               Available Today
             </p>
 

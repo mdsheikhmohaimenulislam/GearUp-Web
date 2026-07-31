@@ -70,9 +70,9 @@ export default async function GearPage({
     <div className="container mx-auto py-10">
 
 
-      <h1 className="text-3xl font-bold mb-6">
+      {/* <h1 className="text-3xl font-bold mb-6">
         Gear Collection
-      </h1>
+      </h1> */}
 
 
 
@@ -157,7 +157,7 @@ export default async function GearPage({
 
 
 
-                  <p className="text-gray-600 text-sm">
+                  <p className="text-white text-sm">
 
                     {
                       gear.description
@@ -242,7 +242,7 @@ export default async function GearPage({
                       {
                         gear.isActive ? (
 
-                          <span className="text-green-600 font-semibold">
+                          <span className="text-green-600 font-semibold dark:text-green-400">
                             {" "}Active
                           </span>
 
@@ -263,10 +263,8 @@ export default async function GearPage({
 
 
 
-
-
-
-                    {/* <p>
+{/* 
+                    <p>
                       Provider:
                       <span className="font-semibold">
                         {" "}{gear.provider?.name}
@@ -280,20 +278,20 @@ export default async function GearPage({
 
 
 
-                  <Link
-                    href={`/gear/${gear.id}`}
-                    className="block text-center w-full mt-4 rounded-md bg-black text-white py-2 hover:bg-gray-800"
-                  >
 
-                    See More
-
-                  </Link>
 
 
 
                 </div>
 
+                  <Link
+                    href={`/gear/${gear.id}`}
+                    className="block text-center w-full mt-4  bg-green-700 text-white py-2 hover:bg-green-600"
+                  >
 
+                    See More
+
+                  </Link>
 
               </div>
 
