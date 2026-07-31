@@ -21,14 +21,16 @@ export function middleware(request: NextRequest) {
 
 
 
+  // Login/Register protection
 
-  if(
+  if (
     accessToken &&
     AUTH_ROUTES.includes(pathname)
-  ){
+  ) {
 
 
-    const user:JwtPayload = jwtDecode(accessToken);
+    const user: JwtPayload =
+      jwtDecode(accessToken);
 
 
 
@@ -58,7 +60,6 @@ export function middleware(request: NextRequest) {
 
 
 
-
     if(user.role === "ADMIN"){
 
       return NextResponse.redirect(
@@ -70,28 +71,222 @@ export function middleware(request: NextRequest) {
 
     }
 
+  }
+
+
+
+
+
+  // Provider Dashboard Protection
+
+  if(
+    pathname.startsWith("/providerDashboard")
+  ){
+
+
+    if(!accessToken){
+
+      return NextResponse.redirect(
+        new URL(
+          "/login",
+          request.url
+        )
+      );
+
+    }
+
+
+
+    const user: JwtPayload =
+      jwtDecode(accessToken);
+
+
+
+    if(user.role !== "PROVIDER"){
+
+
+      if(user.role === "CUSTOMER"){
+
+        return NextResponse.redirect(
+          new URL(
+            "/customerDashboard",
+            request.url
+          )
+        );
+
+      }
+
+
+
+      if(user.role === "ADMIN"){
+
+        return NextResponse.redirect(
+          new URL(
+            "/adminDashboard",
+            request.url
+          )
+        );
+
+      }
+
+
+    }
+
 
   }
 
 
 
 
-  return NextResponse.next();
 
+
+
+  // Customer Dashboard Protection
+
+
+  if(
+    pathname.startsWith("/customerDashboard")
+  ){
+
+
+    if(!accessToken){
+
+      return NextResponse.redirect(
+        new URL(
+          "/login",
+          request.url
+        )
+      );
+
+    }
+
+
+
+    const user: JwtPayload =
+      jwtDecode(accessToken);
+
+
+
+    if(user.role !== "CUSTOMER"){
+
+
+      if(user.role === "PROVIDER"){
+
+        return NextResponse.redirect(
+          new URL(
+            "/providerDashboard",
+            request.url
+          )
+        );
+
+      }
+
+
+
+      if(user.role === "ADMIN"){
+
+        return NextResponse.redirect(
+          new URL(
+            "/adminDashboard",
+            request.url
+          )
+        );
+
+      }
+
+
+    }
+
+
+  }
+
+
+
+
+
+
+
+  // Admin Dashboard Protection
+
+
+  if(
+    pathname.startsWith("/adminDashboard")
+  ){
+
+
+    if(!accessToken){
+
+      return NextResponse.redirect(
+        new URL(
+          "/login",
+          request.url
+        )
+      );
+
+    }
+
+
+
+    const user: JwtPayload =
+      jwtDecode(accessToken);
+
+
+
+    if(user.role !== "ADMIN"){
+
+
+      if(user.role === "CUSTOMER"){
+
+        return NextResponse.redirect(
+          new URL(
+            "/customerDashboard",
+            request.url
+          )
+        );
+
+      }
+
+
+
+      if(user.role === "PROVIDER"){
+
+        return NextResponse.redirect(
+          new URL(
+            "/providerDashboard",
+            request.url
+          )
+        );
+
+      }
+
+
+    }
+
+
+  }
+
+
+
+
+
+  return NextResponse.next();
 
 }
 
 
 
 
+
+
 export const config = {
 
-  matcher: [
-
+  matcher:[
     "/login",
-
     "/register",
 
+    "/providerDashboard/:path*",
+    "/customerDashboard/:path*",
+    "/adminDashboard/:path*",
   ],
 
 };
