@@ -294,6 +294,7 @@ export default async function GearPage({
                   </Link>
 
               </div>
+              
 
 
             ))
