@@ -74,14 +74,6 @@ export type Gear = {
   };
 };
 
-export type Category = {
-  id: string;
-  name: string;
-  description?: string | null;
-  createdAt?: string;
-  updatedAt?: string;
-};
-
 export type CreateCategoryData = {
   name: string;
   description?: string;
@@ -143,7 +135,7 @@ export type CreateReviewData = {
 export type GearQuery = {
   search?: string;
   brand?: string;
-  slug?: string;
+  category?: string;
   price?: number;
   maxPrice?: number;
   minPrice?: number;
@@ -151,4 +143,31 @@ export type GearQuery = {
   sortBy?: string;
   sortOrder?: "asc" | "desc";
   tags?: string[];
+};
+
+export type SearchParams = {
+  search?: string;
+  category?: string;
+  brand?: string;
+  minPrice?: string;
+  maxPrice?: string;
+  sortBy?: string;
+  sortOrder?: "asc" | "desc";
+};
+
+export type Props = {
+  params: Promise<{ id: string }>;
+};
+
+export type Category = {
+  id: string;
+  name: string;
+  slug?: string;
+  description?: string | null;
+  createdAt?: string;
+  updatedAt?: string;
+};
+
+export type GearFilterProps = {
+  categories: Category[];
 };

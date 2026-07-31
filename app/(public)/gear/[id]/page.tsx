@@ -1,11 +1,8 @@
+import { Props } from "@/lib/types";
 import { getSingleGear } from "@/server/gear.service";
 import { cookies } from "next/headers";
 import Link from "next/link";
-import { redirect } from "next/navigation";
-
-type Props = {
-  params: Promise<{ id: string }>;
-};
+import { notFound, redirect } from "next/navigation";
 
 const SingleGearPage = async ({ params }: Props) => {
   const { id } = await params;
@@ -19,7 +16,7 @@ const SingleGearPage = async ({ params }: Props) => {
   const response = await getSingleGear(id);
   const gear = response?.data;
   if (!gear) {
-    return <div className="p-10 text-center">Gear not found</div>;
+    notFound();
   }
 
   return (
@@ -69,22 +66,21 @@ const SingleGearPage = async ({ params }: Props) => {
 
             <p>
               <b>Status:</b>
-              <b className="text-green-600">{gear.isActive ? "Active" : "Inactive"}</b>
-               
+              <b className="text-green-600">
+                {gear.isActive ? "Active" : "Inactive"}
+              </b>
             </p>
 
             <p>
               <b>Provider:</b> {gear.provider?.name}
             </p>
           </div>
-                            <Link
-                    href={``}
-                    className="block text-center w-full mt-4  bg-green-700 text-white py-2 hover:bg-green-600"
-                  >
-
-                    Purchase
-
-                  </Link>
+          <Link
+            href={``}
+            className="block text-center w-full mt-4  bg-green-700 text-white py-2 hover:bg-green-600"
+          >
+            Purchase
+          </Link>
         </div>
       </div>
     </div>

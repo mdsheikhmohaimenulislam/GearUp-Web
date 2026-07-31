@@ -1,17 +1,8 @@
 "use client";
 
+import { GearFilterProps } from "@/lib/types";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
-
-type Category = {
-  id: string;
-  name: string;
-  slug: string;
-};
-
-type GearFilterProps = {
-  categories: Category[];
-};
 
 export default function GearFilter({ categories }: GearFilterProps) {
   const router = useRouter();
@@ -42,9 +33,9 @@ export default function GearFilter({ categories }: GearFilterProps) {
         params.set("search", search);
       }
 
-      if (category) {
-        params.set("slug", category);
-      }
+if(category){
+  params.set("category", category);
+}
 
       if (minPrice) {
         params.set("minPrice", minPrice);
@@ -121,9 +112,9 @@ export default function GearFilter({ categories }: GearFilterProps) {
         onChange={(e) => setSortOrder(e.target.value)}
         className="border rounded-md px-4 py-2 dark:bg-black cursor-pointer"
       >
-        <option   value="desc">Descending ↓</option>
+        <option value="desc">Descending ↓</option>
 
-        <option  value="asc">Ascending ↑</option>
+        <option value="asc">Ascending ↑</option>
       </select>
     </div>
   );

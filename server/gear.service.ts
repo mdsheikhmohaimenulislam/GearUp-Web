@@ -21,9 +21,9 @@ export const getGears = async (
   }
 
 
-  if(query.slug){
-    params.set("slug", query.slug);
-  }
+if(query.category){
+  params.set("category", query.category);
+}
 
 
   if(query.minPrice){

@@ -173,7 +173,7 @@ export default function Navbar({ user }: NavbarProps) {
             </SheetTrigger>
 
             <SheetContent side="right">
-              <div className="flex flex-col gap-6 mt-8">
+              <div className="flex flex-col gap-2 p-5">
                 {navLinks.map((item) => (
                   <Link key={item.name} href={item.href} className="text-lg">
                     {item.name}
