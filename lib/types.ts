@@ -240,3 +240,27 @@ export type PaymentConfirmResponse = {
   status: "PENDING" | "PAID" | "FAILED";
   paidAt: string | null;
 };
+
+
+export type Payment = {
+  id: string;
+  amount: string;
+  method: "STRIPE";
+  status: "PENDING" | "PAID" | "FAILED";
+  transactionId: string;
+  paidAt: string | null;
+
+  rentalOrder?: {
+    id: string;
+    quantity: number;
+    startDate: string;
+    endDate: string;
+    status: string;
+
+    gear?: {
+      id: string;
+      title: string;
+      brand: string;
+    };
+  };
+};

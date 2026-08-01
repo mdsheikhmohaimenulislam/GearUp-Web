@@ -28,24 +28,48 @@ export const confirmPayment = async (data: ConfirmPaymentRequest) => {
 
   const token = cookieStore.get("accessToken")?.value;
 
-  const res = await fetch(
-    `${serverUrl}/api/payments/confirm`,
-    {
-      method: "POST",
+  const res = await fetch(`${serverUrl}/api/payments/confirm`, {
+    method: "POST",
 
-      headers: {
-        "Content-Type": "application/json",
-        Cookie: `accessToken=${token}`,
-      },
+    headers: {
+      "Content-Type": "application/json",
+      Cookie: `accessToken=${token}`,
+    },
 
-      body: JSON.stringify(data),
-    }
-  );
+    body: JSON.stringify(data),
+  });
 
   return res.json();
 };
 
-export const getPayment = async (id: string) => {
+export const getMyPayments = async () => {
+
+  const cookieStore = await cookies();
+
+  const token = cookieStore
+    .get("accessToken")
+    ?.value;
+
+
+  const res = await fetch(
+    `${serverUrl}/api/payments`,
+    {
+      headers: {
+        Cookie: `accessToken=${token}`,
+      },
+
+      credentials: "include",
+
+      cache: "no-store",
+    }
+  );
+
+
+  return res.json();
+
+};
+
+export const getPaymentDetails = async (id: string) => {
   const cookieStore = await cookies();
 
   const token = cookieStore.get("accessToken")?.value;
@@ -53,6 +77,8 @@ export const getPayment = async (id: string) => {
     headers: {
       Cookie: `accessToken=${token}`,
     },
+    credentials: "include",
+    cache: "no-store",
   });
 
   return res.json();
