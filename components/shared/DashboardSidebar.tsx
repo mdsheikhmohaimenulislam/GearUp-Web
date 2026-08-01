@@ -180,7 +180,7 @@ export default function DashboardSidebar({ role }: Props) {
         </button>
 
         <Link href="/" className=" text-3xl font-bold mb-8 block ">
-         GearUp
+          GearUp
         </Link>
 
         <nav
@@ -189,25 +189,22 @@ export default function DashboardSidebar({ role }: Props) {
           flex-1
           "
         >
-{menus.map((menu) => {
-  const Icon = menu.icon;
+          {menus.map((menu) => {
+            const Icon = menu.icon;
 
+            const active =
+              menu.href === "/customerDashboard" ||
+              menu.href === "/providerDashboard" ||
+              menu.href === "/adminDashboard"
+                ? pathname === menu.href
+                : pathname.startsWith(menu.href);
 
-  const active =
-    menu.href === "/customerDashboard" ||
-    menu.href === "/providerDashboard" ||
-    menu.href === "/adminDashboard"
-      ? pathname === menu.href
-      : pathname.startsWith(menu.href);
-
-
-
-  return (
-    <Link
-      key={menu.href}
-      href={menu.href}
-      onClick={() => setOpen(false)}
-      className={`
+            return (
+              <Link
+                key={menu.href}
+                href={menu.href}
+                onClick={() => setOpen(false)}
+                className={`
         flex
         items-center
         gap-3
@@ -221,17 +218,13 @@ export default function DashboardSidebar({ role }: Props) {
             : "hover:bg-gray-100 dark:hover:bg-gray-800"
         }
       `}
-    >
+              >
+                <Icon size={20} />
 
-      <Icon size={20}/>
-
-      <span>
-        {menu.name}
-      </span>
-
-    </Link>
-  );
-})}
+                <span>{menu.name}</span>
+              </Link>
+            );
+          })}
         </nav>
 
         <LogoutButton />

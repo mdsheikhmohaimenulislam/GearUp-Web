@@ -1,47 +1,41 @@
 import AdminDashboard from "@/app/(public)/_components/(admin)/AdminDashboard";
 import CustomerDashboard from "@/app/(public)/_components/CustomerDashboard";
-
-
+import { Payment } from "@/lib/types";
+import { getMe } from "@/server/getMe";
+import { getMyPayments } from "@/server/payment.service";
 
 export default async function DashboardPage() {
+  // temporary test user
 
+  const data = await getMe();
 
-  // temporary test
-  const user = {
-    id: "1",
-    name: "loi2",
-    email: "loi6@gmail.com",
-    role: "CUSTOMER",
-  };
+  const user = data?.data;
 
-
-
+  if (!user) {
+    return null;
+  }
+  // CUSTOMER STATS
   if (user.role === "CUSTOMER") {
+    const paymentsRes = await getMyPayments();
 
-    return (
-      <CustomerDashboard
-        user={user}
-      />
-    );
+    const payments: Payment[] = paymentsRes?.data || [];
 
+    const stats = {
+      totalRentals: payments.length,
+      activeOrders: payments.filter((p) => p.status === "PAID").length,
+      pendingReturns: payments.filter((p) => p.status === "PENDING").length,
+      returnedOrders: payments.filter(
+        (p) => p.rentalOrder?.status === "RETURNED",
+      ).length,
+    };
+
+    return <CustomerDashboard user={user} stats={stats} />;
   }
 
-
-
-
-
+  // ADMIN DASHBOARD
   if (user.role === "ADMIN") {
-
-    return (
-      <AdminDashboard
-        user={user}
-      />
-    );
-
+    return <AdminDashboard user={user} />;
   }
-
-
 
   return null;
-
 }

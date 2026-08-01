@@ -17,31 +17,20 @@ import {
   Package,
   CalendarDays,
   CreditCard,
+  ArrowLeft,
 } from "lucide-react";
 
 import { getMyPayments } from "@/server/payment.service";
 
 import { Payment } from "@/lib/types";
 
-
 export default async function OrdersPage() {
-
-
   const response = await getMyPayments();
 
-
-  const payments: Payment[] =
-    response?.data || [];
-
-
+  const payments: Payment[] = response?.data || [];
 
   return (
-
-    <div
-className="p-5 lg:p-15"
-    >
-
-
+    <div className="p-5 lg:p-15">
       {/* Header */}
 
       <div
@@ -51,9 +40,7 @@ className="p-5 lg:p-15"
         items-center
         "
       >
-
         <div className="mb-5">
-
           <h1
             className="
             text-3xl
@@ -63,7 +50,6 @@ className="p-5 lg:p-15"
             My Payments
           </h1>
 
-
           <p
             className="
             text-muted-foreground
@@ -72,464 +58,254 @@ className="p-5 lg:p-15"
           >
             Manage and view your rental payment history.
           </p>
-
-
         </div>
 
-
-
-        <Button
-          asChild
-          variant="outline"
-        >
-
-          <Link href="/">
-
-            <Home size={18}/>
-
-            Home
-
+        <Button asChild variant="outline">
+          <Link href="/customerDashboard">
+            <ArrowLeft size={18} />
+            Back
           </Link>
-
         </Button>
-
-
       </div>
 
-
-
-
-
-      {
-        payments.length === 0 ? (
-
-          <Card>
-
-            <CardContent
-              className="
+      {payments.length === 0 ? (
+        <Card>
+          <CardContent
+            className="
               py-10
               text-center
               text-muted-foreground
               "
-            >
-
-              No payments found
-
-            </CardContent>
-
-          </Card>
-
-
-        ) : (
-
-
-
-          <div
-            className="
+          >
+            No payments found
+          </CardContent>
+        </Card>
+      ) : (
+        <div
+          className="
             grid
             sm:grid-cols-2
             lg:grid-cols-3
             gap-8
             "
-          >
-
-
-            {
-              payments.map((payment)=>(
-
-
-                <Card
-                  key={payment.id}
-                  className="
+        >
+          {payments.map((payment) => (
+            <Card
+              key={payment.id}
+              className="
                   rounded-2xl
                   hover:shadow-xl
                   transition
                   "
-                >
+            >
+              {/* Header */}
 
-
-
-                  {/* Header */}
-
-                  <CardHeader>
-
-
-                    <div
-                      className="
+              <CardHeader>
+                <div
+                  className="
                       flex
                       justify-between
                       items-start
                       gap-3
                       "
-                    >
-
-
-                      <CardTitle
-                        className="
+                >
+                  <CardTitle
+                    className="
                         text-lg
                         "
-                      >
+                  >
+                    {payment.rentalOrder?.gear?.title ?? "Unknown Gear"}
+                  </CardTitle>
 
-                        {
-                          payment.rentalOrder?.gear?.title
-                          ??
-                          "Unknown Gear"
-                        }
-
-
-                      </CardTitle>
-
-
-
-
-                      <Badge
-
-                        className={`
+                  <Badge
+                    className={`
                         
                         ${
                           payment.status === "PAID"
-                          ?
-                          "bg-green-100 text-green-700"
-                          :
-                          payment.status === "PENDING"
-                          ?
-                          "bg-yellow-100 text-yellow-700"
-                          :
-                          "bg-red-100 text-red-700"
-
+                            ? "bg-green-100 text-green-700"
+                            : payment.status === "PENDING"
+                              ? "bg-yellow-100 text-yellow-700"
+                              : "bg-red-100 text-red-700"
                         }
 
                         `}
+                  >
+                    {payment.status}
+                  </Badge>
+                </div>
+              </CardHeader>
 
-                      >
-
-                        {payment.status}
-
-                      </Badge>
-
-
-
-                    </div>
-
-
-
-                  </CardHeader>
-
-
-
-
-
-
-
-                  <CardContent
-                    className="
+              <CardContent
+                className="
                     space-y-5
                     "
-                  >
+              >
+                {/* Amount */}
 
-
-
-                    {/* Amount */}
-
-                    <div
-                      className="
+                <div
+                  className="
                       flex
                       justify-between
                       "
-                    >
-
-                      <span
-                        className="
+                >
+                  <span
+                    className="
                         text-muted-foreground
                         "
-                      >
-                        Amount
-                      </span>
+                  >
+                    Amount
+                  </span>
 
-
-                      <span
-                        className="
+                  <span
+                    className="
                         font-semibold
                         "
-                      >
+                  >
+                    ৳{payment.amount}
+                  </span>
+                </div>
 
-                        ৳{payment.amount}
+                {/* Method */}
 
-                      </span>
-
-
-                    </div>
-
-
-
-
-
-
-                    {/* Method */}
-
-                    <div
-                      className="
+                <div
+                  className="
                       flex
                       justify-between
                       items-center
                       "
-                    >
-
-                      <span
-                        className="
+                >
+                  <span
+                    className="
                         text-muted-foreground
                         "
-                      >
-                        Payment Method
-                      </span>
+                  >
+                    Payment Method
+                  </span>
 
-
-                      <div
-                        className="
+                  <div
+                    className="
                         flex
                         items-center
                         gap-2
                         "
-                      >
+                  >
+                    <CreditCard size={16} />
 
-                        <CreditCard size={16}/>
+                    {payment.method}
+                  </div>
+                </div>
 
-                        {payment.method}
+                {/* Quantity */}
 
-
-                      </div>
-
-
-                    </div>
-
-
-
-
-
-
-
-                    {/* Quantity */}
-
-                    <div
-                      className="
+                <div
+                  className="
                       flex
                       justify-between
                       items-center
                       "
-                    >
-
-                      <span
-                        className="
+                >
+                  <span
+                    className="
                         text-muted-foreground
                         "
-                      >
-                        Quantity
-                      </span>
+                  >
+                    Quantity
+                  </span>
 
-
-                      <div
-                        className="
+                  <div
+                    className="
                         flex
                         items-center
                         gap-2
                         font-medium
                         "
-                      >
+                  >
+                    <Package size={16} />
 
-                        <Package size={16}/>
+                    {payment.rentalOrder?.quantity ?? "N/A"}
+                  </div>
+                </div>
 
+                {/* Rental Period */}
 
-                        {
-                          payment.rentalOrder?.quantity
-                          ??
-                          "N/A"
-                        }
-
-
-                      </div>
-
-
-                    </div>
-
-
-
-
-
-
-
-                    {/* Rental Period */}
-
-                    <div
-                      className="
+                <div
+                  className="
                       flex
                       justify-between
                       items-start
                       "
-                    >
-
-                      <span
-                        className="
+                >
+                  <span
+                    className="
                         text-muted-foreground
                         "
-                      >
-                        Rental Period
-                      </span>
+                  >
+                    Rental Period
+                  </span>
 
-
-
-                      <div
-                        className="
+                  <div
+                    className="
                         text-sm
                         text-right
                         "
-                      >
+                  >
+                    {payment.rentalOrder?.startDate &&
+                    payment.rentalOrder?.endDate ? (
+                      <>
+                        <p>
+                          {new Date(
+                            payment.rentalOrder.startDate,
+                          ).toLocaleDateString()}
+                        </p>
 
-
-                        {
-                          payment.rentalOrder?.startDate
-                          &&
-                          payment.rentalOrder?.endDate
-
-                          ?
-
-                          (
-                            <>
-
-                              <p>
-
-                                {
-                                  new Date(
-                                    payment.rentalOrder.startDate
-                                  )
-                                  .toLocaleDateString()
-                                }
-
-                              </p>
-
-
-                              <p
-                                className="
+                        <p
+                          className="
                                 text-muted-foreground
                                 "
-                              >
-                                to
-                              </p>
+                        >
+                          to
+                        </p>
 
+                        <p>
+                          {new Date(
+                            payment.rentalOrder.endDate,
+                          ).toLocaleDateString()}
+                        </p>
+                      </>
+                    ) : (
+                      <span>N/A</span>
+                    )}
+                  </div>
+                </div>
 
-                              <p>
+                {/* Payment ID */}
 
-                                {
-                                  new Date(
-                                    payment.rentalOrder.endDate
-                                  )
-                                  .toLocaleDateString()
-                                }
-
-                              </p>
-
-
-                            </>
-
-                          )
-
-                          :
-
-                          (
-
-                            <span>
-                              N/A
-                            </span>
-
-                          )
-
-                        }
-
-
-                      </div>
-
-
-
-                    </div>
-
-
-
-
-
-
-
-                    {/* Payment ID */}
-
-                    <div
-                      className="
+                <div
+                  className="
                       text-sm
                       text-muted-foreground
                       border-t
                       pt-3
                       "
-                    >
+                >
+                  Payment ID: {payment.id.slice(0, 8)}
+                </div>
+              </CardContent>
 
-                      Payment ID:
-                      {" "}
-                      {payment.id.slice(0,8)}
-
-                    </div>
-
-
-
-                  </CardContent>
-
-
-
-
-
-
-
-                  <CardFooter>
-
-
-                    <Button
-                      asChild
-                      className="
+              <CardFooter>
+                <Button
+                  asChild
+                  className="
                       w-full
                       "
-                    >
-
-                      <Link
-                        href={`/orders/${payment.id}`}
-                      >
-
-                        View Details
-
-                      </Link>
-
-
-                    </Button>
-
-
-                  </CardFooter>
-
-
-
-
-
-                </Card>
-
-
-              ))
-            }
-
-
-
-          </div>
-
-
-
-        )
-      }
-
-
-
+                >
+                  <Link href={`/orders/${payment.id}`}>View Details</Link>
+                </Button>
+              </CardFooter>
+            </Card>
+          ))}
+        </div>
+      )}
     </div>
-
   );
 }

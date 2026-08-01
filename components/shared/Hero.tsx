@@ -38,7 +38,7 @@ export default function Hero() {
             </Button>
 
             <Button asChild variant="outline" size="lg">
-              <Link href="/rents">
+              <Link href="/customerDashboard/rents">
                 <ShoppingBag className="mr-2 h-5 w-5" />
                 My Rentals
               </Link>
