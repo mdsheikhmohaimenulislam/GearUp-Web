@@ -45,6 +45,11 @@ export default function DashboardSidebar({ role }: Props) {
       href: "/providerDashboard/orders",
       icon: ShoppingCart,
     },
+        {
+      name: "Profile",
+      href: "/providerDashboard/profile",
+      icon: User,
+    },
   ];
 
   const customerMenus = [
@@ -65,7 +70,7 @@ export default function DashboardSidebar({ role }: Props) {
     },
     {
       name: "Profile",
-      href: "/profile",
+      href: "/customerDashboard/profile",
       icon: User,
     },
   ];
@@ -85,6 +90,11 @@ export default function DashboardSidebar({ role }: Props) {
       name: "Orders",
       href: "/adminDashboard/orders",
       icon: ShoppingCart,
+    },
+            {
+      name: "Profile",
+      href: "/adminDashboard/profile",
+      icon: User,
     },
   ];
 

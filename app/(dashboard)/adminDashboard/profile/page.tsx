@@ -1,6 +1,6 @@
 
 import { getMe } from "@/server/getMe";
-import ProfileCard from "./_components/ProfileCard";
+import ProfileCard from "../../customerDashboard/profile/_components/ProfileCard";
 
 
 export default async function CustomerProfilePage(){

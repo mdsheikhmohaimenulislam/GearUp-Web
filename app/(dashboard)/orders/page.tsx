@@ -40,7 +40,7 @@ export default async function OrdersPage() {
         items-center
         "
       >
-        <div className="mb-5">
+        <div className="mb-5 ml-8 md:ml-2 ">
           <h1
             className="
             text-3xl
@@ -60,12 +60,12 @@ export default async function OrdersPage() {
           </p>
         </div>
 
-        <Button asChild variant="outline">
+        {/* <Button asChild variant="outline">
           <Link href="/customerDashboard">
             <ArrowLeft size={18} />
             Back
           </Link>
-        </Button>
+        </Button> */}
       </div>
 
       {payments.length === 0 ? (
