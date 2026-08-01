@@ -93,14 +93,6 @@ export type UpdateUserData = {
 
 export type CreatePaymentData = {
   orderId: string;
-  amount: number;
-  paymentMethod: "STRIPE";
-};
-
-export type ConfirmPaymentData = {
-  paymentId: string;
-  transactionId: string;
-  status: "SUCCESS" | "FAILED";
 };
 
 export type UpdateGearData = Partial<CreateGearData>;
@@ -218,7 +210,6 @@ export type ProviderDashboardOrder = {
   };
 };
 
-
 export type CustomerRental = {
   id: string;
 
@@ -235,4 +226,17 @@ export type CustomerRental = {
     images?: string[];
     pricePerDay: number;
   };
+};
+
+export type ConfirmPaymentRequest = {
+  sessionId: string;
+};
+
+export type PaymentConfirmResponse = {
+  id: string;
+  transactionId: string;
+  amount: string;
+  method: "STRIPE";
+  status: "PENDING" | "PAID" | "FAILED";
+  paidAt: string | null;
 };

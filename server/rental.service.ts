@@ -47,3 +47,26 @@ export const getSingleRental = async (id: string) => {
 
   return res.json();
 };
+
+export const returnRental = async (id: string) => {
+  const cookieStore = await cookies();
+
+  const token = cookieStore.get("accessToken")?.value;
+
+  const res = await fetch(`${serverUrl}/api/rentals/${id}`, {
+    method: "PATCH",
+
+    headers: {
+      "Content-Type": "application/json",
+      Cookie: `accessToken=${token}`,
+    },
+    credentials: "include",
+    body: JSON.stringify({
+      status: "RETURNED",
+    }),
+
+  
+  });
+
+  return res.json();
+};

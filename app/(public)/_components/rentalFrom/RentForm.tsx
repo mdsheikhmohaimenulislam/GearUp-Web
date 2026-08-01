@@ -1,16 +1,21 @@
 "use client";
+
 import { useState } from "react";
 import { CalendarDays, Minus, Plus, ShoppingBag } from "lucide-react";
 import { toast } from "sonner";
-
-import { createRentalAction } from "../_actions/rentalAction";
 import { useRouter } from "next/navigation";
+
+import { createRentalAction } from "../_actions/createRentalAction";
+import { createPaymentAction } from "../_actions/paymentAction";
 
 type Props = {
   gearId: string;
+  maxQuantity?: number;
 };
 
-export default function RentForm({ gearId }: Props) {
+export default function RentForm({ gearId, maxQuantity = 10 }: Props) {
+  const router = useRouter();
+
   const [quantity, setQuantity] = useState(1);
 
   const [startDate, setStartDate] = useState("");
@@ -18,7 +23,8 @@ export default function RentForm({ gearId }: Props) {
   const [endDate, setEndDate] = useState("");
 
   const [loading, setLoading] = useState(false);
-  const router = useRouter();
+
+  const today = new Date().toISOString().split("T")[0];
 
   const handleSubmit = async () => {
     if (!startDate || !endDate) {
@@ -27,173 +33,172 @@ export default function RentForm({ gearId }: Props) {
       return;
     }
 
-    setLoading(true);
+    if (new Date(startDate) > new Date(endDate)) {
+      toast.error("End date must be after start date");
 
-    const result = await createRentalAction({
-      gearId,
-      quantity,
-      startDate,
-      endDate,
-    });
+      return;
+    }
 
-    setLoading(false);
+    try {
+      setLoading(true);
 
-    if (result.success) {
-      toast.success("Rental request created successfully");
-      router.push("/customerDashboard/rents");
-      router.refresh();
-    } else {
-      toast.error(result.message || "Something went wrong");
+      // 1. Create Rental Order
+
+      const rentalResult = await createRentalAction({
+        gearId,
+
+        quantity,
+
+        startDate,
+
+        endDate,
+      });
+
+      console.log("Rental Response:", rentalResult);
+
+      if (!rentalResult.success) {
+        toast.error(rentalResult.message || "Rental failed");
+
+        return;
+      }
+
+      /*
+        Backend response example:
+
+        {
+          data:{
+            id:"64ad7179..."
+          }
+        }
+
+      */
+
+      const orderId = rentalResult.data.id;
+
+      console.log("Order ID:", orderId);
+
+      // 2. Create Stripe Payment
+
+      const paymentResult = await createPaymentAction({
+        orderId,
+      });
+
+      console.log("Payment Response:", paymentResult);
+
+      if (!paymentResult.success) {
+        toast.error(paymentResult.message || "Payment failed");
+
+        return;
+      }
+
+      // 3. Stripe Checkout URL
+
+      const checkoutUrl = paymentResult.data.payment.rawResponse.url;
+
+      if (checkoutUrl) {
+        window.location.href = checkoutUrl;
+      } else {
+        toast.error("Stripe url not found");
+      }
+    } catch (error) {
+      console.error(error);
+
+      toast.error("Something went wrong");
+    } finally {
+      setLoading(false);
     }
   };
 
   return (
-    <div
-      className="
-      border
-      rounded-2xl
-      p-6
-      space-y-6
-      bg-white
-      dark:bg-black
-      shadow-sm
-      "
-    >
-      {/* Header */}
-
+    <div className="space-y-6">
       <div>
         <h2 className="text-xl font-semibold">Rental Details</h2>
 
-        <p className="text-sm text-gray-500 mt-1">Select your rental period</p>
+        <p className="text-sm text-gray-500">Select your rental period</p>
       </div>
 
       {/* Date */}
 
       <div className="grid md:grid-cols-2 gap-5">
-        {/* Start Date */}
         <div className="space-y-2">
-          <label className="text-sm font-semibold">Start Date</label>
+          <label className="text-sm font-medium">Start Date</label>
 
           <div
             className="
-      group
-      flex
-      items-center
-      gap-3
-      rounded-xl
-      border
-      bg-gray-50
-      dark:bg-gray-900
-      px-4
-      transition
-      focus-within:border-green-600
-      focus-within:ring-2
-      focus-within:ring-green-100
-      "
+          flex items-center gap-3
+          border rounded-xl px-4
+          bg-gray-50
+          "
           >
-            <CalendarDays
-              size={20}
-              className="
-        text-gray-500
-        group-focus-within:text-green-600
-        "
-            />
+            <CalendarDays size={20} />
 
             <input
               type="date"
+              min={today}
               value={startDate}
               onChange={(e) => setStartDate(e.target.value)}
               className="
-        w-full
-        py-3
-        bg-transparent
-        outline-none
-        text-sm
-        cursor-pointer
-        "
+              w-full py-3
+              bg-transparent
+              outline-none
+              "
             />
           </div>
         </div>
 
-        {/* End Date */}
         <div className="space-y-2">
-          <label className="text-sm font-semibold">End Date</label>
+          <label className="text-sm font-medium">End Date</label>
 
           <div
             className="
-      group
-      flex
-      items-center
-      gap-3
-      rounded-xl
-      border
-      bg-gray-50
-      dark:bg-gray-900
-      px-4
-      transition
-      focus-within:border-green-600
-      focus-within:ring-2
-      focus-within:ring-green-100
-      "
+          flex items-center gap-3
+          border rounded-xl px-4
+          bg-gray-50
+          "
           >
-            <CalendarDays
-              size={20}
-              className="
-        text-gray-500
-        group-focus-within:text-green-600
-        "
-            />
+            <CalendarDays size={20} />
 
             <input
               type="date"
+              min={startDate || today}
               value={endDate}
               onChange={(e) => setEndDate(e.target.value)}
               className="
-        w-full
-        py-3
-        bg-transparent
-        outline-none
-        text-sm
-        cursor-pointer
-        "
+              w-full py-3
+              bg-transparent
+              outline-none
+              "
             />
           </div>
         </div>
       </div>
+
       {/* Quantity */}
 
       <div
         className="
-        flex
-        items-center
-        justify-between
-        border
-        rounded-xl
-        p-4
-        "
+      flex justify-between items-center
+      border rounded-xl p-4
+      "
       >
         <div>
           <p className="font-medium">Quantity</p>
 
-          <p className="text-sm text-gray-500">Number of gears</p>
+          <p className="text-sm text-gray-500">Available: {maxQuantity}</p>
         </div>
 
         <div
           className="
-          flex
-          items-center
-          gap-4
-          "
+        flex items-center gap-4
+        "
         >
           <button
             type="button"
+            disabled={quantity === 1}
             onClick={() => setQuantity(Math.max(1, quantity - 1))}
             className="
-            border
-            rounded-full
-            p-2
-            hover:bg-gray-100
-            "
+          border rounded-full p-2
+          "
           >
             <Minus size={16} />
           </button>
@@ -202,39 +207,36 @@ export default function RentForm({ gearId }: Props) {
 
           <button
             type="button"
+            disabled={quantity >= maxQuantity}
             onClick={() => setQuantity(quantity + 1)}
             className="
-            border
-            rounded-full
-            p-2
-            hover:bg-gray-100
-            "
+          border rounded-full p-2
+          "
           >
             <Plus size={16} />
           </button>
         </div>
       </div>
 
-      {/* Button */}
+      {/* Confirm Button */}
 
       <button
+        type="button"
         onClick={handleSubmit}
         disabled={loading}
         className="
-        w-full
-        flex
-        items-center
-        justify-center
-        gap-2
-        bg-green-700
-        text-white
-        py-3
-        rounded-xl
-        font-medium
-        hover:bg-green-600
-        transition
-        disabled:opacity-50
-        "
+      w-full
+      flex
+      justify-center
+      items-center
+      gap-2
+      bg-green-700
+      text-white
+      py-3
+      rounded-xl
+      font-medium
+      disabled:opacity-50
+      "
       >
         <ShoppingBag size={20} />
 
