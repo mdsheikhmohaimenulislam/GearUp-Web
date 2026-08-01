@@ -107,9 +107,9 @@ export type UpdateGearData = Partial<CreateGearData>;
 
 export type CreateRentalData = {
   gearId: string;
+  quantity: number;
   startDate: string;
   endDate: string;
-  quantity: number;
 };
 
 export type CreateReviewData = {
@@ -215,5 +215,24 @@ export type ProviderDashboardOrder = {
 
   customer?: {
     name: string;
+  };
+};
+
+
+export type CustomerRental = {
+  id: string;
+
+  quantity: number;
+
+  startDate: string;
+
+  endDate: string;
+
+  status: string;
+
+  gear?: {
+    title: string;
+    images?: string[];
+    pricePerDay: number;
   };
 };

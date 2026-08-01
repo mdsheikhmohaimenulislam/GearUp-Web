@@ -42,10 +42,7 @@ export default function Navbar({ user }: NavbarProps) {
       name: "About",
       href: "/about",
     },
-    {
-      name: "Rents",
-      href: "/rents",
-    },
+
   ];
 
   // Dynamic Dashboard Redirect

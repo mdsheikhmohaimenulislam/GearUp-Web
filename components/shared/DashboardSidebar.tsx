@@ -15,23 +15,14 @@ import {
 import { useState } from "react";
 import LogoutButton from "./LogoutButton";
 
-
 type Props = {
   role: "CUSTOMER" | "PROVIDER" | "ADMIN";
 };
 
-
-
-export default function DashboardSidebar({
-  role,
-}: Props) {
-
-
+export default function DashboardSidebar({ role }: Props) {
   const pathname = usePathname();
 
   const [open, setOpen] = useState(false);
-
-
 
   const providerMenus = [
     {
@@ -56,75 +47,60 @@ export default function DashboardSidebar({
     },
   ];
 
-
-
-
   const customerMenus = [
     {
-      name:"Dashboard",
-      href:"/customerDashboard",
-      icon:LayoutDashboard,
+      name: "Dashboard",
+      href: "/customerDashboard",
+      icon: LayoutDashboard,
     },
     {
-      name:"My Rentals",
-      href:"/rents",
-      icon:Package,
+      name: "My Rentals",
+      href: "/customerDashboard/rents",
+      icon: Package,
     },
     {
-      name:"Orders",
-      href:"/orders",
-      icon:ShoppingCart,
+      name: "Orders",
+      href: "/orders",
+      icon: ShoppingCart,
     },
     {
-      name:"Profile",
-      href:"/profile",
-      icon:User,
+      name: "Profile",
+      href: "/profile",
+      icon: User,
     },
   ];
-
-
-
 
   const adminMenus = [
     {
-      name:"Dashboard",
-      href:"/adminDashboard",
-      icon:LayoutDashboard,
+      name: "Dashboard",
+      href: "/adminDashboard",
+      icon: LayoutDashboard,
     },
     {
-      name:"Users",
-      href:"/adminDashboard/users",
-      icon:User,
+      name: "Users",
+      href: "/adminDashboard/users",
+      icon: User,
     },
     {
-      name:"Orders",
-      href:"/adminDashboard/orders",
-      icon:ShoppingCart,
+      name: "Orders",
+      href: "/adminDashboard/orders",
+      icon: ShoppingCart,
     },
   ];
-
-
-
 
   const menus =
     role === "PROVIDER"
       ? providerMenus
       : role === "CUSTOMER"
-      ? customerMenus
-      : adminMenus;
-
-
-
-
+        ? customerMenus
+        : adminMenus;
 
   return (
     <>
-
-
       {/* Mobile Menu Button */}
 
       <button
-        onClick={()=>setOpen(true)}
+        onClick={() => setOpen(true)}
         className="
         md:hidden
         fixed
@@ -138,40 +114,25 @@ export default function DashboardSidebar({
         shadow
         "
       >
-
-        <Menu size={22}/>
-
+        <Menu size={22} />
       </button>
-
-
-
-
 
       {/* Overlay */}
 
-      {
-        open && (
-
-          <div
-            onClick={()=>setOpen(false)}
-            className="
+      {open && (
+        <div
+          onClick={() => setOpen(false)}
+          className="
             fixed
             inset-0
             bg-black/40
             z-40
             md:hidden
             "
-          />
-
-        )
-      }
-
-
-
-
+        />
+      )}
 
       {/* Sidebar */}
-
 
       <aside
         className={`
@@ -200,21 +161,14 @@ export default function DashboardSidebar({
         duration-300
 
 
-        ${
-          open
-          ? "translate-x-0"
-          : "-translate-x-full md:translate-x-0"
-        }
+        ${open ? "translate-x-0" : "-translate-x-full md:translate-x-0"}
 
         `}
       >
-
-
-
         {/* Close Button */}
 
         <button
-          onClick={()=>setOpen(false)}
+          onClick={() => setOpen(false)}
           className="
           md:hidden
           absolute
@@ -222,28 +176,12 @@ export default function DashboardSidebar({
           top-4
           "
         >
-
-          <X size={22}/>
-
+          <X size={22} />
         </button>
 
-
-
-
-
-        <h1
-          className="
-          text-xl
-          font-bold
-          mb-8
-          "
-        >
-          Dashboard
-        </h1>
-
-
-
-
+        <Link href="/" className=" text-3xl font-bold mb-8 block ">
+         GearUp
+        </Link>
 
         <nav
           className="
@@ -251,77 +189,53 @@ export default function DashboardSidebar({
           flex-1
           "
         >
-
-        {
-          menus.map((menu)=>{
-
-
-            const Icon = menu.icon;
+{menus.map((menu) => {
+  const Icon = menu.icon;
 
 
-            const active =
-              pathname === menu.href ||
-              (
-                menu.href !== pathname &&
-                pathname.startsWith(menu.href + "/")
-              );
+  const active =
+    menu.href === "/customerDashboard" ||
+    menu.href === "/providerDashboard" ||
+    menu.href === "/adminDashboard"
+      ? pathname === menu.href
+      : pathname.startsWith(menu.href);
 
 
 
-            return (
+  return (
+    <Link
+      key={menu.href}
+      href={menu.href}
+      onClick={() => setOpen(false)}
+      className={`
+        flex
+        items-center
+        gap-3
+        px-4
+        py-3
+        rounded-md
 
-              <Link
-                key={menu.href}
-                href={menu.href}
-                onClick={()=>setOpen(false)}
-                className={`
-                flex
-                items-center
-                gap-3
-
-                px-4
-                py-3
-
-                rounded-md
-
-
-                ${
-                  active
-                  ? "bg-green-700 text-white"
-                  : "hover:bg-gray-100 dark:hover:bg-gray-800"
-                }
-
-                `}
-              >
-
-                <Icon size={20}/>
-
-                <span>
-                  {menu.name}
-                </span>
-
-
-              </Link>
-
-            );
-
-
-          })
+        ${
+          active
+            ? "bg-green-700 text-white"
+            : "hover:bg-gray-100 dark:hover:bg-gray-800"
         }
+      `}
+    >
 
+      <Icon size={20}/>
 
+      <span>
+        {menu.name}
+      </span>
+
+    </Link>
+  );
+})}
         </nav>
 
-
-
-
         <LogoutButton />
-
-
       </aside>
-
-
     </>
   );
-
 }

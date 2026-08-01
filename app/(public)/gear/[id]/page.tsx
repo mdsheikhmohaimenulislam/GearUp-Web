@@ -3,9 +3,19 @@ import { getSingleGear } from "@/server/gear.service";
 import { cookies } from "next/headers";
 import Link from "next/link";
 import { notFound, redirect } from "next/navigation";
+import Image from "next/image";
+
+import {
+  PackageCheck,
+  Tag,
+  Layers,
+  User,
+  CircleDollarSign,
+} from "lucide-react";
 
 const SingleGearPage = async ({ params }: Props) => {
   const { id } = await params;
+
   const cookieStore = await cookies();
   const accessToken = cookieStore.get("accessToken")?.value;
 
@@ -15,72 +25,168 @@ const SingleGearPage = async ({ params }: Props) => {
 
   const response = await getSingleGear(id);
   const gear = response?.data;
+
   if (!gear) {
     notFound();
   }
 
   return (
-    <div className="container mx-auto py-10">
-      <div className="grid md:grid-cols-2 gap-8">
-        {/* Image */}
-        <div>
-          {gear.images?.length > 0 ? (
-            <img
-              src={gear.images[0]}
-              alt={gear.title}
-              className="w-full rounded-lg border"
-            />
-          ) : (
-            <div className="h-96 flex items-center justify-center bg-gray-200 rounded-lg">
-              No Image
+    <div className="max-w-6xl mx-auto px-4 py-10">
+      <div className="grid lg:grid-cols-2 gap-10 items-start">
+        {/* Image Section */}
+        <div className="space-y-4">
+          {/* Main Image */}
+          <div className="relative overflow-hidden rounded-2xl border bg-white dark:bg-black shadow-sm h-[450px]">
+            {gear.images?.length > 0 ? (
+              <Image
+                src={gear.images[0]}
+                alt={gear.title}
+                fill
+                priority
+                className="object-cover"
+                sizes="(max-width: 1024px) 100vw, 50vw"
+              />
+            ) : (
+              <div className="h-full flex items-center justify-center text-gray-500">
+                No Image Available
+              </div>
+            )}
+          </div>
+
+          {/* Thumbnail Images */}
+          {gear.images?.length > 1 && (
+            <div className="grid grid-cols-4 gap-3">
+              {gear.images.map((image: string, index: number) => (
+                <div
+                  key={index}
+                  className="relative overflow-hidden rounded-xl border bg-white dark:bg-black h-20 cursor-pointer hover:border-green-600 transition"
+                >
+                  <Image
+                    src={image}
+                    alt={`${gear.title} ${index + 1}`}
+                    fill
+                    className="object-cover"
+                    sizes="80px"
+                  />
+                </div>
+              ))}
             </div>
           )}
         </div>
 
-        {/* Content */}
-        <div className="space-y-4">
-          <h1 className="text-3xl font-bold">{gear.title}</h1>
-
-          <p className="dark:text-white">{gear.description}</p>
-
-          <div className="space-y-2 text-sm">
-            <p>
-              <b>Brand:</b> {gear.brand}
-            </p>
-
-            <p>
-              <b>Category:</b> {gear.category?.name}
-            </p>
-
-            <p>
-              <b>Price:</b> ৳{gear.pricePerDay}/day
-            </p>
-
-            <p>
-              <b>Available:</b> {gear.quantityAvailable}
-            </p>
-
-            <p>
-              <b>Total:</b> {gear.quantityTotal}
-            </p>
-
-            <p>
-              <b>Status:</b>
-              <b className="text-green-600">
+        {/* Content Section */}
+        <div className="space-y-6">
+          {/* Title + Status */}
+          <div className="space-y-3">
+            <div className="flex items-center gap-3 flex-wrap">
+              <span
+                className={`px-3 py-1 text-sm rounded-full font-medium ${
+                  gear.isActive
+                    ? "bg-green-100 text-green-700"
+                    : "bg-red-100 text-red-700"
+                }`}
+              >
                 {gear.isActive ? "Active" : "Inactive"}
-              </b>
-            </p>
+              </span>
 
-            <p>
-              <b>Provider:</b> {gear.provider?.name}
+              <span className="text-sm text-gray-500">
+                Gear ID: #{gear.id.slice(0, 8).toUpperCase()}
+              </span>
+            </div>
+
+            <h1 className="text-3xl lg:text-4xl font-bold tracking-tight">
+              {gear.title}
+            </h1>
+
+            <p className="text-gray-600 dark:text-gray-300 leading-relaxed">
+              {gear.description}
             </p>
           </div>
-          <Link
-            href={``}
-            className="block text-center w-full mt-4  bg-green-700 text-white py-2 hover:bg-green-600"
-          >
-            Purchase
-          </Link>
+
+          {/* Price Card */}
+          <div className="rounded-2xl border bg-white dark:bg-black p-6 shadow-sm">
+            <div className="flex items-center gap-3 mb-2">
+              <CircleDollarSign className="text-green-600" size={28} />
+
+              <div>
+                <p className="text-sm text-gray-500">Rental Price</p>
+
+                <h2 className="text-3xl font-bold text-green-700">
+                  ৳{gear.pricePerDay}
+
+                  <span className="text-lg text-gray-500 font-medium">
+                    /day
+                  </span>
+                </h2>
+              </div>
+            </div>
+          </div>
+
+          {/* Details */}
+          <div className="rounded-2xl border bg-white dark:bg-black p-6 shadow-sm">
+            <h3 className="text-lg font-semibold mb-5">Gear Details</h3>
+
+            <div className="space-y-4">
+              <div className="flex items-center justify-between gap-4">
+                <div className="flex items-center gap-3 text-gray-600 dark:text-gray-300">
+                  <Tag size={18} />
+                  <span>Brand</span>
+                </div>
+
+                <span className="font-medium text-right">{gear.brand}</span>
+              </div>
+
+              <div className="flex items-center justify-between gap-4">
+                <div className="flex items-center gap-3 text-gray-600 dark:text-gray-300">
+                  <Layers size={18} />
+                  <span>Category</span>
+                </div>
+
+                <span className="font-medium text-right">
+                  {gear.category?.name}
+                </span>
+              </div>
+
+              <div className="flex items-center justify-between gap-4">
+                <div className="flex items-center gap-3 text-gray-600 dark:text-gray-300">
+                  <PackageCheck size={18} />
+                  <span>Available</span>
+                </div>
+
+                <span className="font-medium text-right">
+                  {gear.quantityAvailable} / {gear.quantityTotal}
+                </span>
+              </div>
+
+              <div className="flex items-center justify-between gap-4">
+                <div className="flex items-center gap-3 text-gray-600 dark:text-gray-300">
+                  <User size={18} />
+                  <span>Provider</span>
+                </div>
+
+                <span className="font-medium text-right">
+                  {gear.provider?.name}
+                </span>
+              </div>
+            </div>
+          </div>
+
+          {/* Actions */}
+          <div className="flex flex-col sm:flex-row gap-4">
+            <Link
+              href={`/rent/${gear.id}`}
+              className="flex-1 bg-green-700 text-white py-3 rounded-xl text-center font-medium hover:bg-green-600 transition"
+            >
+              Rent Now
+            </Link>
+
+            <Link
+              href="/gear"
+              className="flex-1 border py-3 rounded-xl text-center font-medium hover:bg-gray-50 dark:hover:bg-gray-900 transition"
+            >
+              Back to Gears
+            </Link>
+          </div>
         </div>
       </div>
     </div>
