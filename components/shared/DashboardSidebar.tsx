@@ -45,7 +45,7 @@ export default function DashboardSidebar({ role }: Props) {
       href: "/providerDashboard/orders",
       icon: ShoppingCart,
     },
-        {
+    {
       name: "Profile",
       href: "/providerDashboard/profile",
       icon: User,
@@ -91,7 +91,7 @@ export default function DashboardSidebar({ role }: Props) {
       href: "/adminDashboard/orders",
       icon: ShoppingCart,
     },
-            {
+    {
       name: "Profile",
       href: "/adminDashboard/profile",
       icon: User,
@@ -145,35 +145,7 @@ export default function DashboardSidebar({ role }: Props) {
       {/* Sidebar */}
 
       <aside
-        className={`
-        fixed
-        md:static
-
-        top-0
-        left-0
-
-        z-50
-
-        w-64
-        min-h-screen
-
-        border-r
-
-        p-5
-
-        flex
-        flex-col
-
-        bg-white
-        dark:bg-black
-
-        transition-transform
-        duration-300
-
-
-        ${open ? "translate-x-0" : "-translate-x-full md:translate-x-0"}
-
-        `}
+        className={` fixed md:sticky md:top-0 top-0 left-0 z-50 w-64 h-screen border-r p-5 flex flex-col bg-white dark:bg-black transition-transform duration-300 ${open ? "translate-x-0" : "-translate-x-full md:translate-x-0"}`}
       >
         {/* Close Button */}
 

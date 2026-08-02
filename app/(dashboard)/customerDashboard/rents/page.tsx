@@ -1,323 +1,216 @@
 import { CustomerRental } from "@/lib/types";
 import { getMyRentals } from "@/server/rental.service";
 import ReturnButton from "@/components/shared/ReturnButton";
+import Link from "next/link";
+import { CalendarDays, Package, ClipboardList, Star } from "lucide-react";
 
 export default async function CustomerRentsPage() {
   const response = await getMyRentals();
 
   const rentals: CustomerRental[] = response?.data || [];
 
-  console.log("Rentals:", rentals);
-
-
   const activeRentals = rentals.filter(
-    (rental) => rental.status !== "CANCELLED"
+    (rental) => rental.status !== "CANCELLED",
   );
 
+  const getStatusStyle = (status: string) => {
+    switch (status) {
+      case "RETURNED":
+        return "bg-blue-100 text-blue-700";
 
-  const cancelledRentals = rentals.filter(
-    (rental) => rental.status === "CANCELLED"
-  );
+      case "CONFIRMED":
+        return "bg-green-100 text-green-700";
 
+      case "PICKED_UP":
+        return "bg-purple-100 text-purple-700";
+
+      case "PLACED":
+        return "bg-yellow-100 text-yellow-700";
+
+      default:
+        return "bg-gray-100 text-gray-700";
+    }
+  };
 
   return (
     <div className="space-y-10">
-
-
       {/* Header */}
 
       <div>
-        <h1 className="text-3xl font-bold">
+        <h1
+          className="
+        text-3xl
+        font-bold
+        tracking-tight
+        "
+        >
           My Rentals
         </h1>
 
-        <p className="text-gray-500 mt-2">
-          View your rental history and active rentals.
+        <p
+          className="
+        text-muted-foreground
+        mt-2
+        "
+        >
+          View your rental history and manage your rented gears.
         </p>
       </div>
 
+      <section className="space-y-6">
+        <div className="flex items-center gap-2">
+          <ClipboardList className="text-green-600" />
 
+          <h2
+            className="
+          text-2xl
+          font-semibold
+          "
+          >
+            Rental History
+          </h2>
+        </div>
 
-      {/* Active Rentals */}
-
-      <section className="space-y-5">
-
-        <h2 className="text-2xl font-semibold">
-          Active Rentals
-        </h2>
-
-
-        {
-          activeRentals.length === 0 ? (
-
-            <div
-              className="
+        {activeRentals.length === 0 ? (
+          <div
+            className="
               border
-              rounded-xl
-              p-10
+              rounded-2xl
+              p-12
               text-center
               text-gray-500
               "
-            >
-              No active rentals found
-            </div>
-
-          ) : (
-
-            <div
-              className="
+          >
+            No rentals found
+          </div>
+        ) : (
+          <div
+            className="
               grid
               md:grid-cols-2
-              gap-5
+              gap-6
               "
-            >
-
-              {
-                activeRentals.map((rental)=>(
-                  
-                  <div
-                    key={rental.id}
-                    className="
+          >
+            {activeRentals.map((rental) => (
+              <div
+                key={rental.id}
+                className="
+                    rounded-2xl
                     border
-                    rounded-xl
-                    p-5
-                    space-y-4
+                    bg-white
+                    dark:bg-black
+                    p-6
+                    shadow-sm
+                    hover:shadow-md
+                    transition
+                    space-y-5
                     "
-                  >
+              >
+                {/* Title */}
 
-
-                    <h2
-                      className="
-                      text-xl
-                      font-semibold
+                <div
+                  className="
+                      flex
+                      justify-between
+                      items-start
+                      gap-3
                       "
-                    >
-                      {rental.gear?.title}
-                    </h2>
+                >
+                  <h3
+                    className="
+                        text-xl
+                        font-bold
+                        "
+                  >
+                    {rental.gear?.title}
+                  </h3>
 
+                  <span
+                    className={`
+                        px-3
+                        py-1
+                        rounded-full
+                        text-xs
+                        font-semibold
+                        ${getStatusStyle(rental.status)}
+                        `}
+                  >
+                    {rental.status}
+                  </span>
+                </div>
 
+                {/* Info */}
 
-                    <p>
-                      Rental ID:
-                      {" "}
-                      {rental.id.slice(0,8)}
-                    </p>
-
-
-
-                    <p>
-                      Quantity:
-                      {" "}
-                      {rental.quantity}
-                    </p>
-
-
-
-                    <p>
-                      Start:
-                      {" "}
-                      {new Date(
-                        rental.startDate
-                      ).toLocaleDateString()}
-                    </p>
-
-
-
-                    <p>
-                      End:
-                      {" "}
-                      {new Date(
-                        rental.endDate
-                      ).toLocaleDateString()}
-                    </p>
-
-
-
-                    <span
-                      className={`
-                      inline-flex
-                      px-3
-                      py-1
-                      rounded-full
+                <div
+                  className="
+                      space-y-3
                       text-sm
+                      "
+                >
+                  <p className="flex items-center gap-2">
+                    <Package size={17} className="text-green-600" />
+                    Quantity:
+                    <span className="font-medium">{rental.quantity}</span>
+                  </p>
 
-                      ${
-                        rental.status === "RETURNED"
-                        ?
-                        "bg-blue-100 text-blue-700"
-                        :
-                        rental.status === "CONFIRMED"
-                        ?
-                        "bg-green-100 text-green-700"
-                        :
-                        rental.status === "PICKED_UP"
-                        ?
-                        "bg-purple-100 text-purple-700"
-                        :
-                        "bg-yellow-100 text-yellow-700"
-                      }
-                      `}
+                  <p className="flex items-center gap-2">
+                    <CalendarDays size={17} className="text-green-600" />
+
+                    {new Date(rental.startDate).toLocaleDateString()}
+
+                    {" - "}
+
+                    {new Date(rental.endDate).toLocaleDateString()}
+                  </p>
+
+                  <p
+                    className="
+                      text-gray-500
+                      "
+                  >
+                    Rental ID: {rental.id.slice(0, 8)}
+                  </p>
+                </div>
+
+                {/* Actions */}
+
+                <div
+                  className="
+                      pt-3
+                      flex
+                      gap-3
+                      "
+                >
+                  {rental.status === "PICKED_UP" && (
+                    <ReturnButton id={rental.id} />
+                  )}
+
+                  {rental.status === "RETURNED" && (
+                    <Link
+                      href={`/customerDashboard/rents/${rental.id}`}
+                      className="
+                            flex
+                            items-center
+                            gap-2
+                            bg-green-600
+                            text-white
+                            px-4
+                            py-2
+                            rounded-lg
+                            hover:bg-green-700
+                            transition
+                            "
                     >
-
-                      {rental.status}
-
-                    </span>
-
-
-
-                    {/* Customer Return */}
-
-                    {
-                      rental.status === "PICKED_UP" && (
-
-                        <ReturnButton
-                          id={rental.id}
-                        />
-
-                      )
-                    }
-
-
-
-                  </div>
-
-                ))
-              }
-
-            </div>
-
-          )
-        }
-
-
+                      <Star size={18} />
+                      Write Review
+                    </Link>
+                  )}
+                </div>
+              </div>
+            ))}
+          </div>
+        )}
       </section>
-
-
-
-
-
-
-      {/* Cancelled Rentals */}
-
-      {/* {
-        cancelledRentals.length > 0 && (
-
-          <section className="space-y-5">
-
-
-            <h2
-              className="
-              text-2xl
-              font-semibold
-              "
-            >
-              Cancelled Rentals
-            </h2>
-
-
-
-            <div
-              className="
-              grid
-              md:grid-cols-2
-              gap-5
-              "
-            >
-
-              {
-                cancelledRentals.map((rental)=>(
-
-
-                  <div
-                    key={rental.id}
-                    className="
-                    border
-                    rounded-xl
-                    p-5
-                    space-y-4
-                    "
-                  >
-
-
-                    <h2
-                      className="
-                      text-xl
-                      font-semibold
-                      "
-                    >
-                      {rental.gear?.title}
-                    </h2>
-
-
-
-                    <p>
-                      Rental ID:
-                      {" "}
-                      {rental.id.slice(0,8)}
-                    </p>
-
-
-
-                    <p>
-                      Quantity:
-                      {" "}
-                      {rental.quantity}
-                    </p>
-
-
-
-                    <p>
-                      Start:
-                      {" "}
-                      {new Date(
-                        rental.startDate
-                      ).toLocaleDateString()}
-                    </p>
-
-
-
-                    <p>
-                      End:
-                      {" "}
-                      {new Date(
-                        rental.endDate
-                      ).toLocaleDateString()}
-                    </p>
-
-
-
-                    <span
-                      className="
-                      inline-flex
-                      px-3
-                      py-1
-                      rounded-full
-                      bg-red-100
-                      text-red-700
-                      text-sm
-                      "
-                    >
-                      CANCELLED
-                    </span>
-
-
-                  </div>
-
-
-                ))
-              }
-
-
-            </div>
-
-
-          </section>
-
-        )
-      } */}
-
-
-
     </div>
   );
 }

@@ -14,7 +14,7 @@ export default function Hero() {
       <div className="container mx-auto grid min-h-[calc(100vh-64px)] items-center gap-10 px-4 py-16 md:grid-cols-2">
         {/* Left Content */}
         <div className="space-y-6">
-          <span className="inline-block dark:text-green-300 dark:bg-primary/50 dark:rounded-full  rounded-full bg-primary/10 px-4 py-2 text-sm font-medium text-primary">
+          <span className="inline-block rounded-full bg-primary/10 px-4 py-2 text-sm font-medium text-primary dark:bg-primary/50 dark:text-green-300">
             🏕️ Rent Sports & Outdoor Gear Instantly
           </span>
 
@@ -23,7 +23,7 @@ export default function Hero() {
             <span className="block text-green-600">Every Adventure</span>
           </h1>
 
-          <p className="max-w-xl text-muted-foreground text-base sm:text-lg">
+          <p className="max-w-xl text-base text-muted-foreground sm:text-lg">
             Explore and rent premium sports equipment, camping gear, and outdoor
             essentials without buying expensive equipment. Get the gear you
             need, when you need it.
@@ -36,33 +36,9 @@ export default function Hero() {
                 <ArrowRight className="ml-2 h-5 w-5" />
               </Link>
             </Button>
-
-            <Button asChild variant="outline" size="lg">
-              <Link href="/customerDashboard/rents">
-                <ShoppingBag className="mr-2 h-5 w-5" />
-                My Rentals
-              </Link>
-            </Button>
           </div>
 
           {/* Stats */}
-          {/* <div className="grid grid-cols-3 gap-5 pt-6">
-            <div>
-              <h3 className="text-2xl font-bold">500+</h3>
-              <p className="text-sm text-muted-foreground">Gear Items</p>
-            </div>
-
-            <div>
-              <h3 className="text-2xl font-bold">50+</h3>
-              <p className="text-sm text-muted-foreground">Providers</p>
-            </div>
-
-            <div>
-              <h3 className="text-2xl font-bold">24/7</h3>
-              <p className="text-sm text-muted-foreground">Support</p>
-            </div>
-          </div> */}
-
           <div className="grid grid-cols-3 gap-5 pt-6">
             <div className="text-center">
               <h3 className="text-2xl font-bold text-primary dark:text-green-600">
@@ -74,8 +50,9 @@ export default function Hero() {
                   scrollSpyOnce
                 />
               </h3>
-              <p className="text-sm text-muted-foreground"> Gear Items </p>{" "}
+              <p className="text-sm text-muted-foreground">Gear Items</p>
             </div>
+
             <div className="text-center">
               <h3 className="text-2xl font-bold text-primary dark:text-green-600">
                 <CountUp
@@ -86,8 +63,9 @@ export default function Hero() {
                   scrollSpyOnce
                 />
               </h3>
-              <p className="text-sm text-muted-foreground"> Providers </p>{" "}
+              <p className="text-sm text-muted-foreground">Providers</p>
             </div>
+
             <div className="text-center">
               <h3 className="text-2xl font-bold text-primary dark:text-green-600">
                 <CountUp
@@ -98,7 +76,7 @@ export default function Hero() {
                   scrollSpyOnce
                 />
               </h3>
-              <p className="text-sm text-muted-foreground"> Support </p>{" "}
+              <p className="text-sm text-muted-foreground">Support</p>
             </div>
           </div>
         </div>
@@ -117,7 +95,6 @@ export default function Hero() {
           </div>
 
           {/* Floating Card */}
-
           <div className="absolute bottom-5 left-5 rounded-xl border bg-background/90 p-4 shadow-lg backdrop-blur">
             <p className="text-sm font-bold text-green-900 dark:text-green-600">
               Available Today

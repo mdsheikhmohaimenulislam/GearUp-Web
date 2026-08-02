@@ -72,6 +72,8 @@ const SingleGearPage = async ({ params }: Props) => {
               ))}
             </div>
           )}
+
+
         </div>
 
         {/* Content Section */}

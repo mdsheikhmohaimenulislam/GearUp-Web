@@ -105,7 +105,8 @@ export type CreateRentalData = {
 };
 
 export type CreateReviewData = {
-  gearId: string;
+  gearItemId: string;
+  orderId: string;
   rating: number;
   comment: string;
 };

@@ -74,6 +74,7 @@ export default async function GearPage({
                     No Image
                   </div>
                 )}
+                
               </div>
 
               {/* Content */}
