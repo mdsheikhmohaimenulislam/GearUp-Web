@@ -47,6 +47,7 @@ export default async function GearPage({
 
   const gears: Gear[] = response?.data?.gears || [];
 
+
   return (
     <div className="container mx-auto py-10">
       <GearFilter categories={categories} />

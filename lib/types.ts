@@ -57,23 +57,6 @@ export interface JwtPayload {
   exp?: number;
 }
 
-export type Gear = {
-  id: string;
-  title: string;
-  description: string;
-  brand: string;
-  pricePerDay: string;
-  quantityTotal: number;
-  quantityAvailable: number;
-  images: string[];
-  isActive: boolean;
-
-  category?: {
-    id: string;
-    name: string;
-  };
-};
-
 export type CreateCategoryData = {
   name: string;
   description?: string;
@@ -164,13 +147,9 @@ export type CreateGearData = {
 
 export interface UpdateGear {
   title?: string;
-
   description?: string;
-
   pricePerDay?: number;
-
   quantityTotal?: number;
-
   quantityAvailable?: number;
 }
 
@@ -213,20 +192,18 @@ export type ProviderDashboardOrder = {
 
 export type CustomerRental = {
   id: string;
-
   quantity: number;
-
   startDate: string;
-
   endDate: string;
-
   status: string;
 
   gear?: {
+    id: string;
     title: string;
     images?: string[];
     pricePerDay: number;
   };
+  review: { id: string; rating: number; comment: string | null }[];
 };
 
 export type ConfirmPaymentRequest = {
@@ -241,7 +218,6 @@ export type PaymentConfirmResponse = {
   status: "PENDING" | "PAID" | "FAILED";
   paidAt: string | null;
 };
-
 
 export type Payment = {
   id: string;
@@ -263,5 +239,59 @@ export type Payment = {
       title: string;
       brand: string;
     };
+  };
+};
+
+export type GearItem = {
+  id: string;
+  title: string;
+  reviews?: { id: string; rating: number; comment?: string | null }[];
+};
+
+export type GearReview = {
+  id: string;
+  rating: number;
+  comment: string | null;
+  createdAt: string;
+};
+
+export type ProviderGear = {
+  id: string;
+  title: string;
+  brand: string;
+  reviews: GearReview[];
+};
+export type Review = {
+  id: string;
+  rating: number;
+  comment: string | null;
+  createdAt: string;
+  customerId: string;
+  gearItemId: string;
+  orderId: string;
+};
+
+export type Gear = {
+  id: string;
+  title: string;
+  description: string;
+  brand: string | null;
+  pricePerDay: string;
+  quantityTotal: number;
+  quantityAvailable: number;
+  images: string[];
+  isActive: boolean;
+
+  reviews: Review[];
+
+  category: {
+    id: string;
+    name: string;
+    slug: string;
+  };
+
+  provider: {
+    id: string;
+    name: string;
   };
 };

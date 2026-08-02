@@ -6,6 +6,8 @@ import { Button } from "@/components/ui/button";
 import { toast } from "sonner";
 import { createReviewAction } from "@/app/(dashboard)/customerDashboard/rents/_actions/review.action";
 import { Star } from "lucide-react";
+import { useRouter } from "next/navigation";
+
 
 type Props = {
   gearItemId: string;
@@ -14,10 +16,9 @@ type Props = {
 
 export default function ReviewSection({ gearItemId, orderId }: Props) {
   const [comment, setComment] = useState("");
-
   const [rating, setRating] = useState(5);
-
   const [loading, setLoading] = useState(false);
+  const router = useRouter();
 
   const handleSubmit = async () => {
     if (!comment.trim()) {
@@ -36,7 +37,6 @@ export default function ReviewSection({ gearItemId, orderId }: Props) {
         comment,
       };
 
-      console.log("Review Data:", reviewData);
       const res = await createReviewAction(reviewData);
 
       if (res?.success === false) {
@@ -48,8 +48,8 @@ export default function ReviewSection({ gearItemId, orderId }: Props) {
       toast.success("Review submitted successfully");
 
       setComment("");
-
       setRating(5);
+      router.push("/customerDashboard/rents");
     } catch (error) {
       console.log(error);
 

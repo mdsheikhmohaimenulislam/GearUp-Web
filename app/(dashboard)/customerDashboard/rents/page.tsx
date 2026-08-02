@@ -185,26 +185,15 @@ export default async function CustomerRentsPage() {
                     <ReturnButton id={rental.id} />
                   )}
 
-                  {rental.status === "RETURNED" && (
-                    <Link
-                      href={`/customerDashboard/rents/${rental.id}`}
-                      className="
-                            flex
-                            items-center
-                            gap-2
-                            bg-green-600
-                            text-white
-                            px-4
-                            py-2
-                            rounded-lg
-                            hover:bg-green-700
-                            transition
-                            "
-                    >
-                      <Star size={18} />
-                      Write Review
-                    </Link>
-                  )}
+                  {rental.status === "RETURNED" &&
+                    rental.review.length === 0 && (
+                      <Link
+                        href={`/customerDashboard/rents/${rental.id}`}
+                        className=" flex items-center gap-2 bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700 transition "
+                      >
+                        <Star size={18} /> Write Review{" "}
+                      </Link>
+                    )}
                 </div>
               </div>
             ))}

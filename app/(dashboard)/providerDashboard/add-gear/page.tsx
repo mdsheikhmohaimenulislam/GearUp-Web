@@ -34,29 +34,21 @@ type Category = {
   slug: string;
 };
 
-export default  function AddGearPage() {
+export default function AddGearPage() {
   const [loading, setLoading] = useState(false);
 
   const [imagePreview, setImagePreview] = useState("");
 
-const [categories, setCategories] = useState<Category[]>([]);
-
+  const [categories, setCategories] = useState<Category[]>([]);
 
   useEffect(() => {
-
     const loadCategories = async () => {
-
       const result = await getCategoriesAction();
 
-      setCategories(
-        result?.data?.categories || []
-      );
-
+      setCategories(result?.data?.categories || []);
     };
 
-
     loadCategories();
-
   }, []);
 
   const form = useForm<GearFormValues>({
@@ -80,20 +72,13 @@ const [categories, setCategories] = useState<Category[]>([]);
 
       const result = await createGearAction({
         title: values.title,
-
         description: values.description,
-
         brand: values.brand,
-
         pricePerDay: values.pricePerDay,
-
         quantityTotal: values.quantityTotal,
-
         quantityAvailable: values.quantityAvailable,
-
         images: [values.images],
-
-     categoryId: values.categoryId
+        categoryId: values.categoryId,
       });
 
       if (result.success) {
@@ -180,7 +165,7 @@ py-3
           </div>
         </div>
 
-        <div >
+        <div>
           <label className="text-sm font-medium">Category</label>
 
           <select
@@ -195,7 +180,7 @@ py-3
       mt-2
     "
           >
-            <option >Select Category</option>
+            <option>Select Category</option>
 
             {categories.map((cat) => (
               <option key={cat.id} value={cat.id}>

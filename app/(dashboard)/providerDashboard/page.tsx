@@ -4,25 +4,38 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Package, ShoppingCart, DollarSign, Star } from "lucide-react";
 
 import { getMyGears, getProviderOrders } from "@/server/provider.service";
-import { ProviderDashboardOrder } from "@/lib/types";
+import {
+  GearItem,
+  GearReview,
+  ProviderDashboardOrder,
+  ProviderGear,
+} from "@/lib/types";
 
 export default async function ProviderDashboardPage() {
   const gearsResult = await getMyGears();
 
   const ordersResult = await getProviderOrders();
 
-  const gears = gearsResult?.data || [];
-
+  const gears: ProviderGear[] = gearsResult?.data || [];
   const orders: ProviderDashboardOrder[] = ordersResult?.data?.orders || [];
-
   const totalGear = gears.length;
-
   const totalRentals = orders.length;
-
   const totalRevenue = orders.reduce(
     (sum: number, order) => sum + Number(order.totalPrice || 0),
     0,
   );
+
+  const allReviews = gears.flatMap((gear) => gear.reviews || []);
+
+  const totalRating = allReviews.reduce(
+    (sum, review) => sum + review.rating,
+    0,
+  );
+
+  const averageRating =
+    allReviews.length > 0
+      ? (totalRating / allReviews.length).toFixed(1)
+      : "0.0";
 
   const stats = [
     {
@@ -45,7 +58,7 @@ export default async function ProviderDashboardPage() {
 
     {
       title: "Average Rating",
-      value: "4.8",
+      value: averageRating,
       icon: Star,
     },
   ];

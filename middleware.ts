@@ -9,9 +9,14 @@ const AUTH_ROUTES = [
 ];
 
 
+const CUSTOMER_ROUTES = [
+  "/order",
+  "/rent",
+  "/payment",
+];
+
 
 export function middleware(request: NextRequest) {
-
 
   const pathname = request.nextUrl.pathname;
 
@@ -21,17 +26,17 @@ export function middleware(request: NextRequest) {
 
 
 
-  // Login/Register protection
+  // =========================
+  // Auth Route Protection
+  // =========================
 
   if (
     accessToken &&
     AUTH_ROUTES.includes(pathname)
   ) {
 
-
     const user: JwtPayload =
       jwtDecode(accessToken);
-
 
 
     if(user.role === "CUSTOMER"){
@@ -46,7 +51,6 @@ export function middleware(request: NextRequest) {
     }
 
 
-
     if(user.role === "PROVIDER"){
 
       return NextResponse.redirect(
@@ -57,7 +61,6 @@ export function middleware(request: NextRequest) {
       );
 
     }
-
 
 
     if(user.role === "ADMIN"){
@@ -77,10 +80,61 @@ export function middleware(request: NextRequest) {
 
 
 
-  // Provider Dashboard Protection
+  // =========================
+  // Customer Only Routes
+  // order/rent/payment
+  // =========================
+
 
   if(
-    pathname.startsWith("/providerDashboard")
+    CUSTOMER_ROUTES.some(
+      (route)=> pathname.startsWith(route)
+    )
+  ){
+
+    if(!accessToken){
+
+      return NextResponse.redirect(
+        new URL(
+          `/login?redirect=${pathname}`,
+          request.url
+        )
+      );
+
+    }
+
+
+    const user: JwtPayload =
+      jwtDecode(accessToken);
+
+
+
+    if(user.role !== "CUSTOMER"){
+
+      return NextResponse.redirect(
+        new URL(
+          "/",
+          request.url
+        )
+      );
+
+    }
+
+  }
+
+
+
+
+
+  // =========================
+  // Provider Dashboard
+  // =========================
+
+
+  if(
+    pathname.startsWith(
+      "/providerDashboard"
+    )
   ){
 
 
@@ -96,14 +150,12 @@ export function middleware(request: NextRequest) {
     }
 
 
-
     const user: JwtPayload =
       jwtDecode(accessToken);
 
 
 
     if(user.role !== "PROVIDER"){
-
 
       if(user.role === "CUSTOMER"){
 
@@ -117,7 +169,6 @@ export function middleware(request: NextRequest) {
       }
 
 
-
       if(user.role === "ADMIN"){
 
         return NextResponse.redirect(
@@ -129,9 +180,7 @@ export function middleware(request: NextRequest) {
 
       }
 
-
     }
-
 
   }
 
@@ -140,12 +189,15 @@ export function middleware(request: NextRequest) {
 
 
 
-
-  // Customer Dashboard Protection
+  // =========================
+  // Customer Dashboard
+  // =========================
 
 
   if(
-    pathname.startsWith("/customerDashboard")
+    pathname.startsWith(
+      "/customerDashboard"
+    )
   ){
 
 
@@ -161,14 +213,12 @@ export function middleware(request: NextRequest) {
     }
 
 
-
     const user: JwtPayload =
       jwtDecode(accessToken);
 
 
 
     if(user.role !== "CUSTOMER"){
-
 
       if(user.role === "PROVIDER"){
 
@@ -182,7 +232,6 @@ export function middleware(request: NextRequest) {
       }
 
 
-
       if(user.role === "ADMIN"){
 
         return NextResponse.redirect(
@@ -194,9 +243,7 @@ export function middleware(request: NextRequest) {
 
       }
 
-
     }
-
 
   }
 
@@ -206,11 +253,15 @@ export function middleware(request: NextRequest) {
 
 
 
-  // Admin Dashboard Protection
+  // =========================
+  // Admin Dashboard
+  // =========================
 
 
   if(
-    pathname.startsWith("/adminDashboard")
+    pathname.startsWith(
+      "/adminDashboard"
+    )
   ){
 
 
@@ -224,7 +275,6 @@ export function middleware(request: NextRequest) {
       );
 
     }
-
 
 
     const user: JwtPayload =
@@ -247,7 +297,6 @@ export function middleware(request: NextRequest) {
       }
 
 
-
       if(user.role === "PROVIDER"){
 
         return NextResponse.redirect(
@@ -259,13 +308,9 @@ export function middleware(request: NextRequest) {
 
       }
 
-
     }
 
-
   }
-
-
 
 
 
@@ -277,12 +322,15 @@ export function middleware(request: NextRequest) {
 
 
 
-
 export const config = {
 
   matcher:[
     "/login",
     "/register",
+
+    "/order/:path*",
+    "/rent/:path*",
+    "/payment/:path*",
 
     "/providerDashboard/:path*",
     "/customerDashboard/:path*",
