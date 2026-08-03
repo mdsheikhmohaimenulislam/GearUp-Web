@@ -325,8 +325,8 @@ export function middleware(request: NextRequest) {
 export const config = {
 
   matcher:[
-    "/login",
-    "/register",
+    // "/login",
+    // "/register",
 
     "/order/:path*",
     "/rent/:path*",
