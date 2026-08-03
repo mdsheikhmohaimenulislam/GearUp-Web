@@ -1,7 +1,8 @@
 "use client";
 import { useTransition } from "react";
 import { useRouter } from "next/navigation";
-import { getUserUpdateActions } from "../_actions/gearActions";
+import { getUserUpdateActions } from "../../_actions/gearActions";
+
 type Props = { user: { id: string; status: "ACTIVE" | "BLOCKED" } };
 export default function UserActionButton({ user }: Props) {
   const router = useRouter();

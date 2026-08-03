@@ -1,6 +1,7 @@
+import { orderActions } from "../../_actions/gearActions";
 import AdminTable, { Column } from "../_components/AdminTable";
 import OrderStatusBadge from "../_components/OrderStatusBadge";
-import { orderActions } from "../_actions/gearActions";
+
 
 
 type Payment = {

@@ -3,8 +3,9 @@
 import { useState } from "react";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
+import { createCategoryAction } from "@/app/(dashboard)/_actions/CategoryAction";
 
-import { createCategoryAction } from "../../_actions/CategoryAction";
+
 
 export default function CategoryForm() {
   const router = useRouter();

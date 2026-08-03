@@ -1,8 +1,9 @@
 import AdminTable, { Column } from "../_components/AdminTable";
-import { gearActions } from "../_actions/gearActions";
+
 import Pagination from "../_components/Pagination";
 import GearFilter from "../_components/GearFilter";
 import GearActionButton from "../_components/GearActionButton";
+import { gearActions } from "../../_actions/gearActions";
 
 type Gear = {
   id: string;

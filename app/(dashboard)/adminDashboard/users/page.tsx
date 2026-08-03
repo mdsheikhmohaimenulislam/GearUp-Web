@@ -1,6 +1,7 @@
+import { getUserActions } from "../../_actions/gearActions";
 import AdminTable, { Column } from "../_components/AdminTable";
 import UserActionButton from "../_components/UserActionButton";
-import { getUserActions } from "../_actions/gearActions";
+
 type User = {
   id: string;
   name: string;

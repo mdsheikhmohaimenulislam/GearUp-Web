@@ -1,4 +1,5 @@
-import { paymentActions } from "../_actions/paymentActions";
+
+import { paymentActions } from "../../_actions/paymentActions";
 import AdminTable, { Column } from "../_components/AdminTable";
 
 

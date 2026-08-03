@@ -2,7 +2,8 @@
 
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
-import { updateGearStatusAction } from "../_actions/gearUpdate";
+import { updateGearStatusAction } from "../../_actions/gearUpdate";
+
 
 type Props = {
   gear: {

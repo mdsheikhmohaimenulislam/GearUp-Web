@@ -93,6 +93,11 @@ export default function DashboardSidebar({ role }: Props) {
       icon: User,
     },
     {
+      name: "Gears",
+      href: "/adminDashboard/gears",
+      icon: Package,
+    },
+    {
       name: "Orders",
       href: "/adminDashboard/orders",
       icon: ShoppingCart,

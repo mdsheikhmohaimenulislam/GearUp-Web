@@ -1,4 +1,5 @@
-import { gearDetailsActions } from "../../_actions/gearUpdate";
+import { gearDetailsActions } from "@/app/(dashboard)/_actions/gearUpdate";
+
 
 
 

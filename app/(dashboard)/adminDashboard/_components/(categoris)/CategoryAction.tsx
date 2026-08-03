@@ -1,88 +1,100 @@
 "use client";
 
+
 import { useState } from "react";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
 
-import {
-  Dialog,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from "@/components/ui/dialog";
-
 import { Button } from "@/components/ui/button";
+import { deleteCategoryAction, updateCategoryAction } from "@/app/(dashboard)/_actions/CategoryAction";
 
-import {
-  updateCategoryAction,
-  deleteCategoryAction,
-} from "../../_actions/CategoryAction";
 
 
 
 type Props = {
-
-  category:{
-    id:string;
-    name:string;
+  category: {
+    id: string;
+    name: string;
+    slug: string;
   };
-
 };
 
 
 
 export default function CategoryAction({
   category,
-}:Props){
+}: Props) {
 
 
   const router = useRouter();
 
 
-  const [name,setName] = useState(
-    category.name
-  );
-
-
-  const [open,setOpen] = useState(false);
+  const [loading, setLoading] = useState(false);
 
 
 
-  const handleUpdate = async()=>{
+  const handleDelete = async () => {
 
 
-    const result =
-      await updateCategoryAction(
-        category.id,
-        {
-          name
-        }
-      );
+    const confirmDelete = window.confirm(
+      `Are you sure delete "${category.name}"?`
+    );
 
 
-
-    if(result.success){
-
-
-      toast.success(
-        "Category updated successfully"
-      );
-
-
-      setOpen(false);
-
-      router.refresh();
+    if (!confirmDelete) return;
 
 
 
-    }else{
+    try {
+
+
+      setLoading(true);
+
+
+
+      const result =
+        await deleteCategoryAction(
+          category.id
+        );
+
+
+
+      if(result.success){
+
+
+        toast.success(
+          "Category deleted successfully"
+        );
+
+
+        router.refresh();
+
+
+      }else{
+
+
+        toast.error(
+          result.message ||
+          "Delete failed"
+        );
+
+
+      }
+
+
+
+    } catch(error){
 
 
       toast.error(
-        result.message ||
-        "Update failed"
+        "Something went wrong"
       );
+
+
+    } finally {
+
+
+      setLoading(false);
 
 
     }
@@ -92,103 +104,134 @@ export default function CategoryAction({
 
 
 
+
+
+  const handleEdit = async()=>{
+
+
+    const name =
+      prompt(
+        "Update category name",
+        category.name
+      );
+
+
+
+    if(!name || name === category.name){
+      return;
+    }
+
+
+
+    try{
+
+
+      setLoading(true);
+
+
+
+      const result =
+        await updateCategoryAction(
+          category.id,
+          {
+            name,
+          }
+        );
+
+
+
+      if(result.success){
+
+
+        toast.success(
+          "Category updated successfully"
+        );
+
+
+        router.refresh();
+
+
+      }else{
+
+
+        toast.error(
+          result.message ||
+          "Update failed"
+        );
+
+
+      }
+
+
+
+    }catch(error){
+
+
+      toast.error(
+        "Something went wrong"
+      );
+
+
+    }finally{
+
+
+      setLoading(false);
+
+
+    }
+
+
+  };
+
+
+
+
+
   return (
 
-    <div className="flex gap-2">
+    <div
+      className="
+      flex
+      gap-2
+      "
+    >
 
 
+      <Button
 
-      <Dialog
-        open={open}
-        onOpenChange={setOpen}
+        onClick={handleEdit}
+
+        disabled={loading}
+
+        variant="outline"
+
       >
 
+        Edit
 
-        <DialogTrigger asChild>
-
-          <Button
-            variant="outline"
-            size="sm"
-          >
-
-            Edit
-
-          </Button>
-
-
-        </DialogTrigger>
-
-
-
-
-        <DialogContent>
-
-
-          <DialogHeader>
-
-            <DialogTitle>
-              Edit Category
-            </DialogTitle>
-
-          </DialogHeader>
-
-
-
-          <input
-
-            value={name}
-
-            onChange={(e)=>
-              setName(e.target.value)
-            }
-
-            className="
-            border
-            rounded-lg
-            px-3
-            py-2
-            w-full
-            "
-
-          />
-
-
-
-          <Button
-            onClick={handleUpdate}
-          >
-
-            Update
-
-          </Button>
-
-
-
-        </DialogContent>
-
-
-      </Dialog>
-
-
+      </Button>
 
 
 
       <Button
 
-        variant="outline"
+        onClick={handleDelete}
 
-        size="sm"
+        disabled={loading}
 
-        className="
-        text-red-600
-        "
+        variant="destructive"
 
       >
 
-        Delete
+        {
+          loading
+          ?
+          "Loading..."
+          :
+          "Delete"
+        }
 
       </Button>
-
 
 
     </div>

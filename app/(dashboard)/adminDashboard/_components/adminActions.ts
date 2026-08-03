@@ -1,33 +1,51 @@
-export const adminActions = [
-  {
-    title: "Manage Users",
-    description: "View and manage all users",
-    href: "/adminDashboard/users",
-    icon: "users",
-  },
-  {
-    title: "Manage Gears",
-    description: "Manage all gear items",
-    href: "/adminDashboard/gears",
-    icon: "package",
-  },
-  {
-    title: "Manage Rentals",
-    description: "Track rental orders",
-    href: "/adminDashboard/rentals",
-    icon: "shoppingCart",
-  },
+import {
+  Users,
+  Package,
+  CalendarDays,
+  ShoppingCart,
+  CreditCard,
+} from "lucide-react";
 
-  {
-    title: "Manage Orders",
-    description: "Manage all orders",
-    href: "/adminDashboard/orders",
-    icon: "shoppingCart",
-  },
-  {
-    title: "Manage payments",
-    description: "Manage all payments",
-    href: "/adminDashboard/payments",
-    icon: "shoppingCart",
-  },
-] as const;
+
+export const adminActions = [
+
+{
+ title:"Manage Users",
+ description:"View and manage all users",
+ href:"/adminDashboard/users",
+ icon:Users,
+},
+
+
+{
+ title:"Manage Gears",
+ description:"Manage all gear items",
+ href:"/adminDashboard/gears",
+ icon:Package,
+},
+
+
+{
+ title:"Manage Rentals",
+ description:"Track rental orders",
+ href:"/adminDashboard/rentals",
+ icon:CalendarDays,
+},
+
+
+{
+ title:"Manage Orders",
+ description:"Manage all orders",
+ href:"/adminDashboard/orders",
+ icon:ShoppingCart,
+},
+
+
+{
+ title:"Manage Payments",
+ description:"Manage all payments",
+ href:"/adminDashboard/payments",
+ icon:CreditCard,
+},
+
+];

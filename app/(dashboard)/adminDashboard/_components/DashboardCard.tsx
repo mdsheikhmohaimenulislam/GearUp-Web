@@ -1,44 +1,103 @@
-import React from "react";
+import Link from "next/link";
 
-interface Props {
-  title: string;
+import type { LucideIcon } from "lucide-react";
 
-  value: string | number;
 
-  icon: React.ReactNode;
-}
+type Props = {
 
-export default function DashboardCard({ title, value, icon }: Props) {
-  return (
-    <div
-      className="
+  title:string;
+
+  description:string;
+
+  href:string;
+
+  icon:LucideIcon;
+
+};
+
+
+
+export default function AdminActionCard({
+
+  title,
+
+  description,
+
+  href,
+
+  icon:Icon,
+
+}:Props){
+
+
+return (
+
+<Link
+
+href={href}
+
+className="
+flex
+items-center
+gap-4
 border
 rounded-xl
-p-5
-bg-card
-shadow-sm
-hover:shadow-md
+p-4
+hover:bg-muted
 transition
 "
-    >
-      <div className="flex justify-between items-center">
-        <div>
-          <p className="text-sm text-muted-foreground">{title}</p>
 
-          <h2 className="text-3xl font-bold mt-2">{value}</h2>
-        </div>
+>
 
-        <div
-          className="
+
+<div
+
+className="
 p-3
 rounded-lg
 bg-green-100
 text-green-700
 "
-        >
-          {icon}
-        </div>
-      </div>
-    </div>
-  );
+
+>
+
+<Icon
+className="
+w-5 h-5
+"
+/>
+
+</div>
+
+
+
+<div>
+
+<h3
+className="
+font-semibold
+"
+>
+{title}
+</h3>
+
+
+<p
+className="
+text-sm
+text-muted-foreground
+"
+>
+{description}
+</p>
+
+
+</div>
+
+
+</Link>
+
+);
+
+
 }
