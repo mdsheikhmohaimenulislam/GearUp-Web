@@ -67,12 +67,7 @@ export type UpdateCategoryData = {
   description?: string;
 };
 
-export type UserStatus = "ACTIVE" | "BLOCKED";
 
-export type UpdateUserData = {
-  status?: UserStatus;
-  role?: "CUSTOMER" | "PROVIDER" | "ADMIN";
-};
 
 export type CreatePaymentData = {
   orderId: string;
@@ -314,3 +309,27 @@ export interface AdminRental {
   };
 }
 
+export interface AdminUser {
+  id: string;
+  name: string;
+  email: string;
+  phone?: string;
+  address?: string;
+  role: "CUSTOMER" | "PROVIDER" | "ADMIN";
+  status?: "ACTIVE" | "INACTIVE";
+  createdAt: string;
+  updatedAt: string;
+}
+export type UpdateUserData = {
+  name?: string;
+
+  email?: string;
+
+  phone?: string;
+
+  address?: string;
+
+  role?: "CUSTOMER" | "PROVIDER" | "ADMIN";
+
+  status?: "ACTIVE" | "SUSPENDED";
+};
