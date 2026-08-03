@@ -1,6 +1,6 @@
 import DashboardSidebar from "@/components/shared/DashboardSidebar";
-
 import { getMe } from "@/server/getMe";
+import { redirect } from "next/navigation";
 
 export default async function ProviderDashboardLayout({
   children,
@@ -8,6 +8,11 @@ export default async function ProviderDashboardLayout({
   children: React.ReactNode;
 }) {
   const user = await getMe();
+
+  if (!user?.data) {
+    redirect("/login");
+  }
+
   const role = user.data.role;
 
   return (
