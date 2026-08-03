@@ -4,7 +4,6 @@ import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 import { updateGearStatusAction } from "../_actions/gearUpdate";
 
-
 type Props = {
   gear: {
     id: string;
@@ -12,77 +11,33 @@ type Props = {
   };
 };
 
-
-export default function GearActionButton({
-  gear,
-}: Props) {
-
-
+export default function GearActionButton({ gear }: Props) {
   const router = useRouter();
 
-
-
   const handleStatus = async () => {
-
     console.log("Sending gear id:", gear.id);
 
-
-    const result =
-      await updateGearStatusAction(
-        gear.id,
-        {
-          isActive: !gear.isActive,
-        }
-      );
-
+    const result = await updateGearStatusAction(gear.id, {
+      isActive: !gear.isActive,
+    });
 
     console.log("Response:", result);
 
-
-
     if (result.success) {
-
-
-      toast.success(
-        "Gear status updated"
-      );
-
+      toast.success("Gear status updated");
 
       router.refresh();
-
-
     } else {
-
-
-      toast.error(
-        result.message ||
-        "Update failed"
-      );
-
-
+      toast.error(result.message || "Update failed");
     }
-
   };
 
-
-
-
   return (
-
     <div className="flex gap-2">
-
-
       {/* View Button */}
 
       <button
-
-        onClick={() =>
-          router.push(
-            `/adminDashboard/gears/${gear.id}`
-          )
-        }
-
-
+        onClick={() => router.push(`/adminDashboard/gears/${gear.id}`)}
         className="
         border
         rounded-lg
@@ -90,24 +45,14 @@ export default function GearActionButton({
         py-1
         hover:bg-muted
         "
-
       >
-
         View
-
       </button>
-
-
-
-
 
       {/* Status Button */}
 
       <button
-
         onClick={handleStatus}
-
-
         className={`
         border
         rounded-lg
@@ -116,31 +61,14 @@ export default function GearActionButton({
 
         ${
           gear.isActive
-          ?
-          "text-red-600 hover:bg-red-50"
-          :
-          "text-green-600 hover:bg-green-50"
+            ? "text-red-600 hover:bg-red-50"
+            : "text-green-600 hover:bg-green-50"
         }
 
         `}
-
       >
-
-        {
-          gear.isActive
-          ?
-          "Disable"
-          :
-          "Activate"
-        }
-
-
+        {gear.isActive ? "Disable" : "Activate"}
       </button>
-
-
-
     </div>
-
   );
-
 }

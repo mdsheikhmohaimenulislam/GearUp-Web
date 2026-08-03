@@ -10,6 +10,7 @@ import {
   User,
   Menu,
   X,
+  ChartBarStacked,
 } from "lucide-react";
 
 import { useState } from "react";
@@ -80,6 +81,11 @@ export default function DashboardSidebar({ role }: Props) {
       name: "Dashboard",
       href: "/adminDashboard",
       icon: LayoutDashboard,
+    },
+    {
+      name: "AddCategories",
+      href: "/adminDashboard/categories",
+      icon: ChartBarStacked ,
     },
     {
       name: "Users",
