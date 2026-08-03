@@ -1,103 +1,198 @@
 "use client";
 
+import { useState } from "react";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
-import { useState } from "react";
 
 import {
-  AlertDialog,
-  AlertDialogAction,
-  AlertDialogCancel,
-  AlertDialogContent,
-  AlertDialogDescription,
-  AlertDialogFooter,
-  AlertDialogHeader,
-  AlertDialogTitle,
-  AlertDialogTrigger,
-} from "@/components/ui/alert-dialog";
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
 
 import { Button } from "@/components/ui/button";
 
-import { deleteCategoryAction } from "../../_actions/CategoryAction";
+import {
+  updateCategoryAction,
+  deleteCategoryAction,
+} from "../../_actions/CategoryAction";
+
+
 
 type Props = {
-  category: {
-    id: string;
-    name: string;
+
+  category:{
+    id:string;
+    name:string;
   };
+
 };
 
-export default function CategoryAction({ category }: Props) {
+
+
+export default function CategoryAction({
+  category,
+}:Props){
+
+
   const router = useRouter();
 
-  const [loading, setLoading] = useState(false);
 
-  const handleDelete = async () => {
-    try {
-      setLoading(true);
+  const [name,setName] = useState(
+    category.name
+  );
 
-      const result = await deleteCategoryAction(category.id);
 
-      if (result.success) {
-        toast.success("Category deleted successfully");
+  const [open,setOpen] = useState(false);
 
-        router.refresh();
-      } else {
-        toast.error(result.message || "Delete failed");
-      }
-    } catch (error) {
-      toast.error("Something went wrong");
-    } finally {
-      setLoading(false);
+
+
+  const handleUpdate = async()=>{
+
+
+    const result =
+      await updateCategoryAction(
+        category.id,
+        {
+          name
+        }
+      );
+
+
+
+    if(result.success){
+
+
+      toast.success(
+        "Category updated successfully"
+      );
+
+
+      setOpen(false);
+
+      router.refresh();
+
+
+
+    }else{
+
+
+      toast.error(
+        result.message ||
+        "Update failed"
+      );
+
+
     }
+
+
   };
 
-  return (
-    <div className="flex gap-2">
-      <Button variant="outline" size="sm">
-        Edit
-      </Button>
 
-      <AlertDialog>
-        <AlertDialogTrigger asChild>
+
+  return (
+
+    <div className="flex gap-2">
+
+
+
+      <Dialog
+        open={open}
+        onOpenChange={setOpen}
+      >
+
+
+        <DialogTrigger asChild>
+
           <Button
             variant="outline"
             size="sm"
-            className="
-            text-red-600
-            hover:text-red-700
-            "
           >
-            Delete
+
+            Edit
+
           </Button>
-        </AlertDialogTrigger>
 
-        <AlertDialogContent>
-          <AlertDialogHeader>
-            <AlertDialogTitle>Delete Category?</AlertDialogTitle>
 
-            <AlertDialogDescription>
-              Are you sure you want to delete
-              <b> {category.name}</b>? This action cannot be undone.
-            </AlertDialogDescription>
-          </AlertDialogHeader>
+        </DialogTrigger>
 
-          <AlertDialogFooter>
-            <AlertDialogCancel>Cancel</AlertDialogCancel>
 
-            <AlertDialogAction
-              onClick={handleDelete}
-              disabled={loading}
-              className="
-              bg-red-600
-              hover:bg-red-700
-              "
-            >
-              {loading ? "Deleting..." : "Delete"}
-            </AlertDialogAction>
-          </AlertDialogFooter>
-        </AlertDialogContent>
-      </AlertDialog>
+
+
+        <DialogContent>
+
+
+          <DialogHeader>
+
+            <DialogTitle>
+              Edit Category
+            </DialogTitle>
+
+          </DialogHeader>
+
+
+
+          <input
+
+            value={name}
+
+            onChange={(e)=>
+              setName(e.target.value)
+            }
+
+            className="
+            border
+            rounded-lg
+            px-3
+            py-2
+            w-full
+            "
+
+          />
+
+
+
+          <Button
+            onClick={handleUpdate}
+          >
+
+            Update
+
+          </Button>
+
+
+
+        </DialogContent>
+
+
+      </Dialog>
+
+
+
+
+
+      <Button
+
+        variant="outline"
+
+        size="sm"
+
+        className="
+        text-red-600
+        "
+
+      >
+
+        Delete
+
+      </Button>
+
+
+
     </div>
+
   );
+
 }
