@@ -13,6 +13,7 @@ import {
   CircleDollarSign,
 } from "lucide-react";
 import Reviews from "../../_components/reviews/Reviews";
+import GearGallery from "../../_components/GearGallery";
 
 const SingleGearPage = async ({ params }: Props) => {
   const { id } = await params;
@@ -35,66 +36,14 @@ const SingleGearPage = async ({ params }: Props) => {
     <div className="max-w-6xl mx-auto px-4 py-10">
       <div className="grid lg:grid-cols-2 gap-10 items-start">
         {/* Image Section */}
-        <div className="space-y-5">
-          {/* Main Image */}
-          <div className="group relative overflow-hidden rounded-3xl border bg-gray-100 dark:bg-zinc-900 shadow-lg h-[450px]">
-            {gear.images?.length > 0 ? (
-              <>
-                <Image
-                  src={gear.images[0]}
-                  alt={gear.title}
-                  fill
-                  priority
-                  className="object-cover transition duration-500 group-hover:scale-110"
-                  sizes="(max-width: 1024px) 100vw, 50vw"
-                />
-
-                {/* Overlay */}
-                <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent" />
-
-                {/* Image Badge */}
-                <div className="absolute bottom-5 left-5">
-                  <span className="px-4 py-2 rounded-full bg-white/90 text-black text-sm font-semibold shadow">
-                    {gear.category?.name}
-                  </span>
-                </div>
-              </>
-            ) : (
-              <div className="h-full flex items-center justify-center text-gray-500">
-                <div className="text-center">
-                  <PackageCheck size={45} className="mx-auto mb-3" />
-                  <p>No Image Available</p>
-                </div>
-              </div>
-            )}
-          </div>
-
-          {/* Thumbnail Images */}
-          {gear.images?.length > 1 && (
-            <div className="grid grid-cols-4 gap-3">
-              {gear.images.map((image: string, index: number) => (
-                <div
-                  key={index}
-                  className={`relative overflow-hidden rounded-xl border h-24 cursor-pointer transition
-          ${
-            index === 0
-              ? "ring-2 ring-green-600"
-              : "hover:ring-2 hover:ring-green-400"
-          }`}
-                >
-                  <Image
-                    src={image}
-                    alt={`${gear.title}-${index}`}
-                    fill
-                    className="object-cover hover:scale-110 transition duration-300"
-                    sizes="100px"
-                  />
-                </div>
-              ))}
-            </div>
-          )}
-        </div>
-
+        <GearGallery
+          images={gear.images || []}
+          title={gear.title}
+          categoryName={gear.category?.name}
+          quantityAvailable={gear.quantityAvailable}
+          pricePerDay={gear.pricePerDay}
+          brand={gear.brand}
+        />
         {/* Content Section */}
         <div className="space-y-6">
           {/* Title + Status */}
