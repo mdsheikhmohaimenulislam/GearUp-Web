@@ -59,7 +59,7 @@ const SingleGearPage = async ({ params }: Props) => {
                 {gear.isActive ? "Active" : "Inactive"}
               </span>
 
-              <span className="text-sm text-gray-500">
+              <span className="text-sm">
                 Gear ID: #{gear.id.slice(0, 8).toUpperCase()}
               </span>
             </div>
@@ -79,11 +79,11 @@ const SingleGearPage = async ({ params }: Props) => {
               <CircleDollarSign className="text-green-600" size={28} />
 
               <div>
-                <p className="text-sm text-gray-500">Rental Price</p>
+                <p className="text-sm text-gray-500 dark:text-white">Rental Price</p>
 
                 <h2 className="text-3xl font-bold text-green-700">
                   ৳{gear.pricePerDay}
-                  <span className="text-lg text-gray-500 font-medium">
+                  <span className="text-lg text-gray-500 dark:text-white font-medium">
                     /day
                   </span>
                 </h2>

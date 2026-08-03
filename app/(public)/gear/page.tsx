@@ -3,6 +3,7 @@ import GearFilter from "../_components/GearFilter";
 import { Gear, SearchParams } from "@/lib/types";
 import Link from "next/link";
 import { notFound } from "next/navigation";
+import GearPagination from "../_components/GearPagination";
 
 export default async function GearPage({
   searchParams,
@@ -30,7 +31,7 @@ export default async function GearPage({
   const response = await getGears({
     search: params.search,
 
-      category: params.category,
+    category: params.category,
 
     minPrice: params.minPrice ? Number(params.minPrice) : undefined,
 
@@ -39,14 +40,22 @@ export default async function GearPage({
     sortBy: params.sortBy || "createdAt",
 
     sortOrder: params.sortOrder === "asc" ? "asc" : "desc",
+    page: params.page ? Number(params.page) : 1,
+
+    limit: 10,
   });
+
+  console.log("FULL RESPONSE:", response);
 
   const categoryResponse = await getCategories();
 
   const categories = categoryResponse?.data?.categories || [];
 
-  const gears: Gear[] = response?.data?.gears || [];
+  const gears: Gear[] = response?.data?.gears?.gears || [];
 
+  const pagination = response?.data?.gears?.pagination;
+
+  console.log(pagination);
 
   return (
     <div className="container mx-auto py-10">
@@ -55,8 +64,8 @@ export default async function GearPage({
       {gears.length === 0 ? (
         <div className="text-center py-10 text-gray-500">Gear Not Found</div>
       ) : (
-        <div className="grid md:grid-cols-3 gap-6 mt-8">
-          {gears.map((gear: Gear) => (
+        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 mt-8">
+          {gears?.map((gear: Gear) => (
             <div
               key={gear.id}
               className="border rounded-lg overflow-hidden shadow hover:shadow-lg transition"
@@ -75,7 +84,6 @@ export default async function GearPage({
                     No Image
                   </div>
                 )}
-                
               </div>
 
               {/* Content */}
@@ -151,6 +159,15 @@ export default async function GearPage({
           ))}
         </div>
       )}
+      {/* Pagination */}
+      <GearPagination
+  currentPage={pagination?.currentPage || 1}
+  totalPages={pagination?.totalPages || 1}
+  totalItems={pagination?.totalItems || 0}
+  limit={pagination?.limit || 10}
+  hasNextPage={pagination?.hasNextPage || false}
+  hasPreviousPage={pagination?.hasPreviousPage || false}
+      />
     </div>
   );
 }

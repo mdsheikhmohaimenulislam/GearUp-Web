@@ -102,6 +102,7 @@ export type GearQuery = {
   maxPrice?: number;
   minPrice?: number;
   page?: number;
+  limit?: number;
   sortBy?: string;
   sortOrder?: "asc" | "desc";
   tags?: string[];
@@ -114,6 +115,8 @@ export type SearchParams = {
   minPrice?: string;
   maxPrice?: string;
   sortBy?: string;
+  page?: number;
+  limit?: number
   sortOrder?: "asc" | "desc";
 };
 
