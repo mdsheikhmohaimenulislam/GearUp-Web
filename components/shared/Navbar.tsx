@@ -4,7 +4,6 @@ import Link from "next/link";
 import { Menu, User } from "lucide-react";
 import { useRouter } from "next/navigation";
 
-
 import { Button } from "@/components/ui/button";
 import { ModeToggle } from "@/components/theme/mode-toggle";
 
@@ -20,7 +19,7 @@ import {
 
 import { IUser } from "@/lib/types";
 import Image from "next/image";
-import LogoutButton from './LogoutButton';
+import LogoutButton from "./LogoutButton";
 
 type NavbarProps = {
   user: IUser;
@@ -42,7 +41,18 @@ export default function Navbar({ user }: NavbarProps) {
       name: "About",
       href: "/about",
     },
-
+    {
+      name: "FAQ",
+      href: "/faqSection",
+    },
+    {
+      name: "Contact",
+      href: "/contact",
+    },
+    {
+      name: "Help Center",
+      href: "/help-center",
+    },
   ];
 
   // Dynamic Dashboard Redirect
@@ -72,8 +82,6 @@ export default function Navbar({ user }: NavbarProps) {
         break;
     }
   };
-
-
 
   return (
     <header className="sticky top-0 z-50 border-b bg-background/80 backdrop-blur">
@@ -130,8 +138,8 @@ export default function Navbar({ user }: NavbarProps) {
                   <User className="mr-2 h-4 w-4" />
                   Dashboard
                 </DropdownMenuItem>
-{/* logout */}
-<LogoutButton/>
+                {/* logout */}
+                <LogoutButton />
               </DropdownMenuContent>
             </DropdownMenu>
           ) : (
@@ -174,8 +182,8 @@ export default function Navbar({ user }: NavbarProps) {
                       Dashboard
                     </Button>
 
-{/* logout */}
-<LogoutButton/>
+                    {/* logout */}
+                    <LogoutButton />
                   </>
                 ) : (
                   <Button asChild>
