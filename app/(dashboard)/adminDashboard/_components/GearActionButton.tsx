@@ -5,8 +5,6 @@ import { toast } from "sonner";
 import { updateGearStatusAction } from "../_actions/gearUpdate";
 
 
-
-
 type Props = {
   gear: {
     id: string;
@@ -26,6 +24,8 @@ export default function GearActionButton({
 
   const handleStatus = async () => {
 
+    console.log("Sending gear id:", gear.id);
+
 
     const result =
       await updateGearStatusAction(
@@ -34,6 +34,9 @@ export default function GearActionButton({
           isActive: !gear.isActive,
         }
       );
+
+
+    console.log("Response:", result);
 
 
 
@@ -48,20 +51,19 @@ export default function GearActionButton({
       router.refresh();
 
 
-
     } else {
 
 
       toast.error(
         result.message ||
-        "Something went wrong"
+        "Update failed"
       );
 
 
     }
 
-
   };
+
 
 
 
@@ -73,11 +75,13 @@ export default function GearActionButton({
       {/* View Button */}
 
       <button
+
         onClick={() =>
           router.push(
             `/adminDashboard/gears/${gear.id}`
           )
         }
+
 
         className="
         border
@@ -86,11 +90,13 @@ export default function GearActionButton({
         py-1
         hover:bg-muted
         "
+
       >
 
         View
 
       </button>
+
 
 
 
@@ -101,6 +107,7 @@ export default function GearActionButton({
 
         onClick={handleStatus}
 
+
         className={`
         border
         rounded-lg
@@ -109,17 +116,22 @@ export default function GearActionButton({
 
         ${
           gear.isActive
-            ? "text-red-600"
-            : "text-green-600"
+          ?
+          "text-red-600 hover:bg-red-50"
+          :
+          "text-green-600 hover:bg-green-50"
         }
 
         `}
+
       >
 
         {
           gear.isActive
-            ? "Disable"
-            : "Activate"
+          ?
+          "Disable"
+          :
+          "Activate"
         }
 
 

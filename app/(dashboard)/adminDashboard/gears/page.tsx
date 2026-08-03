@@ -159,19 +159,20 @@ ${gear.isActive ? "bg-green-100 text-green-700" : "bg-red-100 text-red-700"}
       ),
     },
 
-{
- key:"id",
- label:"Action",
+    {
+      key: "id",
 
- render:(gear:Gear)=>(
-   <GearActionButton
-     gear={{
-       id:gear.id,
-       isActive:gear.isActive
-     }}
-   />
- )
-}
+      label: "Action",
+
+      render: (gear: Gear) => (
+        <GearActionButton
+          gear={{
+            id: gear.id,
+            isActive: gear.isActive,
+          }}
+        />
+      ),
+    },
   ] satisfies Column<Gear>[];
 
   return (

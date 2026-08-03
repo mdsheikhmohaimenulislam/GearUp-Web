@@ -38,3 +38,36 @@ export async function updateGearStatusAction(
   return res.json();
 
 }
+
+
+export const gearDetailsActions = async (
+  id:string
+)=>{
+
+  const cookieStore = await cookies();
+
+
+  const token =
+    cookieStore
+    .get("accessToken")
+    ?.value;
+
+
+
+  const res =
+    await fetch(
+      `${serverUrl}/api/admin/gears/${id}`,
+      {
+        headers:{
+          Cookie:
+          `accessToken=${token}`
+        },
+
+        cache:"no-store"
+      }
+    );
+
+
+  return res.json();
+
+};
