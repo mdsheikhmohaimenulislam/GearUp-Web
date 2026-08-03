@@ -45,18 +45,16 @@ export default async function GearPage({
     limit: 10,
   });
 
-
-
   const categoryResponse = await getCategories();
 
   const categories = categoryResponse?.data?.categories || [];
 
-const gears: Gear[] = response?.data?.gears || [];
+  const gears: Gear[] = response?.data?.gears || [];
 
-const pagination = response?.data?.pagination || {};
+  const pagination = response?.data?.pagination || {};
 
-  console.log(pagination,"pagination");
-  console.log("gear",gears);
+  console.log(pagination, "pagination");
+  console.log("gear", gears);
 
   return (
     <div className="container mx-auto py-10">
@@ -162,12 +160,12 @@ const pagination = response?.data?.pagination || {};
       )}
       {/* Pagination */}
       <GearPagination
-  currentPage={pagination?.currentPage || 1}
-  totalPages={pagination?.totalPages || 1}
-  totalItems={pagination?.totalItems || 0}
-  limit={pagination?.limit || 10}
-  hasNextPage={pagination?.hasNextPage || false}
-  hasPreviousPage={pagination?.hasPreviousPage || false}
+        currentPage={pagination?.currentPage || 1}
+        totalPages={pagination?.totalPages || 1}
+        totalItems={pagination?.totalItems || 0}
+        limit={pagination?.limit || 10}
+        hasNextPage={pagination?.hasNextPage || false}
+        hasPreviousPage={pagination?.hasPreviousPage || false}
       />
     </div>
   );
