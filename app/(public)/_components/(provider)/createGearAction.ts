@@ -23,7 +23,6 @@ export async function createGearAction(
 
   } catch (error) {
 
-    console.log("Create Gear Error:", error);
 
 
     return {

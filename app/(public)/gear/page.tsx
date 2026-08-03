@@ -40,6 +40,7 @@ export default async function GearPage({
     sortBy: params.sortBy || "createdAt",
 
     sortOrder: params.sortOrder === "asc" ? "asc" : "desc",
+
     page: params.page ? Number(params.page) : 1,
 
     limit: 10,
@@ -53,21 +54,20 @@ export default async function GearPage({
 
   const pagination = response?.data?.pagination || {};
 
-  console.log(pagination, "pagination");
-  console.log("gear", gears);
-
   return (
     <div className="container mx-auto py-10">
       <GearFilter categories={categories} />
 
       {gears.length === 0 ? (
-        <div className="text-center py-10 text-gray-500">Gear Not Found</div>
+        <div className="text-center py-10 text-gray-500">
+          Gear Not Found
+        </div>
       ) : (
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 mt-8">
-          {gears?.map((gear: Gear) => (
+          {gears.map((gear: Gear) => (
             <div
               key={gear.id}
-              className="border rounded-lg overflow-hidden shadow hover:shadow-lg transition"
+              className="border rounded-lg overflow-hidden shadow hover:shadow-lg transition flex flex-col"
             >
               {/* Image */}
 
@@ -85,22 +85,36 @@ export default async function GearPage({
                 )}
               </div>
 
+
               {/* Content */}
 
-              <div className="p-5 space-y-3">
-                <h2 className="text-xl font-bold">{gear.title}</h2>
+              <div className="p-5 space-y-3 flex flex-col flex-1">
+                <h2 className="text-xl font-bold">
+                  {gear.title}
+                </h2>
+
 
                 <p className="text-sm text-gray-600 dark:text-gray-300">
-                  {gear.description?.split(" ").slice(0, 20).join(" ")}
+                  {gear.description
+                    ?.split(" ")
+                    .slice(0, 20)
+                    .join(" ")}
 
-                  {gear.description?.split(" ").length > 20 ? "..." : ""}
+                  {gear.description?.split(" ").length > 20
+                    ? "..."
+                    : ""}
                 </p>
+
 
                 <div className="space-y-1 text-sm">
                   <p>
                     Brand:
-                    <span className="font-semibold"> {gear.brand}</span>
+                    <span className="font-semibold">
+                      {" "}
+                      {gear.brand}
+                    </span>
                   </p>
+
 
                   <p>
                     Category:
@@ -110,6 +124,7 @@ export default async function GearPage({
                     </span>
                   </p>
 
+
                   <p>
                     Price:
                     <span className="font-semibold">
@@ -117,6 +132,7 @@ export default async function GearPage({
                       ৳{gear.pricePerDay}/day
                     </span>
                   </p>
+
 
                   <p>
                     Available:
@@ -126,10 +142,15 @@ export default async function GearPage({
                     </span>
                   </p>
 
+
                   <p>
                     Total:
-                    <span className="font-semibold"> {gear.quantityTotal}</span>
+                    <span className="font-semibold">
+                      {" "}
+                      {gear.quantityTotal}
+                    </span>
                   </p>
+
 
                   <p>
                     Status:
@@ -147,18 +168,25 @@ export default async function GearPage({
                   </p>
                 </div>
 
+
+                {/* Button Fixed Bottom */}
+
                 <Link
                   href={`/gear/${gear.id}?redirect=/gear/${gear.id}`}
-                  className="block text-center w-full mt-4 bg-green-700 text-white py-2 rounded hover:bg-green-600"
+                  className="block text-center w-full mt-auto bg-green-700 text-white py-2 rounded hover:bg-green-600 transition"
                 >
                   See More
                 </Link>
+
               </div>
             </div>
           ))}
         </div>
       )}
+
+
       {/* Pagination */}
+
       <GearPagination
         currentPage={pagination?.currentPage || 1}
         totalPages={pagination?.totalPages || 1}
@@ -167,6 +195,7 @@ export default async function GearPage({
         hasNextPage={pagination?.hasNextPage || false}
         hasPreviousPage={pagination?.hasPreviousPage || false}
       />
+
     </div>
   );
 }

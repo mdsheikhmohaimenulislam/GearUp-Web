@@ -26,7 +26,7 @@ export default async function ProviderDashboardPage() {
   );
 
   const allReviews = gears.flatMap((gear) => gear.reviews || []);
-  console.log(allReviews);
+
 
   const totalRating = allReviews.reduce(
     (sum, review) => sum + review.rating,

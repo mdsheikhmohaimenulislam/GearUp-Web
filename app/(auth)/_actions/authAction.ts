@@ -12,7 +12,7 @@ type LoginPayload = {
 
 export async function loginAction(values: LoginPayload) {
 
-  console.log(values);
+
 
   const res = await fetch(
     `${serverUrl}/api/auth/login`,
@@ -29,16 +29,13 @@ export async function loginAction(values: LoginPayload) {
   const data = await res.json();
 
 
-  console.log("LOGIN RESPONSE:", data);
+
 
 
 
   if(data.success){
 
-    console.log(
-      "ACCESS TOKEN FROM BACKEND:",
-      data.data.accessToken
-    );
+ 
 
 
     const cookieStore = await cookies();
@@ -56,9 +53,7 @@ export async function loginAction(values: LoginPayload) {
     );
 
 
-    console.log(
-      "COOKIE SET DONE"
-    );
+ 
 
   }
 
@@ -70,7 +65,7 @@ export async function loginAction(values: LoginPayload) {
 
 export async function registerAction(values: RegisterValues) {
   try {
-    console.log("REGISTER DATA:", values);
+
 
     const res = await fetch(
       `${serverUrl}/api/auth/register`,
@@ -85,7 +80,7 @@ export async function registerAction(values: RegisterValues) {
 
     const data = await res.json();
 
-    console.log("REGISTER RESPONSE:", data);
+
 
     return data;
 

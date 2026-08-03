@@ -54,7 +54,7 @@ export default function RentForm({ gearId, maxQuantity = 10 }: Props) {
         endDate,
       });
 
-      console.log("Rental Response:", rentalResult);
+
 
       if (!rentalResult.success) {
         toast.error(rentalResult.message || "Rental failed");
@@ -75,7 +75,6 @@ export default function RentForm({ gearId, maxQuantity = 10 }: Props) {
 
       const orderId = rentalResult.data.id;
 
-      console.log("Order ID:", orderId);
 
       // 2. Create Stripe Payment
 
@@ -83,7 +82,7 @@ export default function RentForm({ gearId, maxQuantity = 10 }: Props) {
         orderId,
       });
 
-      console.log("Payment Response:", paymentResult);
+  
 
       if (!paymentResult.success) {
         toast.error(paymentResult.message || "Payment failed");
@@ -101,7 +100,7 @@ export default function RentForm({ gearId, maxQuantity = 10 }: Props) {
         toast.error("Stripe url not found");
       }
     } catch (error) {
-      console.error(error);
+   
 
       toast.error("Something went wrong");
     } finally {

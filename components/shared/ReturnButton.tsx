@@ -21,7 +21,7 @@ export default function ReturnButton({
     const result = await returnRentalAction(id);
 
 
-    console.log("Return response:", result);
+
 
 
     if(result.success){

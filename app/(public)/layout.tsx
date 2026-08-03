@@ -4,7 +4,7 @@ import React from "react";
 
 const DashboardLayout = async ({ children }: { children: React.ReactNode }) => {
   const user = await getMe();
-  console.log(user);
+
 
   return (
     <div>

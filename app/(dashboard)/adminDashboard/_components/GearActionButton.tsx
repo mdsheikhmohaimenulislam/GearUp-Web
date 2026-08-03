@@ -16,13 +16,13 @@ export default function GearActionButton({ gear }: Props) {
   const router = useRouter();
 
   const handleStatus = async () => {
-    console.log("Sending gear id:", gear.id);
+
 
     const result = await updateGearStatusAction(gear.id, {
       isActive: !gear.isActive,
     });
 
-    console.log("Response:", result);
+
 
     if (result.success) {
       toast.success("Gear status updated");

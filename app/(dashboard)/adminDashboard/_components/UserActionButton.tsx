@@ -12,9 +12,9 @@ export default function UserActionButton({ user }: Props) {
     startTransition(async () => {
       const newStatus: "ACTIVE" | "SUSPENDED" =
         user.status === "ACTIVE" ? "SUSPENDED" : "ACTIVE";
-      console.log("Updating user:", user.id, newStatus);
+  
       const result = await getUserUpdateActions(user.id, { status: newStatus });
-      console.log("Result:", result);
+  
       router.refresh();
     });
   };

@@ -62,7 +62,7 @@ export default function RegisterForm() {
 
       const result = await registerAction(values);
 
-      console.log(result);
+
 
       if (result.success) {
         toast.success(result.message);

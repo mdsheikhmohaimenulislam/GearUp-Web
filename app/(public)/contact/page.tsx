@@ -112,11 +112,7 @@ export default function ContactSection() {
 
     // Demo Data
 
-    console.log(
-      "Contact Form Data:",
-      formData
-    );
-
+ 
 
 
     toast.success(
