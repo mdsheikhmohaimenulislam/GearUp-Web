@@ -45,17 +45,18 @@ export default async function GearPage({
     limit: 10,
   });
 
-  console.log("FULL RESPONSE:", response);
+
 
   const categoryResponse = await getCategories();
 
   const categories = categoryResponse?.data?.categories || [];
 
-  const gears: Gear[] = response?.data?.gears?.gears || [];
+const gears: Gear[] = response?.data?.gears || [];
 
-  const pagination = response?.data?.gears?.pagination;
+const pagination = response?.data?.pagination || {};
 
-  console.log(pagination);
+  console.log(pagination,"pagination");
+  console.log("gear",gears);
 
   return (
     <div className="container mx-auto py-10">

@@ -116,7 +116,7 @@ export type SearchParams = {
   maxPrice?: string;
   sortBy?: string;
   page?: number;
-  limit?: number
+  limit?: number;
   sortOrder?: "asc" | "desc";
 };
 
@@ -298,3 +298,19 @@ export type Gear = {
     name: string;
   };
 };
+export interface AdminRental {
+  id: string;
+  totalPrice?: number | string;
+  status?: string;
+  createdAt?: string;
+
+  customer?: {
+    name: string;
+    email: string;
+  };
+
+  gear?: {
+    title: string;
+  };
+}
+

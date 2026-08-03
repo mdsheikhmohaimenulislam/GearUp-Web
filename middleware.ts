@@ -9,6 +9,13 @@ const AUTH_ROUTES = [
 ];
 
 
+const ROLE_ROUTES = {
+  ADMIN: "/adminDashboard",
+  PROVIDER: "/providerDashboard",
+  CUSTOMER: "/customerDashboard",
+};
+
+
 const CUSTOMER_ROUTES = [
   "/order",
   "/rent",
@@ -18,7 +25,7 @@ const CUSTOMER_ROUTES = [
 
 export function middleware(request: NextRequest) {
 
-  const pathname = request.nextUrl.pathname;
+  const { pathname } = request.nextUrl;
 
 
   const accessToken =
@@ -26,50 +33,19 @@ export function middleware(request: NextRequest) {
 
 
 
-  // =========================
-  // Auth Route Protection
-  // =========================
-
-  if (
-    accessToken &&
-    AUTH_ROUTES.includes(pathname)
-  ) {
-
-    const user: JwtPayload =
-      jwtDecode(accessToken);
+  let user: JwtPayload | null = null;
 
 
-    if(user.role === "CUSTOMER"){
+  if(accessToken){
+
+    try{
+
+      user = jwtDecode<JwtPayload>(accessToken);
+
+    }catch(error){
 
       return NextResponse.redirect(
-        new URL(
-          "/customerDashboard",
-          request.url
-        )
-      );
-
-    }
-
-
-    if(user.role === "PROVIDER"){
-
-      return NextResponse.redirect(
-        new URL(
-          "/providerDashboard",
-          request.url
-        )
-      );
-
-    }
-
-
-    if(user.role === "ADMIN"){
-
-      return NextResponse.redirect(
-        new URL(
-          "/adminDashboard",
-          request.url
-        )
+        new URL("/login", request.url)
       );
 
     }
@@ -78,21 +54,43 @@ export function middleware(request: NextRequest) {
 
 
 
+  // =========================
+  // Already logged in
+  // login/register block
+  // =========================
+
+  if(
+    AUTH_ROUTES.includes(pathname)
+    &&
+    user
+  ){
+
+    return NextResponse.redirect(
+      new URL(
+        ROLE_ROUTES[user.role],
+        request.url
+      )
+    );
+
+  }
+
+
+
 
 
   // =========================
-  // Customer Only Routes
-  // order/rent/payment
+  // Customer Routes
   // =========================
 
 
   if(
     CUSTOMER_ROUTES.some(
-      (route)=> pathname.startsWith(route)
+      route => pathname.startsWith(route)
     )
   ){
 
-    if(!accessToken){
+
+    if(!user){
 
       return NextResponse.redirect(
         new URL(
@@ -104,16 +102,11 @@ export function middleware(request: NextRequest) {
     }
 
 
-    const user: JwtPayload =
-      jwtDecode(accessToken);
-
-
-
     if(user.role !== "CUSTOMER"){
 
       return NextResponse.redirect(
         new URL(
-          "/",
+          ROLE_ROUTES[user.role],
           request.url
         )
       );
@@ -127,18 +120,20 @@ export function middleware(request: NextRequest) {
 
 
   // =========================
-  // Provider Dashboard
+  // Dashboard Protection
   // =========================
 
 
   if(
-    pathname.startsWith(
-      "/providerDashboard"
-    )
+    pathname.startsWith("/adminDashboard")
+    ||
+    pathname.startsWith("/providerDashboard")
+    ||
+    pathname.startsWith("/customerDashboard")
   ){
 
 
-    if(!accessToken){
+    if(!user){
 
       return NextResponse.redirect(
         new URL(
@@ -150,62 +145,15 @@ export function middleware(request: NextRequest) {
     }
 
 
-    const user: JwtPayload =
-      jwtDecode(accessToken);
-
-
-
-    if(user.role !== "PROVIDER"){
-
-      if(user.role === "CUSTOMER"){
-
-        return NextResponse.redirect(
-          new URL(
-            "/customerDashboard",
-            request.url
-          )
-        );
-
-      }
-
-
-      if(user.role === "ADMIN"){
-
-        return NextResponse.redirect(
-          new URL(
-            "/adminDashboard",
-            request.url
-          )
-        );
-
-      }
-
-    }
-
-  }
-
-
-
-
-
-
-  // =========================
-  // Customer Dashboard
-  // =========================
-
-
-  if(
-    pathname.startsWith(
-      "/customerDashboard"
-    )
-  ){
-
-
-    if(!accessToken){
+    if(
+      pathname.startsWith("/adminDashboard")
+      &&
+      user.role !== "ADMIN"
+    ){
 
       return NextResponse.redirect(
         new URL(
-          "/login",
+          ROLE_ROUTES[user.role],
           request.url
         )
       );
@@ -213,63 +161,16 @@ export function middleware(request: NextRequest) {
     }
 
 
-    const user: JwtPayload =
-      jwtDecode(accessToken);
 
-
-
-    if(user.role !== "CUSTOMER"){
-
-      if(user.role === "PROVIDER"){
-
-        return NextResponse.redirect(
-          new URL(
-            "/providerDashboard",
-            request.url
-          )
-        );
-
-      }
-
-
-      if(user.role === "ADMIN"){
-
-        return NextResponse.redirect(
-          new URL(
-            "/adminDashboard",
-            request.url
-          )
-        );
-
-      }
-
-    }
-
-  }
-
-
-
-
-
-
-
-  // =========================
-  // Admin Dashboard
-  // =========================
-
-
-  if(
-    pathname.startsWith(
-      "/adminDashboard"
-    )
-  ){
-
-
-    if(!accessToken){
+    if(
+      pathname.startsWith("/providerDashboard")
+      &&
+      user.role !== "PROVIDER"
+    ){
 
       return NextResponse.redirect(
         new URL(
-          "/login",
+          ROLE_ROUTES[user.role],
           request.url
         )
       );
@@ -277,38 +178,22 @@ export function middleware(request: NextRequest) {
     }
 
 
-    const user: JwtPayload =
-      jwtDecode(accessToken);
 
+    if(
+      pathname.startsWith("/customerDashboard")
+      &&
+      user.role !== "CUSTOMER"
+    ){
 
-
-    if(user.role !== "ADMIN"){
-
-
-      if(user.role === "CUSTOMER"){
-
-        return NextResponse.redirect(
-          new URL(
-            "/customerDashboard",
-            request.url
-          )
-        );
-
-      }
-
-
-      if(user.role === "PROVIDER"){
-
-        return NextResponse.redirect(
-          new URL(
-            "/providerDashboard",
-            request.url
-          )
-        );
-
-      }
+      return NextResponse.redirect(
+        new URL(
+          ROLE_ROUTES[user.role],
+          request.url
+        )
+      );
 
     }
+
 
   }
 
@@ -325,16 +210,18 @@ export function middleware(request: NextRequest) {
 export const config = {
 
   matcher:[
-    // "/login",
-    // "/register",
+
+    "/login",
+    "/register",
 
     "/order/:path*",
     "/rent/:path*",
     "/payment/:path*",
 
+    "/adminDashboard/:path*",
     "/providerDashboard/:path*",
     "/customerDashboard/:path*",
-    "/adminDashboard/:path*",
+
   ],
 
 };

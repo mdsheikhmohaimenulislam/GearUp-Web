@@ -3,209 +3,257 @@ import {
   Package,
   ShoppingCart,
   CreditCard,
-  TrendingUp,
+  BadgeDollarSign,
+  Wallet,
 } from "lucide-react";
 
+import {
+  getUsers,
+  getAdminGear,
+  getAdminRentals,
+} from "@/server/admin.service";
+
+import RecentRentals from "./_components/RecentRentals";
+
 export default async function AdminDashboardPage() {
+  const [usersResponse, gearsResponse, rentalsResponse] = await Promise.all([
+    getUsers(),
+    getAdminGear(),
+    getAdminRentals(),
+  ]);
+
+  const users = usersResponse?.data?.users || [];
+
+  const gears = gearsResponse?.data || [];
+
+  const rentals = rentalsResponse?.data || [];
+
+  const totalUsers = users.length;
+
+  const totalGears = gears.length;
+
+  const totalRentals = rentals.length;
+
+  const revenue = rentals.reduce(
+    (
+      total: number,
+      rental: {
+        payment?: {
+          status?: string;
+          amount?: string | number;
+        }[];
+      },
+    ) => {
+      const paidAmount =
+        rental.payment
+          ?.filter((payment) => payment.status === "PAID")
+          .reduce(
+            (sum, payment) => sum + Number(payment.amount || 0),
+
+            0,
+          ) || 0;
+
+      return total + paidAmount;
+    },
+    0,
+  );
+
+  const paidPaymentsCount = rentals.reduce(
+    (
+      count: number,
+      rental: {
+        payment?: {
+          status?: string;
+        }[];
+      },
+    ) => {
+      const paidCount =
+        rental.payment?.filter((payment) => payment.status === "PAID").length ||
+        0;
+
+      return count + paidCount;
+    },
+    0,
+  );
+
+  const commissionRate = 0.1;
+
+  const platformFee = revenue * commissionRate;
+
+  const providerPayout = Math.round(revenue - platformFee);
+
   return (
-    <div className="container mx-auto py-10 space-y-8">
-      
+    <div
+      className="
+      container
+      mx-auto
+      py-10
+      space-y-8
+      "
+    >
       {/* Header */}
+
       <div>
-        <h1 className="text-3xl font-bold">
+        <h1
+          className="
+          text-3xl
+          font-bold
+          "
+        >
           Admin Dashboard
         </h1>
 
-        <p className="text-gray-500 mt-2">
-          Manage users, gears, rentals and platform activities.
+        <p
+          className="
+          text-muted-foreground
+          mt-2
+          "
+        >
+          Monitor users, gears, rentals and platform activity.
         </p>
       </div>
 
-
       {/* Stats */}
 
-      <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
-
+      <div
+        className="
+        grid
+        gap-5
+        sm:grid-cols-2
+        lg:grid-cols-5
+        "
+      >
         <DashboardCard
           title="Total Users"
-          value="120"
+          value={String(totalUsers)}
           icon={<Users />}
         />
 
-
         <DashboardCard
           title="Total Gears"
-          value="85"
+          value={String(totalGears)}
           icon={<Package />}
         />
 
-
         <DashboardCard
           title="Total Rentals"
-          value="230"
+          value={String(totalRentals)}
           icon={<ShoppingCart />}
         />
 
-
         <DashboardCard
           title="Revenue"
-          value="৳45,000"
+          value={`৳${revenue.toLocaleString()}`}
           icon={<CreditCard />}
         />
 
+        <DashboardCard
+          title="Paid Payments"
+          value={String(paidPaymentsCount)}
+          icon={<BadgeDollarSign />}
+        />
+        <DashboardCard
+          title="Provider Payout"
+          value={`৳${providerPayout.toLocaleString()}`}
+          icon={<Wallet />}
+        />
       </div>
 
+      {/* Dashboard Content */}
 
+      <div
+        className="
+        grid
+        lg:grid-cols-2
+        gap-6
+        "
+      >
+        <RecentRentals rentals={rentals} />
 
-      {/* Overview */}
-
-      <div className="grid lg:grid-cols-2 gap-6">
-
-
-        {/* Recent Rentals */}
-
-        <div className="border rounded-xl p-6 shadow-sm">
-
-          <div className="flex items-center gap-2 mb-5">
-
-            <TrendingUp
-              className="text-green-600"
-            />
-
-            <h2 className="text-xl font-semibold">
-              Recent Rentals
-            </h2>
-
-          </div>
-
-
-          <div className="space-y-4">
-
-
-            {
-              [1,2,3].map((item)=>(
-                <div
-                  key={item}
-                  className="flex justify-between border-b pb-3"
-                >
-
-                  <div>
-                    <p className="font-medium">
-                      Customer #{item}
-                    </p>
-
-                    <p className="text-sm text-gray-500">
-                      Football Rental
-                    </p>
-
-                  </div>
-
-
-                  <span className="text-green-600 font-semibold">
-                    Completed
-                  </span>
-
-                </div>
-              ))
-            }
-
-
-          </div>
-
-        </div>
-
-
-
-
-
-        {/* Quick Actions */}
-
-        <div className="border rounded-xl p-6 shadow-sm">
-
-          <h2 className="text-xl font-semibold mb-5">
+        <div
+          className="
+          border
+          rounded-xl
+          p-6
+          shadow-sm
+          "
+        >
+          <h2
+            className="
+            text-xl
+            font-semibold
+            mb-5
+            "
+          >
             Quick Actions
           </h2>
 
+          <div
+            className="
+            space-y-3
+            "
+          >
+            <ActionButton>Manage Users</ActionButton>
 
-          <div className="grid gap-4">
+            <ActionButton>Manage Gear Items</ActionButton>
 
+            <ActionButton>Manage Rentals</ActionButton>
 
-            <ActionButton>
-              Manage Users
-            </ActionButton>
-
-
-            <ActionButton>
-              Manage Gear Items
-            </ActionButton>
-
-
-            <ActionButton>
-              View Orders
-            </ActionButton>
-
-
-            <ActionButton>
-              Manage Payments
-            </ActionButton>
-
-
+            <ActionButton>Manage Payments</ActionButton>
           </div>
-
-
         </div>
-
-
-
       </div>
-
-
-
     </div>
   );
 }
-
-
-
 
 function DashboardCard({
   title,
   value,
   icon,
-}:{
-  title:string;
-  value:string;
-  icon:React.ReactNode;
+}: {
+  title: string;
+  value: string;
+  icon: React.ReactNode;
 }) {
-
-
   return (
-
     <div
       className="
-      border rounded-xl
+      border
+      rounded-xl
       p-5
       shadow-sm
       hover:shadow-md
       transition
       "
     >
-
-      <div className="flex justify-between items-center">
-
+      <div
+        className="
+        flex
+        justify-between
+        items-center
+        "
+      >
         <div>
-
-          <p className="text-sm text-gray-500">
+          <p
+            className="
+            text-sm
+            text-muted-foreground
+            "
+          >
             {title}
           </p>
 
-
-          <h3 className="text-2xl font-bold mt-2">
+          <h3
+            className="
+            text-2xl
+            font-bold
+            mt-2
+            "
+          >
             {value}
           </h3>
-
         </div>
-
 
         <div
           className="
@@ -217,46 +265,26 @@ function DashboardCard({
         >
           {icon}
         </div>
-
-
       </div>
-
-
     </div>
-
   );
 }
 
-
-
-
-
-function ActionButton({
-  children,
-}:{
-  children:React.ReactNode;
-}) {
-
-
+function ActionButton({ children }: { children: React.ReactNode }) {
   return (
-
     <button
       className="
       w-full
-      text-left
       border
       rounded-lg
       px-4
       py-3
-      hover:bg-green-50
+      text-left
+      hover:bg-muted
       transition
       "
     >
-
       {children}
-
     </button>
-
   );
-
 }
