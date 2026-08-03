@@ -12,6 +12,7 @@ import {
   User,
   CircleDollarSign,
 } from "lucide-react";
+import Reviews from "../../_components/reviews/Reviews";
 
 const SingleGearPage = async ({ params }: Props) => {
   const { id } = await params;
@@ -34,21 +35,36 @@ const SingleGearPage = async ({ params }: Props) => {
     <div className="max-w-6xl mx-auto px-4 py-10">
       <div className="grid lg:grid-cols-2 gap-10 items-start">
         {/* Image Section */}
-        <div className="space-y-4">
+        <div className="space-y-5">
           {/* Main Image */}
-          <div className="relative overflow-hidden rounded-2xl border bg-white dark:bg-black shadow-sm h-[450px]">
+          <div className="group relative overflow-hidden rounded-3xl border bg-gray-100 dark:bg-zinc-900 shadow-lg h-[450px]">
             {gear.images?.length > 0 ? (
-              <Image
-                src={gear.images[0]}
-                alt={gear.title}
-                fill
-                priority
-                className="object-cover"
-                sizes="(max-width: 1024px) 100vw, 50vw"
-              />
+              <>
+                <Image
+                  src={gear.images[0]}
+                  alt={gear.title}
+                  fill
+                  priority
+                  className="object-cover transition duration-500 group-hover:scale-110"
+                  sizes="(max-width: 1024px) 100vw, 50vw"
+                />
+
+                {/* Overlay */}
+                <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent" />
+
+                {/* Image Badge */}
+                <div className="absolute bottom-5 left-5">
+                  <span className="px-4 py-2 rounded-full bg-white/90 text-black text-sm font-semibold shadow">
+                    {gear.category?.name}
+                  </span>
+                </div>
+              </>
             ) : (
               <div className="h-full flex items-center justify-center text-gray-500">
-                No Image Available
+                <div className="text-center">
+                  <PackageCheck size={45} className="mx-auto mb-3" />
+                  <p>No Image Available</p>
+                </div>
               </div>
             )}
           </div>
@@ -59,21 +75,24 @@ const SingleGearPage = async ({ params }: Props) => {
               {gear.images.map((image: string, index: number) => (
                 <div
                   key={index}
-                  className="relative overflow-hidden rounded-xl border bg-white dark:bg-black h-20 cursor-pointer hover:border-green-600 transition"
+                  className={`relative overflow-hidden rounded-xl border h-24 cursor-pointer transition
+          ${
+            index === 0
+              ? "ring-2 ring-green-600"
+              : "hover:ring-2 hover:ring-green-400"
+          }`}
                 >
                   <Image
                     src={image}
-                    alt={`${gear.title} ${index + 1}`}
+                    alt={`${gear.title}-${index}`}
                     fill
-                    className="object-cover"
-                    sizes="80px"
+                    className="object-cover hover:scale-110 transition duration-300"
+                    sizes="100px"
                   />
                 </div>
               ))}
             </div>
           )}
-
-
         </div>
 
         {/* Content Section */}
@@ -115,7 +134,6 @@ const SingleGearPage = async ({ params }: Props) => {
 
                 <h2 className="text-3xl font-bold text-green-700">
                   ৳{gear.pricePerDay}
-
                   <span className="text-lg text-gray-500 font-medium">
                     /day
                   </span>
@@ -190,6 +208,10 @@ const SingleGearPage = async ({ params }: Props) => {
             </Link>
           </div>
         </div>
+      </div>
+      {/* Reviews Section */}
+      <div className="mt-14 border-t pt-10">
+        <Reviews reviews={gear.reviews || []} />
       </div>
     </div>
   );
