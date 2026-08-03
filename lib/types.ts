@@ -67,8 +67,6 @@ export type UpdateCategoryData = {
   description?: string;
 };
 
-
-
 export type CreatePaymentData = {
   orderId: string;
 };
@@ -324,7 +322,7 @@ export type UpdateUserData = {
   name?: string;
 
   email?: string;
-
+  isActive?: boolean;
   phone?: string;
 
   address?: string;

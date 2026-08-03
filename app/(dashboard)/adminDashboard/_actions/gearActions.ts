@@ -8,12 +8,22 @@ import {
 } from "@/server/admin.service";
 
 import { UpdateUserData } from "@/lib/types";
+export async function gearActions(
+ params?:{
+  search?:string;
+  category?:string;
+  available?:string;
+  page?:string;
+  limit?:string;
+ }
+){
 
-export async function gearActions() {
-  const result = await getAdminGear();
+ return await getAdminGear(params);
 
-  return result;
 }
+
+
+
 
 export async function orderActions() {
   const result = await getAdminRentals();
@@ -32,3 +42,4 @@ export async function getUserUpdateActions(id: string, data: UpdateUserData) {
 
   return result;
 }
+

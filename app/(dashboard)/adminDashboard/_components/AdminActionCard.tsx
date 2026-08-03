@@ -1,11 +1,4 @@
-
-import {
-  Users,
-  Package,
-  ShoppingCart,
-  CreditCard,
-} from "lucide-react";
-
+import { Users, Package, ShoppingCart, CreditCard } from "lucide-react";
 
 const iconMap = {
   users: Users,
@@ -14,7 +7,6 @@ const iconMap = {
   creditCard: CreditCard,
 };
 
-
 type Props = {
   title: string;
   description: string;
@@ -22,20 +14,15 @@ type Props = {
   icon: keyof typeof iconMap;
 };
 
-
 export default function AdminActionCard({
   title,
   description,
   href,
   icon,
 }: Props) {
-
-
   const Icon = iconMap[icon];
 
-
   return (
-
     <a
       href={href}
       className="
@@ -49,7 +36,6 @@ export default function AdminActionCard({
       transition
       "
     >
-
       <div
         className="
         p-3
@@ -58,15 +44,10 @@ export default function AdminActionCard({
         text-green-700
         "
       >
-
-        <Icon size={22}/>
-
+        <Icon size={22} />
       </div>
 
-
-
       <div>
-
         <h3
           className="
           font-semibold
@@ -74,7 +55,6 @@ export default function AdminActionCard({
         >
           {title}
         </h3>
-
 
         <p
           className="
@@ -84,12 +64,7 @@ export default function AdminActionCard({
         >
           {description}
         </p>
-
-
       </div>
-
-
     </a>
-
   );
 }

@@ -24,4 +24,10 @@ export const adminActions = [
     href: "/adminDashboard/orders",
     icon: "shoppingCart",
   },
+  {
+    title: "Manage payments",
+    description: "Manage all payments",
+    href: "/adminDashboard/payments",
+    icon: "shoppingCart",
+  },
 ] as const;
