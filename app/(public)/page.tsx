@@ -11,6 +11,7 @@ import HeroSection from "@/components/shared/HeroSection";
 
 import Testimonials from "@/components/shared/Testimonials";
 import WhyChooseUs from "@/components/shared/WhyChooseUs";
+import UpcomingAdventures from "@/components/shared/UpcomingAdventures";
 
 export default async function Home() {
   return (
@@ -23,7 +24,7 @@ export default async function Home() {
       <CategorySection />
       <HowItWorks />
       <RentalBanner />
-
+<UpcomingAdventures/>
       <StatsSection />
 
       <Footer />
