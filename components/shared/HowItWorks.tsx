@@ -1,3 +1,5 @@
+"use client";
+
 import {
   ShieldCheck,
   BadgeDollarSign,
@@ -5,6 +7,7 @@ import {
   Headphones,
   RefreshCcw,
   Zap,
+  ArrowUpRight,
 } from "lucide-react";
 
 const features = [
@@ -46,107 +49,90 @@ const features = [
   },
 ];
 
+const stats = [
+  {
+    value: "1K+",
+    label: "Gear Listings",
+  },
+  {
+    value: "500+",
+    label: "Providers",
+  },
+  {
+    value: "50+",
+    label: "Locations",
+  },
+  {
+    value: "99%",
+    label: "Happy Renters",
+  },
+];
+
 export default function WhyChooseUs() {
   return (
-    <section className="relative py-20 overflow-hidden">
+    <section className="relative overflow-hidden py-10">
       {/* Background */}
-      <div className="absolute inset-0 -z-10 bg-gradient-to-br from-green-50 via-background to-background" />
+      <div className="absolute inset-0 -z-20 bg-gradient-to-br from-green-50 via-background to-background dark:from-green-950/20 dark:via-background dark:to-background" />
+
+      {/* Decorative Glow */}
+      <div className="pointer-events-none absolute -left-40 top-20 -z-10 h-96 w-96 rounded-full bg-green-300/20 blur-3xl dark:bg-green-700/10" />
+
+      <div className="pointer-events-none absolute -right-40 bottom-0 -z-10 h-96 w-96 rounded-full bg-emerald-300/20 blur-3xl dark:bg-emerald-700/10" />
 
       <div className="container mx-auto px-5">
-        {/* Header */}
-        <div className="grid lg:grid-cols-2 gap-12 items-center mb-16">
-          {/* Left Content */}
-          <div className="animate-in fade-in slide-in-from-left-10 duration-700">
-            <span className="inline-flex items-center rounded-full bg-green-100 text-green-700 px-4 py-1 text-sm font-semibold mb-5 shadow-sm">
-              Why Choose GearUp
-            </span>
+        {/* ================= TOP CONTENT ================= */}
 
-            <h2 className="text-4xl md:text-5xl font-bold tracking-tight leading-tight">
-              Built for Every <span className="text-green-600">Adventure</span>
-            </h2>
 
-            <p className="text-muted-foreground mt-6 text-lg leading-relaxed max-w-xl dark:text-white">
-              We make outdoor and sports gear rental
-              <span className="font-medium text-foreground dark:text-green-400">
-                {" "}simple, secure, and affordable
-              </span>
-              {" "}so you can focus on the experience, not the equipment.
-            </p>
+        {/* ================= FEATURE HEADER ================= */}
+        <div className="mx-auto max-w-2xl text-center">
+          <span className="text-sm font-semibold uppercase tracking-[0.2em] text-green-600 dark:text-green-500">
+            Why Rent With Us
+          </span>
 
-            <div className="flex flex-wrap gap-3 mt-8">
-              <div className="px-4 py-2 rounded-full border bg-background text-sm font-medium shadow-sm hover:shadow transition">
-                Verified Providers
-              </div>
-              <div className="px-4 py-2 rounded-full border bg-background text-sm font-medium shadow-sm hover:shadow transition">
-                Secure Payments
-              </div>
-              <div className="px-4 py-2 rounded-full border bg-background text-sm font-medium shadow-sm hover:shadow transition">
-                Flexible Rentals
-              </div>
-            </div>
-          </div>
+          <h3 className="mt-3 text-3xl font-bold tracking-tight sm:text-4xl">
+            Designed Around Your Adventure
+          </h3>
 
-          {/* Right Stats */}
-          <div className="animate-in fade-in slide-in-from-right-10 duration-700 delay-200">
-            <div className="relative rounded-3xl border bg-background p-8 shadow-xl">
-              <div className="absolute -top-4 -right-4 w-24 h-24 bg-green-200 rounded-full blur-2xl opacity-60" />
-
-              <div className="grid grid-cols-2 gap-6">
-                <div className="text-center p-5 rounded-2xl bg-green-50 border animate-pulse">
-                  <div className="text-3xl font-bold text-green-700">1K+</div>
-                  <p className="text-sm text-muted-foreground mt-1">
-                    Gear Listings
-                  </p>
-                </div>
-
-                <div className="text-center p-5 rounded-2xl bg-green-50 border animate-pulse [animation-delay:300ms]">
-                  <div className="text-3xl font-bold text-green-700">500+</div>
-                  <p className="text-sm text-muted-foreground mt-1">
-                    Verified Providers
-                  </p>
-                </div>
-
-                <div className="text-center p-5 rounded-2xl bg-green-50 border animate-pulse [animation-delay:600ms]">
-                  <div className="text-3xl font-bold text-green-700">24/7</div>
-                  <p className="text-sm text-muted-foreground mt-1">
-                    Support
-                  </p>
-                </div>
-
-                <div className="text-center p-5 rounded-2xl bg-green-50 border animate-pulse [animation-delay:900ms]">
-                  <div className="text-3xl font-bold text-green-700">99%</div>
-                  <p className="text-sm text-muted-foreground mt-1">
-                    Happy Renters
-                  </p>
-                </div>
-              </div>
-            </div>
-          </div>
+          <p className="mt-4 text-sm leading-6 text-muted-foreground sm:text-base">
+            From discovering the right equipment to completing your rental,
+            GearUp keeps the entire experience smooth and hassle-free.
+          </p>
         </div>
 
-        {/* Feature Cards */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+        {/* ================= FEATURES ================= */}
+        <div className="mt-10 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
           {features.map((item, index) => {
             const Icon = item.icon;
 
             return (
               <div
                 key={item.title}
-                className="group relative overflow-hidden rounded-2xl border bg-background p-6 transition-all duration-300 hover:-translate-y-2 hover:shadow-2xl animate-in fade-in slide-in-from-bottom-6"
-                style={{ animationDelay: `${index * 120}ms` }}
+                className="group relative overflow-hidden rounded-2xl border bg-background p-6 shadow-sm transition-all duration-300 hover:-translate-y-2 hover:border-green-200 hover:shadow-xl dark:hover:border-green-900"
+                style={{
+                  animationDelay: `${index * 100}ms`,
+                }}
               >
-                <div className="absolute inset-0 bg-gradient-to-br from-green-50 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                {/* Hover Background */}
+                <div className="pointer-events-none absolute inset-0 bg-gradient-to-br from-green-50 via-transparent to-transparent opacity-0 transition-opacity duration-300 group-hover:opacity-100 dark:from-green-950/30" />
 
                 <div className="relative">
-                  <div className="w-14 h-14 rounded-xl bg-green-100 text-green-700 flex items-center justify-center shadow-sm group-hover:scale-110 transition-transform duration-300">
-                    <Icon size={30} />
+                  {/* Icon */}
+                  <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-green-50 text-green-700 transition-all duration-300 group-hover:scale-110 group-hover:bg-green-600 group-hover:text-white dark:bg-green-950/50 dark:text-green-400 dark:group-hover:bg-green-600 dark:group-hover:text-white">
+                    <Icon className="h-6 w-6" />
                   </div>
 
-                  <h3 className="text-xl font-semibold mt-5">{item.title}</h3>
+                  {/* Title */}
+                  <h3 className="mt-5 text-lg font-semibold">
+                    {item.title}
+                  </h3>
 
-                  <p className="text-sm text-muted-foreground mt-3 leading-relaxed">
+                  {/* Description */}
+                  <p className="mt-2 text-sm leading-6 text-muted-foreground">
                     {item.description}
                   </p>
+
+                  {/* Accent */}
+                  <div className="mt-5 h-1 w-7 rounded-full bg-green-600 transition-all duration-500 group-hover:w-14" />
                 </div>
               </div>
             );
