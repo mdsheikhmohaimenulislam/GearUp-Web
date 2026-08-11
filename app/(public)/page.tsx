@@ -24,7 +24,7 @@ export default async function Home() {
       <CategorySection />
       <HowItWorks />
       <RentalBanner />
-<UpcomingAdventures/>
+      <UpcomingAdventures />
       <StatsSection />
 
       <Footer />

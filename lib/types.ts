@@ -331,3 +331,8 @@ export type UpdateUserData = {
 
   status?: "ACTIVE" | "SUSPENDED";
 };
+
+export type LoginValues = {
+  email: string;
+  password: string;
+};

@@ -95,6 +95,7 @@ export default function CustomerDashboard({ user, stats }: Props) {
                       text-3xl
                       font-bold
                       mt-2
+                      dark:text-black
                       "
                   >
                     {card.value}
