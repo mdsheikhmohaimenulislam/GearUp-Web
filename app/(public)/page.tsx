@@ -5,7 +5,10 @@ import Hero from "@/components/shared/Hero";
 import HomeTopGears from "@/components/shared/HomeTopGears";
 import HowItWorks from "@/components/shared/HowItWorks";
 import RentalBanner from "@/components/shared/RentalBanner";
-// import StatsSection from "@/components/shared/StatsSection";
+import StatsSection from "@/components/shared/StatsSection";
+
+import HeroSection from "@/components/shared/HeroSection";
+
 import Testimonials from "@/components/shared/Testimonials";
 import WhyChooseUs from "@/components/shared/WhyChooseUs";
 
@@ -15,12 +18,14 @@ export default async function Home() {
       <Hero />
       <HomeTopGears />
       <FeaturedProviders />
-      <RentalBanner />
-      <HowItWorks />
-      <WhyChooseUs />
-      <CategorySection />
+      <HeroSection />
 
-      {/* <StatsSection /> */}
+      <CategorySection />
+      <HowItWorks />
+      <RentalBanner />
+
+      <StatsSection />
+
       <Footer />
     </>
   );
