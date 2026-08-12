@@ -7,29 +7,59 @@ export interface RegisterValues {
   role: "CUSTOMER" | "PROVIDER";
 }
 
+// export interface IUser {
+//   success: boolean;
+//   message: string;
+//   data: {
+//     profile: {
+//       id: string;
+//       name: string;
+//       email: string;
+//       activeStatus: string;
+//       role: string;
+//       createdAt: string;
+//       updatedAt: string;
+//       profile?: {
+//         id: string;
+//         profilePhoto?: string;
+//         bio: string | null;
+//         userId: string;
+//         createdAt: string;
+//         updatedAt: string;
+//       };
+//     };
+//   };
+// }
 export interface IUser {
   success: boolean;
   message: string;
+
   data: {
-    profile: {
-      id: string;
-      name: string;
-      email: string;
-      activeStatus: string;
-      role: string;
-      createdAt: string;
-      updatedAt: string;
-      profile: {
-        id: string;
-        profilePhoto: string;
-        bio: string | null;
-        userId: string;
-        createdAt: string;
-        updatedAt: string;
-      };
-    };
+    id: string;
+    name: string;
+    email: string;
+
+    phone?: string | null;
+    address?: string | null;
+
+    role: "CUSTOMER" | "PROVIDER" | "ADMIN";
+
+    status: string;
+
+    authProvider: "GOOGLE" | "CREDENTIAL";
+
+    emailVerified: boolean;
+
+    googleId?: string | null;
+
+    profilePhoto?: string | null;
+
+    createdAt: string;
+    updatedAt: string;
   };
 }
+
+
 
 export type CustomerUser = {
   id: string;
@@ -48,14 +78,7 @@ export type CustomerDashboardProps = {
   user: CustomerUser;
 };
 
-export interface JwtPayload {
-  id: string;
-  name: string;
-  email: string;
-  role: "CUSTOMER" | "PROVIDER" | "ADMIN";
-  iat?: number;
-  exp?: number;
-}
+
 
 export type CreateCategoryData = {
   name: string;
@@ -335,4 +358,13 @@ export type UpdateUserData = {
 export type LoginValues = {
   email: string;
   password: string;
+};
+
+export type JwtPayload = {
+  id: string;
+  name: string;
+  email: string;
+  role: "CUSTOMER" | "PROVIDER" | "ADMIN";
+  iat?: number;
+  exp?: number;
 };

@@ -3,11 +3,16 @@
 import Link from "next/link";
 import { Menu, User } from "lucide-react";
 import { useRouter } from "next/navigation";
+import Image from "next/image";
 
 import { Button } from "@/components/ui/button";
 import { ModeToggle } from "@/components/theme/mode-toggle";
 
-import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
+import {
+  Sheet,
+  SheetContent,
+  SheetTrigger,
+} from "@/components/ui/sheet";
 
 import {
   DropdownMenu,
@@ -18,18 +23,45 @@ import {
 } from "@/components/ui/dropdown-menu";
 
 import { IUser } from "@/lib/types";
-import Image from "next/image";
 import LogoutButton from "./LogoutButton";
 
 type NavbarProps = {
   user: IUser;
 };
 
+type ProfileAvatarProps = {
+  name?: string | null;
+  profilePhoto?: string | null;
+};
+
+function ProfileAvatar({
+  name,
+  profilePhoto,
+}: ProfileAvatarProps) {
+  if (profilePhoto) {
+    return (
+      <Image
+        src={profilePhoto}
+        alt={name || "Profile"}
+        width={40}
+        height={40}
+        unoptimized
+        className="h-10 w-10 rounded-full object-cover"
+      />
+    );
+  }
+
+  return (
+    <div className="flex h-10 w-10 items-center justify-center rounded-full bg-green-100 text-sm font-bold text-green-700">
+      {name?.charAt(0).toUpperCase() || "U"}
+    </div>
+  );
+}
+
 export default function Navbar({ user }: NavbarProps) {
   const router = useRouter();
 
   const profile = user?.data;
-
   const isLoggedIn = !!profile;
 
   const navLinks = [
@@ -55,10 +87,13 @@ export default function Navbar({ user }: NavbarProps) {
     },
   ];
 
-  // Dynamic Dashboard Redirect
+  // ==========================================
+  // DASHBOARD REDIRECT
+  // ==========================================
 
   const handleDashboardRedirect = () => {
-    const userRole = profile?.profile?.role;
+    const userRole = profile?.role;
+
     if (!userRole) {
       router.push("/login");
       return;
@@ -86,20 +121,24 @@ export default function Navbar({ user }: NavbarProps) {
   return (
     <header className="sticky top-0 z-50 border-b bg-background/80 backdrop-blur">
       <div className="container mx-auto flex h-16 items-center justify-between px-4">
+
         {/* Logo */}
 
-        <Link href="/" className="text-2xl font-bold text-green-500">
+        <Link
+          href="/"
+          className="text-2xl font-bold text-green-500"
+        >
           GearUp
         </Link>
 
-        {/* Desktop Menu */}
+        {/* Desktop Navigation */}
 
-        <nav className="hidden md:flex gap-8">
+        <nav className="hidden gap-8 md:flex">
           {navLinks.map((item) => (
             <Link
               key={item.name}
               href={item.href}
-              className="text-sm font-medium hover:text-primary"
+              className="text-sm font-medium transition-colors hover:text-primary"
             >
               {item.name}
             </Link>
@@ -108,7 +147,7 @@ export default function Navbar({ user }: NavbarProps) {
 
         {/* Desktop Right */}
 
-        <div className="hidden md:flex items-center gap-3">
+        <div className="hidden items-center gap-3 md:flex">
           <ModeToggle />
 
           {isLoggedIn ? (
@@ -117,39 +156,65 @@ export default function Navbar({ user }: NavbarProps) {
                 <Button
                   variant="ghost"
                   size="icon"
-                  className="rounded-full overflow-hidden"
+                  className="h-10 w-10 overflow-hidden rounded-full p-0"
                 >
-                  {profile?.profile?.profile?.profilePhoto ? (
-                    <Image
-                      src={profile?.profile?.profile?.profilePhoto}
-                      alt="profile"
-                      className="h-10 w-10 rounded-full object-cover"
-                    />
-                  ) : (
-                    <User className="h-5 w-5" />
-                  )}
+                  <ProfileAvatar
+                    name={profile?.name}
+                    profilePhoto={profile?.profilePhoto}
+                  />
                 </Button>
               </DropdownMenuTrigger>
 
-              <DropdownMenuContent align="end">
+              <DropdownMenuContent
+                align="end"
+                className="w-52"
+              >
+                {/* User Information */}
+
+                <div className="px-3 py-2">
+                  <p className="truncate text-sm font-semibold">
+                    {profile?.name}
+                  </p>
+
+                  <p className="truncate text-xs text-muted-foreground">
+                    {profile?.email}
+                  </p>
+                </div>
+
                 <DropdownMenuSeparator />
 
-                <DropdownMenuItem onClick={handleDashboardRedirect}>
+                {/* Dashboard */}
+
+                <DropdownMenuItem
+                  onClick={handleDashboardRedirect}
+                  className="cursor-pointer"
+                >
                   <User className="mr-2 h-4 w-4" />
                   Dashboard
                 </DropdownMenuItem>
-                {/* logout */}
+
+                <DropdownMenuSeparator />
+
+                {/* Logout */}
+
                 <LogoutButton />
               </DropdownMenuContent>
             </DropdownMenu>
           ) : (
             <>
-              <Button asChild variant="ghost">
-                <Link href="/login">Login</Link>
+              <Button
+                asChild
+                variant="ghost"
+              >
+                <Link href="/login">
+                  Login
+                </Link>
               </Button>
 
               <Button asChild>
-                <Link href="/register">Register</Link>
+                <Link href="/register">
+                  Register
+                </Link>
               </Button>
             </>
           )}
@@ -157,43 +222,109 @@ export default function Navbar({ user }: NavbarProps) {
 
         {/* Mobile */}
 
-        <div className="flex md:hidden items-center gap-2">
+        <div className="flex items-center gap-2 md:hidden">
           <ModeToggle />
 
           <Sheet>
             <SheetTrigger asChild>
-              <Button variant="outline" size="icon">
+              <Button
+                variant="outline"
+                size="icon"
+              >
                 <Menu />
               </Button>
             </SheetTrigger>
 
-            <SheetContent side="right">
-              <div className="flex flex-col gap-2 p-5">
-                {navLinks.map((item) => (
-                  <Link key={item.name} href={item.href} className="text-lg">
-                    {item.name}
-                  </Link>
-                ))}
+            <SheetContent
+              side="right"
+              className="w-[300px]"
+            >
+              <div className="flex flex-col gap-4 p-5">
 
-                {isLoggedIn ? (
-                  <>
-                    <Button variant="outline" onClick={handleDashboardRedirect}>
-                      <User className="mr-2 h-4 w-4" />
-                      Dashboard
-                    </Button>
+                {/* Mobile User */}
 
-                    {/* logout */}
-                    <LogoutButton />
-                  </>
-                ) : (
-                  <Button asChild>
-                    <Link href="/login">Login</Link>
-                  </Button>
+                {isLoggedIn && (
+                  <div className="flex items-center gap-3 border-b pb-4">
+                    <ProfileAvatar
+                      name={profile?.name}
+                      profilePhoto={profile?.profilePhoto}
+                    />
+
+                    <div className="min-w-0">
+                      <p className="truncate font-semibold">
+                        {profile?.name}
+                      </p>
+
+                      <p className="truncate text-sm text-muted-foreground">
+                        {profile?.email}
+                      </p>
+                    </div>
+                  </div>
                 )}
+
+                {/* Mobile Navigation */}
+
+                <div className="flex flex-col gap-3">
+                  {navLinks.map((item) => (
+                    <Link
+                      key={item.name}
+                      href={item.href}
+                      className="text-lg font-medium transition-colors hover:text-primary"
+                    >
+                      {item.name}
+                    </Link>
+                  ))}
+                </div>
+
+                {/* Mobile Auth */}
+
+                <div className="mt-4 border-t pt-4">
+                  {isLoggedIn ? (
+                    <div className="flex flex-col gap-3">
+
+                      <Button
+                        variant="outline"
+                        onClick={handleDashboardRedirect}
+                        className="w-full justify-start"
+                      >
+                        <User className="mr-2 h-4 w-4" />
+                        Dashboard
+                      </Button>
+
+                      <LogoutButton />
+
+                    </div>
+                  ) : (
+                    <div className="flex flex-col gap-2">
+
+                      <Button
+                        asChild
+                        variant="outline"
+                        className="w-full"
+                      >
+                        <Link href="/login">
+                          Login
+                        </Link>
+                      </Button>
+
+                      <Button
+                        asChild
+                        className="w-full"
+                      >
+                        <Link href="/register">
+                          Register
+                        </Link>
+                      </Button>
+
+                    </div>
+                  )}
+                </div>
+
               </div>
             </SheetContent>
           </Sheet>
         </div>
+
       </div>
     </header>
   );

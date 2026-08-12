@@ -1,6 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
-import { ArrowUpRight, CheckCircle2 } from "lucide-react";
+import { ArrowUpRight } from "lucide-react";
 
 const HeroSection = () => {
   return (
@@ -16,6 +16,7 @@ const HeroSection = () => {
                 alt="Outdoor adventure"
                 width={1000}
                 height={700}
+                unoptimized
                 className="h-[360px] w-full object-cover transition-transform duration-700 hover:scale-105 sm:h-[400px]"
               />
 
@@ -35,7 +36,7 @@ const HeroSection = () => {
             {/* Secondary Image */}
             <div className="absolute bottom-0 right-0 z-20 w-[45%] overflow-hidden rounded-[1.5rem] border-8 border-muted/20 bg-background shadow-2xl sm:w-[42%]">
               <Image
-                src="https://i.ibb.co.com/XrSDvnGB/khai-truong-Tu-T-ttpd-EIM-unsplash.jpg"
+                src="https://i.ibb.co.com/QvmDVb3q/elizabeth-dunne-LHd-JEQp-q0w-unsplash.jpg"
                 alt="Sports equipment"
                 width={600}
                 height={700}
@@ -76,29 +77,6 @@ const HeroSection = () => {
               exploring the water, GearUp has the equipment you need.
             </p>
 
-            {/* Features */}
-            {/* <div className="mt-7 grid gap-3 sm:grid-cols-2">
-              <div className="flex items-center gap-2 text-sm font-medium">
-                <CheckCircle2 className="h-5 w-5 text-green-600" />
-                Verified Providers
-              </div>
-
-              <div className="flex items-center gap-2 text-sm font-medium">
-                <CheckCircle2 className="h-5 w-5 text-green-600" />
-                Flexible Rentals
-              </div>
-
-              <div className="flex items-center gap-2 text-sm font-medium">
-                <CheckCircle2 className="h-5 w-5 text-green-600" />
-                Easy Booking
-              </div>
-
-              <div className="flex items-center gap-2 text-sm font-medium">
-                <CheckCircle2 className="h-5 w-5 text-green-600" />
-                Secure Payment
-              </div>
-            </div> */}
-
             {/* CTA */}
             <div className="mt-9 flex flex-wrap items-center gap-4">
               <Link
@@ -116,22 +94,6 @@ const HeroSection = () => {
                 Learn More
               </Link>
             </div>
-
-            {/* Bottom Trust Text */}
-            {/* <div className="mt-8 flex items-center gap-3 border-t pt-5">
-              <div className="flex -space-x-2">
-                <div className="h-8 w-8 rounded-full border-2 border-background bg-green-200" />
-                <div className="h-8 w-8 rounded-full border-2 border-background bg-green-300" />
-                <div className="h-8 w-8 rounded-full border-2 border-background bg-green-400" />
-              </div>
-
-              <p className="text-sm text-muted-foreground">
-                Trusted by{" "}
-                <span className="font-semibold text-foreground">
-                  5,000+ adventure lovers
-                </span>
-              </p>
-            </div> */}
           </div>
         </div>
       </div>

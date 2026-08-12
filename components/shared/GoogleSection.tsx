@@ -1,47 +1,259 @@
-
 "use client";
 
-import { Button } from "@/components/ui/button";
+import { useEffect, useRef, useState } from "react";
+import Script from "next/script";
+import { Loader2 } from "lucide-react";
+import { toast } from "sonner";
+import { useRouter, useSearchParams } from "next/navigation";
+import { jwtDecode } from "jwt-decode";
 
-export default function GoogleLogin() {
-  const handleGoogleLogin = () => {
-    console.log("Google login clicked");
-  };
+import { JwtPayload } from "@/lib/types";
+
+type GoogleAutoLoginCardProps = {
+  clientId: string;
+};
+
+export function GoogleAutoLoginCard({
+  clientId,
+}: GoogleAutoLoginCardProps) {
+  const buttonRef = useRef<HTMLDivElement>(null);
+
+  const [scriptReady, setScriptReady] = useState(false);
+  const [loading, setLoading] = useState(false);
+
+  const router = useRouter();
+  const searchParams = useSearchParams();
+
+  const redirectTo = searchParams.get("redirect");
+
+  const backendUrl =
+    process.env.NEXT_PUBLIC_BACKEND_API_URL;
+
+  // ==========================================
+  // GOOGLE LOGIN
+  // ==========================================
+
+const handleGoogleLogin = async (idToken: string) => {
+  try {
+    if (!backendUrl) {
+      toast.error("Backend URL is not configured.");
+      return;
+    }
+
+    setLoading(true);
+
+    console.log("Backend URL:", backendUrl);
+    console.log("Sending Google ID token to backend...");
+
+ const response = await fetch(`${backendUrl}/api/auth/google`, {
+  method: "POST",
+  headers: {
+    "Content-Type": "application/json",
+    Accept: "application/json",
+  },
+  credentials: "include",
+  body: JSON.stringify({
+    idToken,
+  }),
+});
+
+const raw = await response.text();
+
+console.log("STATUS:", response.status);
+console.log("RESPONSE:", raw);
+
+let data;
+
+try {
+  data = JSON.parse(raw);
+} catch {
+  console.error("Server did not return JSON:", raw);
+  toast.error("Backend returned an invalid response.");
+  return;
+}
+
+    if (!response.ok) {
+      toast.error(data?.message || "Google login failed.");
+      return;
+    }
+
+    const accessToken = data?.data?.accessToken;
+
+    if (!accessToken) {
+      toast.error("Access token was not returned by backend.");
+      return;
+    }
+
+    const decoded = jwtDecode<JwtPayload>(accessToken);
+
+    console.log("Google JWT:", decoded);
+    console.log("Google role:", decoded.role);
+
+    toast.success(data?.message || "Google login successful!");
+
+    router.refresh();
+
+    if (redirectTo) {
+      router.replace(redirectTo);
+      return;
+    }
+
+    switch (decoded.role) {
+      case "CUSTOMER":
+        router.replace("/customerDashboard");
+        break;
+
+      case "PROVIDER":
+        router.replace("/providerDashboard");
+        break;
+
+      case "ADMIN":
+        router.replace("/adminDashboard");
+        break;
+
+      default:
+        toast.error(`Unknown user role: ${decoded.role}`);
+        router.replace("/");
+    }
+  } catch (error) {
+    console.error("Google login error:", error);
+    toast.error("Unable to login with Google.");
+  } finally {
+    setLoading(false);
+  }
+};
+  // ==========================================
+  // GOOGLE SCRIPT + BUTTON
+  // ==========================================
+
+  useEffect(() => {
+    if (
+      !scriptReady ||
+      !clientId ||
+      !buttonRef.current ||
+      !window.google
+    ) {
+      return;
+    }
+
+    const container =
+      buttonRef.current;
+
+    // Remove previous button
+    container.innerHTML = "";
+
+    // ========================================
+    // INITIALIZE GOOGLE
+    // ========================================
+
+    window.google.accounts.id.initialize({
+      client_id: clientId,
+
+      callback: (response) => {
+        console.log(
+          "Google response received"
+        );
+
+        if (!response.credential) {
+          toast.error(
+            "Google did not return an ID token."
+          );
+
+          return;
+        }
+
+        handleGoogleLogin(
+          response.credential
+        );
+      },
+    });
+
+    // ========================================
+    // RENDER GOOGLE BUTTON
+    // ========================================
+
+    window.google.accounts.id.renderButton(
+      container,
+      {
+        type: "standard",
+        theme: "outline",
+        size: "large",
+        shape: "rectangular",
+        width: 350,
+        text: "signin_with",
+      }
+    );
+
+    // ========================================
+    // CLEANUP
+    // ========================================
+
+    return () => {
+      container.innerHTML = "";
+    };
+  }, [scriptReady, clientId]);
+
+  // ==========================================
+  // UI
+  // ==========================================
 
   return (
-    <div className="space-y-3">
-      <Button
-        type="button"
-        variant="outline"
-        onClick={handleGoogleLogin}
-        className="h-11 w-full rounded-xl font-medium"
-      >
-        <svg
-          className="mr-2 h-5 w-5"
-          viewBox="0 0 24 24"
-          aria-hidden="true"
-        >
-          <path
-            fill="#4285F4"
-            d="M21.35 12.23c0-.79-.07-1.55-.22-2.27H12v4.3h5.23a4.47 4.47 0 0 1-1.94 2.93v2.43h3.14c1.84-1.69 2.92-4.18 2.92-7.39Z"
-          />
-          <path
-            fill="#34A853"
-            d="M12 21.75c2.63 0 4.84-.87 6.45-2.36l-3.14-2.43c-.87.58-1.98.92-3.31.92-2.54 0-4.7-1.72-5.47-4.03H3.29v2.51A9.74 9.74 0 0 0 12 21.75Z"
-          />
-          <path
-            fill="#FBBC05"
-            d="M6.53 13.85A5.85 5.85 0 0 1 6.22 12c0-.64.11-1.26.31-1.85V7.64H3.29A9.74 9.74 0 0 0 2.25 12c0 1.57.38 3.05 1.04 4.36l3.24-2.51Z"
-          />
-          <path
-            fill="#EA4335"
-            d="M12 6.12c1.43 0 2.72.49 3.74 1.45l2.8-2.8C16.84 3.2 14.63 2.25 12 2.25a9.74 9.74 0 0 0-8.71 5.39l3.24 2.51C7.3 7.84 9.46 6.12 12 6.12Z"
-          />
-        </svg>
+    <>
+      <Script
+        src="https://accounts.google.com/gsi/client"
+        strategy="afterInteractive"
+        onLoad={() => {
+          console.log(
+            "Google Identity Services loaded"
+          );
 
-        Continue with Google
-      </Button>
-    </div>
+          setScriptReady(true);
+        }}
+        onError={() => {
+          console.error(
+            "Google Identity Services failed to load"
+          );
+
+          toast.error(
+            "Google login service could not be loaded."
+          );
+        }}
+      />
+
+      <div className="w-full">
+        <div
+          className="
+            flex
+            min-h-[52px]
+            w-full
+            items-center
+            justify-center
+            rounded-xl
+            border
+            bg-background
+            px-4
+            py-2
+            transition-all
+            duration-200
+            hover:border-green-500
+          "
+        >
+          {loading ? (
+            <div className="flex items-center gap-2 text-sm text-muted-foreground">
+              <Loader2 className="h-4 w-4 animate-spin" />
+
+              Signing in with Google...
+            </div>
+          ) : (
+            <div
+              ref={buttonRef}
+              className="flex justify-center"
+            />
+          )}
+        </div>
+      </div>
+    </>
   );
 }
 
+export default GoogleAutoLoginCard;

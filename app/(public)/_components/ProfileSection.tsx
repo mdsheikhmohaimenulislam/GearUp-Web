@@ -48,7 +48,6 @@ export default function ProfileSection({
 
 
           {/* Avatar */}
-
           <div className="flex flex-col items-center gap-4">
 
 

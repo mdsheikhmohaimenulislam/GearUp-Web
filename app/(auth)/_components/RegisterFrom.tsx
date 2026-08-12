@@ -1,10 +1,26 @@
+
 "use client";
 
 import { useState } from "react";
+import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
-
 import { zodResolver } from "@hookform/resolvers/zod";
+
+import {
+  Eye,
+  EyeOff,
+  User,
+  Mail,
+  Lock,
+  Phone,
+  MapPin,
+  ImageIcon,
+  ShieldCheck,
+  ArrowRight,
+} from "lucide-react";
+import { toast } from "sonner";
 
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -26,13 +42,8 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 
-import { toast } from "sonner";
-
 import { registerAction } from "../_actions/authAction";
 import { registerSchema } from "../_actions/zodSchema";
-
-import { Eye, EyeOff } from "lucide-react";
-import { useRouter } from "next/navigation";
 
 type RegisterValues = z.infer<typeof registerSchema>;
 
@@ -44,7 +55,6 @@ export default function RegisterForm() {
 
   const form = useForm<RegisterValues>({
     resolver: zodResolver(registerSchema),
-
     defaultValues: {
       name: "",
       email: "",
@@ -62,210 +72,381 @@ export default function RegisterForm() {
 
       const result = await registerAction(values);
 
-
-
-      if (result.success) {
-        toast.success(result.message);
-        const role = result.data.user.role;
-
-        if (role === "CUSTOMER") {
-          router.push("/customerDashboard");
-        } else if (role === "PROVIDER") {
-          router.push("/providerDashboard");
-        } else if (role === "ADMIN") {
-          router.push("/adminDashboard");
-        } else {
-          router.push("/");
-        }
-
-        setTimeout(() => {
-          router.push("/login");
-        }, 1000);
-        router.refresh();
-      } else {
-        toast.error(result.message);
+      if (!result.success) {
+        toast.error(result.message || "Registration failed");
+        return;
       }
+
+      toast.success(result.message || "Account created successfully");
+
+      const role = result.data.user.role;
+
+      if (role === "CUSTOMER") {
+        router.push("/customerDashboard");
+      } else if (role === "PROVIDER") {
+        router.push("/providerDashboard");
+      } else {
+        router.push("/");
+      }
+
+      router.refresh();
     } catch (error) {
-      toast.error("Registration failed");
+      console.error("Registration error:", error);
+      toast.error("Something went wrong. Please try again.");
     } finally {
       setLoading(false);
     }
   };
 
   return (
-    <div className="flex min-h-screen items-center justify-center p-4">
-      <div className="w-full max-w-md rounded-lg border p-6 shadow-sm">
-        <h1 className="mb-6 text-center text-2xl font-bold">Create Account</h1>
+    <div className="min-h-screen bg-gradient-to-br from-green-50 via-background to-emerald-50 px-4 py-10 dark:from-background dark:via-background dark:to-green-950/20">
+      <div className="mx-auto grid w-full max-w-6xl overflow-hidden rounded-3xl border bg-background shadow-2xl lg:grid-cols-2">
+        {/* Left Side */}
+        <div className="relative hidden overflow-hidden bg-gradient-to-br from-green-600 via-emerald-600 to-teal-700 p-10 text-white lg:flex lg:flex-col lg:justify-between">
+          <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_left,rgba(255,255,255,0.18),transparent_32%),radial-gradient(circle_at_bottom_right,rgba(255,255,255,0.14),transparent_35%)]" />
 
-        <Form {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
-            {/* Name */}
+          <div className="relative z-10">
+            <Link href="/" className="inline-flex items-center gap-3">
+              <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-white/15 backdrop-blur">
+                <ShieldCheck className="h-6 w-6" />
+              </div>
 
-            <FormField
-              control={form.control}
-              name="name"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Name</FormLabel>
+              <div>
+                <p className="text-xl font-bold tracking-tight">
+                  GearUp
+                </p>
+                <p className="text-sm text-white/75">
+                  Adventure starts here
+                </p>
+              </div>
+            </Link>
+          </div>
 
-                  <FormControl>
-                    <Input placeholder="Enter your name" {...field} />
-                  </FormControl>
+          <div className="relative z-10 max-w-xl">
+            <p className="text-sm font-semibold uppercase tracking-[0.2em] text-white/75">
+              Join GearUp
+            </p>
 
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
+            <h1 className="mt-5 text-4xl font-bold leading-tight tracking-tight xl:text-5xl">
+              Start your next adventure with the right gear.
+            </h1>
 
-            {/* Email */}
+            <p className="mt-6 text-lg leading-8 text-white/80">
+              Create your account to discover quality outdoor equipment,
+              manage rentals, and connect with trusted gear providers.
+            </p>
 
-            <FormField
-              control={form.control}
-              name="email"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Email</FormLabel>
+            <div className="mt-10 space-y-4">
+              <div className="flex items-center gap-4 rounded-2xl border border-white/15 bg-white/10 p-4 backdrop-blur-md">
+                <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-white/15">
+                  <ShieldCheck className="h-5 w-5" />
+                </div>
 
-                  <FormControl>
-                    <Input
-                      type="email"
-                      placeholder="Enter your email"
-                      {...field}
-                    />
-                  </FormControl>
+                <div>
+                  <p className="font-semibold">Secure Account</p>
+                  <p className="text-sm text-white/70">
+                    Your account information stays protected.
+                  </p>
+                </div>
+              </div>
 
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
+              <div className="flex items-center gap-4 rounded-2xl border border-white/15 bg-white/10 p-4 backdrop-blur-md">
+                <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-white/15">
+                  <ArrowRight className="h-5 w-5" />
+                </div>
 
-            {/* Password */}
+                <div>
+                  <p className="font-semibold">Easy Access</p>
+                  <p className="text-sm text-white/70">
+                    Manage your rentals from one dashboard.
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
 
-            <FormField
-              control={form.control}
-              name="password"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Password</FormLabel>
+          <div className="relative z-10 text-sm text-white/70">
+            © {new Date().getFullYear()} GearUp. All rights reserved.
+          </div>
+        </div>
 
-                  <FormControl>
-                    <div className="relative">
-                      <Input
-                        type={showPassword ? "text" : "password"}
-                        placeholder="Enter your password"
-                        {...field}
-                      />
+        {/* Right Side */}
+        <div className="flex items-center justify-center p-5 sm:p-8 lg:p-10">
+          <div className="w-full max-w-lg">
+            {/* Header */}
+            <div className="mb-8 text-center">
+              <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-2xl bg-green-100 text-green-700 dark:bg-green-950/40 dark:text-green-400">
+                <User className="h-7 w-7" />
+              </div>
 
-                      <button
-                        type="button"
-                        onClick={() => setShowPassword(!showPassword)}
-                        className="absolute right-3 top-1/2 -translate-y-1/2"
-                      >
-                        {showPassword ? (
-                          <EyeOff size={20} />
-                        ) : (
-                          <Eye size={20} />
-                        )}
-                      </button>
-                    </div>
-                  </FormControl>
+              <h2 className="mt-5 text-3xl font-bold tracking-tight">
+                Create your account
+              </h2>
 
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
+              <p className="mt-2 text-sm text-muted-foreground">
+                Join GearUp and start exploring today
+              </p>
+            </div>
 
-            {/* Phone */}
+            {/* Form */}
+            <Form {...form}>
+              <form
+                onSubmit={form.handleSubmit(onSubmit)}
+                className="space-y-5"
+              >
+                {/* Name */}
+                <FormField
+                  control={form.control}
+                  name="name"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Full Name</FormLabel>
 
-            <FormField
-              control={form.control}
-              name="phone"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Phone</FormLabel>
+                      <FormControl>
+                        <div className="relative">
+                          <User className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
 
-                  <FormControl>
-                    <Input placeholder="018XXXXXXXX" {...field} />
-                  </FormControl>
+                          <Input
+                            placeholder="Enter your full name"
+                            className="h-12 rounded-xl pl-10"
+                            {...field}
+                          />
+                        </div>
+                      </FormControl>
 
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
 
-            {/* Address */}
+                {/* Email */}
+                <FormField
+                  control={form.control}
+                  name="email"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Email Address</FormLabel>
 
-            <FormField
-              control={form.control}
-              name="address"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Address</FormLabel>
+                      <FormControl>
+                        <div className="relative">
+                          <Mail className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
 
-                  <FormControl>
-                    <Input placeholder="Dhaka, Bangladesh" {...field} />
-                  </FormControl>
+                          <Input
+                            type="email"
+                            placeholder="you@example.com"
+                            className="h-12 rounded-xl pl-10"
+                            {...field}
+                          />
+                        </div>
+                      </FormControl>
 
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
 
-            {/* Profile Photo URL */}
+                {/* Password */}
+                <FormField
+                  control={form.control}
+                  name="password"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Password</FormLabel>
 
-            <FormField
-              control={form.control}
-              name="profilePhoto"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Profile Photo URL</FormLabel>
+                      <FormControl>
+                        <div className="relative">
+                          <Lock className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
 
-                  <FormControl>
-                    <Input
-                      placeholder="https://example.com/image.jpg"
-                      {...field}
-                    />
-                  </FormControl>
+                          <Input
+                            type={showPassword ? "text" : "password"}
+                            placeholder="Create a strong password"
+                            className="h-12 rounded-xl pl-10 pr-10"
+                            {...field}
+                          />
 
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
+                          <button
+                            type="button"
+                            onClick={() =>
+                              setShowPassword((previous) => !previous)
+                            }
+                            className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground transition-colors hover:text-foreground"
+                            aria-label={
+                              showPassword
+                                ? "Hide password"
+                                : "Show password"
+                            }
+                          >
+                            {showPassword ? (
+                              <EyeOff className="h-4 w-4" />
+                            ) : (
+                              <Eye className="h-4 w-4" />
+                            )}
+                          </button>
+                        </div>
+                      </FormControl>
 
-            {/* Role */}
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
 
-            <FormField
-              control={form.control}
-              name="role"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Role</FormLabel>
+                {/* Phone + Role */}
+                <div className="grid gap-5 sm:grid-cols-2">
+                  {/* Phone */}
+                  <FormField
+                    control={form.control}
+                    name="phone"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Phone Number</FormLabel>
 
-                  <Select onValueChange={field.onChange} value={field.value}>
-                    <FormControl>
-                      <SelectTrigger className="w-full">
-                        <SelectValue placeholder="Select role" />
-                      </SelectTrigger>
-                    </FormControl>
+                        <FormControl>
+                          <div className="relative">
+                            <Phone className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
 
-                    <SelectContent>
-                      <SelectItem value="CUSTOMER">Customer</SelectItem>
+                            <Input
+                              placeholder="018XXXXXXXX"
+                              className="h-12 rounded-xl pl-10"
+                              {...field}
+                            />
+                          </div>
+                        </FormControl>
 
-                      <SelectItem value="PROVIDER">Provider</SelectItem>
-                    </SelectContent>
-                  </Select>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
 
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
+                  {/* Role */}
+                  <FormField
+                    control={form.control}
+                    name="role"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Account Type</FormLabel>
 
-            <Button type="submit" className="w-full" disabled={loading}>
-              {loading ? "Creating Account..." : "Register"}
-            </Button>
-          </form>
-        </Form>
+                        <Select
+                          onValueChange={field.onChange}
+                          value={field.value}
+                        >
+                          <FormControl>
+                            <SelectTrigger className="h-12 rounded-xl">
+                              <SelectValue placeholder="Select account type" />
+                            </SelectTrigger>
+                          </FormControl>
+
+                          <SelectContent>
+                            <SelectItem value="CUSTOMER">
+                              Customer
+                            </SelectItem>
+
+                            <SelectItem value="PROVIDER">
+                              Provider
+                            </SelectItem>
+                          </SelectContent>
+                        </Select>
+
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                </div>
+
+                {/* Address */}
+                <FormField
+                  control={form.control}
+                  name="address"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Address</FormLabel>
+
+                      <FormControl>
+                        <div className="relative">
+                          <MapPin className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
+
+                          <Input
+                            placeholder="Dhaka, Bangladesh"
+                            className="h-12 rounded-xl pl-10"
+                            {...field}
+                          />
+                        </div>
+                      </FormControl>
+
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+
+                {/* Profile Photo */}
+                <FormField
+                  control={form.control}
+                  name="profilePhoto"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Profile Photo URL</FormLabel>
+
+                      <FormControl>
+                        <div className="relative">
+                          <ImageIcon className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
+
+                          <Input
+                            placeholder="https://example.com/image.jpg"
+                            className="h-12 rounded-xl pl-10"
+                            {...field}
+                          />
+                        </div>
+                      </FormControl>
+
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+
+                {/* Submit */}
+                <Button
+                  type="submit"
+                  disabled={loading}
+                  className="group h-12 w-full rounded-xl bg-green-600 text-base font-semibold hover:bg-green-700"
+                >
+                  {loading ? (
+                    "Creating Account..."
+                  ) : (
+                    <span className="inline-flex items-center gap-2">
+                      Create Account
+                      <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
+                    </span>
+                  )}
+                </Button>
+              </form>
+            </Form>
+
+            {/* Login Link */}
+            <div className="mt-6 text-center text-sm text-muted-foreground">
+              Already have an account?{" "}
+              <Link
+                href="/login"
+                className="font-semibold text-green-700 hover:underline dark:text-green-400"
+              >
+                Login
+              </Link>
+            </div>
+
+            {/* Security Info */}
+            <div className="mt-6 rounded-2xl border bg-muted/40 p-4">
+              <div className="flex items-center gap-2 text-sm font-semibold">
+                <ShieldCheck className="h-4 w-4 text-green-600 dark:text-green-400" />
+                Secure Registration
+              </div>
+
+              <p className="mt-1 text-xs leading-5 text-muted-foreground">
+                Your account information is protected with secure
+                authentication.
+              </p>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   );
 }
+

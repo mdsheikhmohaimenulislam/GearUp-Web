@@ -9,8 +9,7 @@ import StatsSection from "@/components/shared/StatsSection";
 
 import HeroSection from "@/components/shared/HeroSection";
 
-import Testimonials from "@/components/shared/Testimonials";
-import WhyChooseUs from "@/components/shared/WhyChooseUs";
+
 import UpcomingAdventures from "@/components/shared/UpcomingAdventures";
 
 export default async function Home() {
