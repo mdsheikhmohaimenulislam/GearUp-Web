@@ -34,6 +34,12 @@ type ProfileAvatarProps = {
   profilePhoto?: string | null;
 };
 
+type NavLink = {
+  name: string;
+  href?: string;
+  action?: () => void;
+};
+
 function ProfileAvatar({
   name,
   profilePhoto,
@@ -63,29 +69,6 @@ export default function Navbar({ user }: NavbarProps) {
 
   const profile = user?.data;
   const isLoggedIn = !!profile;
-
-  const navLinks = [
-    {
-      name: "Gear",
-      href: "/gear",
-    },
-    {
-      name: "About",
-      href: "/about",
-    },
-    {
-      name: "FAQ",
-      href: "/faqSection",
-    },
-    {
-      name: "Contact",
-      href: "/contact",
-    },
-    {
-      name: "Help Center",
-      href: "/help-center",
-    },
-  ];
 
   // ==========================================
   // DASHBOARD REDIRECT
@@ -118,11 +101,41 @@ export default function Navbar({ user }: NavbarProps) {
     }
   };
 
+  // ==========================================
+  // NAVIGATION LINKS
+  // ==========================================
+
+  const navLinks: NavLink[] = [
+    {
+      name: "Gear",
+      href: "/gear",
+    },
+    {
+      name: "About",
+      href: "/about",
+    },
+    {
+      name: "FAQ",
+      href: "/faqSection",
+    },
+    {
+      name: "Contact",
+      href: "/contact",
+    },
+    {
+      name: "Help Center",
+      href: "/help-center",
+    },
+    {
+      name: "Dashboard",
+      action: handleDashboardRedirect,
+    },
+  ];
+
   return (
     <header className="sticky top-0 z-50 border-b bg-background/80 backdrop-blur">
       <div className="container mx-auto flex h-16 items-center justify-between px-4">
-
-        {/* Logo */}
+        {/* ================= LOGO ================= */}
 
         <Link
           href="/"
@@ -131,21 +144,32 @@ export default function Navbar({ user }: NavbarProps) {
           GearUp
         </Link>
 
-        {/* Desktop Navigation */}
+        {/* ================= DESKTOP NAVIGATION ================= */}
 
-        <nav className="hidden gap-8 md:flex">
-          {navLinks.map((item) => (
-            <Link
-              key={item.name}
-              href={item.href}
-              className="text-sm font-medium transition-colors hover:text-primary"
-            >
-              {item.name}
-            </Link>
-          ))}
+        <nav className="hidden items-center gap-8 md:flex">
+          {navLinks.map((item) =>
+            item.action ? (
+              <button
+                key={item.name}
+                type="button"
+                onClick={item.action}
+                className="text-sm font-medium transition-colors hover:text-green-400"
+              >
+                {item.name}
+              </button>
+            ) : (
+              <Link
+                key={item.name}
+                href={item.href!}
+                className="text-sm font-medium transition-colors hover:text-green-400"
+              >
+                {item.name}
+              </Link>
+            ),
+          )}
         </nav>
 
-        {/* Desktop Right */}
+        {/* ================= DESKTOP RIGHT ================= */}
 
         <div className="hidden items-center gap-3 md:flex">
           <ModeToggle />
@@ -179,6 +203,10 @@ export default function Navbar({ user }: NavbarProps) {
                   <p className="truncate text-xs text-muted-foreground">
                     {profile?.email}
                   </p>
+
+                  <p className="mt-1 text-xs font-medium text-green-600 dark:text-green-400">
+                    {profile?.role}
+                  </p>
                 </div>
 
                 <DropdownMenuSeparator />
@@ -189,7 +217,7 @@ export default function Navbar({ user }: NavbarProps) {
                   onClick={handleDashboardRedirect}
                   className="cursor-pointer"
                 >
-                  <User className="mr-2 h-4 w-4" />
+                  <User className="mr-2 h-4 w-4 cursor-pointer" />
                   Dashboard
                 </DropdownMenuItem>
 
@@ -220,7 +248,7 @@ export default function Navbar({ user }: NavbarProps) {
           )}
         </div>
 
-        {/* Mobile */}
+        {/* ================= MOBILE ================= */}
 
         <div className="flex items-center gap-2 md:hidden">
           <ModeToggle />
@@ -231,7 +259,7 @@ export default function Navbar({ user }: NavbarProps) {
                 variant="outline"
                 size="icon"
               >
-                <Menu />
+                <Menu className="h-5 w-5" />
               </Button>
             </SheetTrigger>
 
@@ -240,7 +268,6 @@ export default function Navbar({ user }: NavbarProps) {
               className="w-[300px]"
             >
               <div className="flex flex-col gap-4 p-5">
-
                 {/* Mobile User */}
 
                 {isLoggedIn && (
@@ -258,6 +285,10 @@ export default function Navbar({ user }: NavbarProps) {
                       <p className="truncate text-sm text-muted-foreground">
                         {profile?.email}
                       </p>
+
+                      <p className="mt-1 text-xs font-medium text-green-600">
+                        {profile?.role}
+                      </p>
                     </div>
                   </div>
                 )}
@@ -265,15 +296,26 @@ export default function Navbar({ user }: NavbarProps) {
                 {/* Mobile Navigation */}
 
                 <div className="flex flex-col gap-3">
-                  {navLinks.map((item) => (
-                    <Link
-                      key={item.name}
-                      href={item.href}
-                      className="text-lg font-medium transition-colors hover:text-primary"
-                    >
-                      {item.name}
-                    </Link>
-                  ))}
+                  {navLinks.map((item) =>
+                    item.action ? (
+                      <button
+                        key={item.name}
+                        type="button"
+                        onClick={item.action}
+                        className="text-left text-lg font-medium transition-colors hover:text-green-400"
+                      >
+                        {item.name}
+                      </button>
+                    ) : (
+                      <Link
+                        key={item.name}
+                        href={item.href!}
+                        className="text-lg font-medium transition-colors hover:text-green-400"
+                      >
+                        {item.name}
+                      </Link>
+                    ),
+                  )}
                 </div>
 
                 {/* Mobile Auth */}
@@ -281,7 +323,6 @@ export default function Navbar({ user }: NavbarProps) {
                 <div className="mt-4 border-t pt-4">
                   {isLoggedIn ? (
                     <div className="flex flex-col gap-3">
-
                       <Button
                         variant="outline"
                         onClick={handleDashboardRedirect}
@@ -292,11 +333,9 @@ export default function Navbar({ user }: NavbarProps) {
                       </Button>
 
                       <LogoutButton />
-
                     </div>
                   ) : (
                     <div className="flex flex-col gap-2">
-
                       <Button
                         asChild
                         variant="outline"
@@ -315,16 +354,13 @@ export default function Navbar({ user }: NavbarProps) {
                           Register
                         </Link>
                       </Button>
-
                     </div>
                   )}
                 </div>
-
               </div>
             </SheetContent>
           </Sheet>
         </div>
-
       </div>
     </header>
   );
