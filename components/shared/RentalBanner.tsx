@@ -1,4 +1,3 @@
-
 "use client";
 
 import Image from "next/image";
@@ -204,9 +203,9 @@ export default function HowGearUpWorks() {
                   dark:text-gray-300
                 "
               >
-                Renting outdoor equipment should be simple. GearUp connects
-                you with the right equipment so you can spend less time
-                worrying about gear and more time enjoying your journey.
+                Renting outdoor equipment should be simple. GearUp connects you
+                with the right equipment so you can spend less time worrying
+                about gear and more time enjoying your journey.
               </p>
 
               {/* Steps */}
@@ -215,10 +214,7 @@ export default function HowGearUpWorks() {
                   const Icon = step.icon;
 
                   return (
-                    <div
-                      key={step.number}
-                      className="relative flex gap-4"
-                    >
+                    <div key={step.number} className="relative flex gap-4">
                       {/* Connector */}
                       {index !== steps.length - 1 && (
                         <div
@@ -316,7 +312,6 @@ export default function HowGearUpWorks() {
                   "
                 >
                   Explore Available Gear
-
                   <ArrowUpRight
                     className="
                       h-4 w-4
@@ -408,4 +403,3 @@ export default function HowGearUpWorks() {
     </section>
   );
 }
-

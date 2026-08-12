@@ -27,7 +27,7 @@ type Props = {
 };
 
 export default function ProfileCard({ user }: Props) {
-  console.log("Profile user:", user);
+ 
 
   return (
     <Card className="rounded-2xl">

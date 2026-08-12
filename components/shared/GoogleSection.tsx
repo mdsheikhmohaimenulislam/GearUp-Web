@@ -42,8 +42,7 @@ const handleGoogleLogin = async (idToken: string) => {
 
     setLoading(true);
 
-    console.log("Backend URL:", backendUrl);
-    console.log("Sending Google ID token to backend...");
+
 
  const response = await fetch(`${backendUrl}/api/auth/google`, {
   method: "POST",
@@ -59,8 +58,7 @@ const handleGoogleLogin = async (idToken: string) => {
 
 const raw = await response.text();
 
-console.log("STATUS:", response.status);
-console.log("RESPONSE:", raw);
+
 
 let data;
 
@@ -86,8 +84,7 @@ try {
 
     const decoded = jwtDecode<JwtPayload>(accessToken);
 
-    console.log("Google JWT:", decoded);
-    console.log("Google role:", decoded.role);
+
 
     toast.success(data?.message || "Google login successful!");
 
@@ -150,9 +147,6 @@ try {
       client_id: clientId,
 
       callback: (response) => {
-        console.log(
-          "Google response received"
-        );
 
         if (!response.credential) {
           toast.error(
@@ -203,9 +197,7 @@ try {
         src="https://accounts.google.com/gsi/client"
         strategy="afterInteractive"
         onLoad={() => {
-          console.log(
-            "Google Identity Services loaded"
-          );
+
 
           setScriptReady(true);
         }}

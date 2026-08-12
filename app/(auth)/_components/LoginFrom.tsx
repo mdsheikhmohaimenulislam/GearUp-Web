@@ -44,12 +44,6 @@ export default function LoginForm() {
 
   const redirectTo = searchParams.get("redirect");
 
-  /*
-   * IMPORTANT:
-   *
-   * Browser/client component থেকে environment variable
-   * access করতে হলে NEXT_PUBLIC_ prefix লাগবে।
-   */
   const googleClientId = process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID;
 
   const form = useForm<LoginValues>({
