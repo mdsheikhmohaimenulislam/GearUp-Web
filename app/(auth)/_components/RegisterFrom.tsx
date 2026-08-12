@@ -102,73 +102,224 @@ export default function RegisterForm() {
     <div className="min-h-screen bg-gradient-to-br from-green-50 via-background to-emerald-50 px-4 py-10 dark:from-background dark:via-background dark:to-green-950/20">
       <div className="mx-auto grid w-full max-w-6xl overflow-hidden rounded-3xl border bg-background shadow-2xl lg:grid-cols-2">
         {/* Left Side */}
-        <div className="relative hidden overflow-hidden bg-gradient-to-br from-green-600 via-emerald-600 to-teal-700 p-10 text-white lg:flex lg:flex-col lg:justify-between">
-          <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_left,rgba(255,255,255,0.18),transparent_32%),radial-gradient(circle_at_bottom_right,rgba(255,255,255,0.14),transparent_35%)]" />
+<div
+  className="
+    relative hidden min-h-full overflow-hidden
+    p-8 text-white
+    lg:flex lg:flex-col
+    xl:p-10
+  "
+>
+  {/* Background Image */}
+  <div
+    className="absolute inset-0 bg-cover bg-center"
+    style={{
+      backgroundImage:
+        "url('https://i.ibb.co.com/dsYhhH86/patrick-hendry-e-Dg-Uy-Gu93-Yw-unsplash.jpg')",
+    }}
+  />
 
-          <div className="relative z-10">
-            <Link href="/" className="inline-flex items-center gap-3">
-              <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-white/15 backdrop-blur">
-                <ShieldCheck className="h-6 w-6" />
-              </div>
+  {/* Dark Overlay */}
+  <div className="absolute inset-0 bg-black/50" />
 
-              <div>
-                <p className="text-xl font-bold tracking-tight">
-                  GearUp
-                </p>
-                <p className="text-sm text-white/75">
-                  Adventure starts here
-                </p>
-              </div>
-            </Link>
+  {/* Green Tint */}
+  <div
+    className="
+      absolute inset-0
+      bg-gradient-to-br
+      from-green-950/40
+      via-transparent
+      to-green-950/60
+    "
+  />
+
+  {/* Content */}
+  <div className="relative z-10 flex h-full flex-col">
+    {/* ================= LOGO ================= */}
+    <div>
+      <Link
+        href="/"
+        className="inline-flex items-center gap-3"
+      >
+        <div
+          className="
+            flex h-11 w-11 items-center justify-center
+            rounded-xl
+            bg-white/10
+            ring-1 ring-white/20
+            backdrop-blur-md
+          "
+        >
+          <ShieldCheck className="h-5 w-5" />
+        </div>
+
+        <div>
+          <p className="text-xl font-bold tracking-tight">
+            GearUp
+          </p>
+
+          <p className="text-xs font-medium text-white/70">
+            Outdoor gear marketplace
+          </p>
+        </div>
+      </Link>
+    </div>
+
+    {/* ================= HERO ================= */}
+    <div className="mt-20 max-w-xl xl:mt-24">
+      {/* Badge */}
+      <div
+        className="
+          inline-flex items-center gap-2
+          rounded-full
+          border border-white/20
+          bg-black/20
+          px-4 py-2
+          text-sm font-medium
+          text-white/90
+          backdrop-blur-md
+        "
+      >
+        <span className="h-2 w-2 rounded-full bg-green-400" />
+        Join GearUp
+      </div>
+
+      {/* Heading */}
+      <h1
+        className="
+          mt-6
+          text-4xl font-bold
+          leading-[1.08]
+          tracking-tight
+          xl:text-5xl
+        "
+      >
+        Your next adventure
+        <br />
+
+        <span className="text-green-400">
+          starts with the right gear.
+        </span>
+      </h1>
+
+      {/* Description */}
+      <p
+        className="
+          mt-5
+          max-w-lg
+          text-base
+          leading-7
+         text-white font-extrabold
+        "
+      >
+        Create your GearUp account and discover
+        quality outdoor equipment from trusted
+        providers—all in one place.
+      </p>
+
+      {/* Features */}
+      <div className="mt-8 space-y-3">
+        {/* Secure Account */}
+        <div
+          className="
+            flex items-center gap-4
+            rounded-2xl
+            border border-white/15
+            bg-black/20
+            px-4 py-3
+            backdrop-blur-md
+          "
+        >
+          <div
+            className="
+              flex h-10 w-10 shrink-0
+              items-center justify-center
+              rounded-xl
+              bg-green-500/20
+              text-green-400
+            "
+          >
+            <ShieldCheck className="h-5 w-5" />
           </div>
 
-          <div className="relative z-10 max-w-xl">
-            <p className="text-sm font-semibold uppercase tracking-[0.2em] text-white/75">
-              Join GearUp
+          <div>
+            <p className="text-sm font-semibold">
+              Secure Account
             </p>
 
-            <h1 className="mt-5 text-4xl font-bold leading-tight tracking-tight xl:text-5xl">
-              Start your next adventure with the right gear.
-            </h1>
-
-            <p className="mt-6 text-lg leading-8 text-white/80">
-              Create your account to discover quality outdoor equipment,
-              manage rentals, and connect with trusted gear providers.
+            <p className="mt-0.5 text-xs text-white">
+              Your account information stays protected.
             </p>
-
-            <div className="mt-10 space-y-4">
-              <div className="flex items-center gap-4 rounded-2xl border border-white/15 bg-white/10 p-4 backdrop-blur-md">
-                <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-white/15">
-                  <ShieldCheck className="h-5 w-5" />
-                </div>
-
-                <div>
-                  <p className="font-semibold">Secure Account</p>
-                  <p className="text-sm text-white/70">
-                    Your account information stays protected.
-                  </p>
-                </div>
-              </div>
-
-              <div className="flex items-center gap-4 rounded-2xl border border-white/15 bg-white/10 p-4 backdrop-blur-md">
-                <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-white/15">
-                  <ArrowRight className="h-5 w-5" />
-                </div>
-
-                <div>
-                  <p className="font-semibold">Easy Access</p>
-                  <p className="text-sm text-white/70">
-                    Manage your rentals from one dashboard.
-                  </p>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <div className="relative z-10 text-sm text-white/70">
-            © {new Date().getFullYear()} GearUp. All rights reserved.
           </div>
         </div>
+
+        {/* Easy Access */}
+        <div
+          className="
+            flex items-center gap-4
+            rounded-2xl
+            border border-white/15
+            bg-black/20
+            px-4 py-3
+            backdrop-blur-md
+          "
+        >
+          <div
+            className="
+              flex h-10 w-10 shrink-0
+              items-center justify-center
+              rounded-xl
+              bg-green-500/20
+              text-green-400
+            "
+          >
+            <ArrowRight className="h-5 w-5" />
+          </div>
+
+          <div>
+            <p className="text-sm font-semibold">
+              Easy Access
+            </p>
+
+            <p className="mt-0.5 text-xs text-white">
+              Manage your rentals from one dashboard.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    {/* ================= FOOTER ================= */}
+    <div className="mt-auto pt-10">
+      <div className="flex items-center justify-between">
+        <div>
+          <p className="text-sm font-extrabold text-green-500">
+            Rent. Explore. Repeat.
+          </p>
+
+          <p className="mt-1 text-xs text-white font-extrabold">
+            GearUp — built for people who love the outdoors.
+          </p>
+        </div>
+
+        <div className="hidden xl:flex">
+          <div
+            className="
+              flex h-11 w-11
+              items-center justify-center
+              rounded-full
+              border border-white/20
+              bg-white/10
+              backdrop-blur-md
+            "
+          >
+            <ArrowRight className="h-4 w-4 -rotate-45" />
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
 
         {/* Right Side */}
         <div className="flex items-center justify-center p-5 sm:p-8 lg:p-10">

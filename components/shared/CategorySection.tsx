@@ -21,7 +21,7 @@ const adventures = [
       "https://images.unsplash.com/photo-1504280390367-361c6d9f38f4?auto=format&fit=crop&w=1200&q=80",
   },
   {
-    title: "Shuttlecock",
+    title: "Mountain Hiking",
     location: "Mountain Trails",
     duration: "1 Day",
     rating: "4.8",
@@ -58,19 +58,19 @@ export default function AdventureInspiration() {
             </h2>
 
             <p className="mt-4 max-w-xl text-sm leading-6 text-muted-foreground sm:text-base">
-              Whether you ore heading into the mountains, exploring a forest,
+              Whether you are heading into the mountains, exploring a forest,
               or planning a weekend escape, find the equipment that makes
               every adventure better.
             </p>
           </div>
 
-<Link
-  href="/gear"
-  className="group inline-flex w-fit items-center gap-2 rounded-xl border border-green-200 bg-background px-5 py-3 text-sm font-semibold text-green-700 shadow-sm transition-all duration-300 hover:border-green-400 hover:bg-green-50 hover:shadow-md dark:border-green-800 dark:text-green-400 dark:hover:bg-green-950/30"
->
-  Explore Gear
-  <ArrowUpRight className="h-4 w-4 transition-transform duration-300 group-hover:-translate-y-0.5 group-hover:translate-x-0.5" />
-</Link>
+          <Link
+            href="/gear"
+            className="group inline-flex w-fit items-center gap-2 rounded-xl border border-green-200 bg-background px-5 py-3 text-sm font-semibold text-green-700 shadow-sm transition-all duration-300 hover:border-green-400 hover:bg-green-50 hover:shadow-md dark:border-green-800 dark:text-green-400 dark:hover:bg-green-950/30"
+          >
+            Explore Gear
+            <ArrowUpRight className="h-4 w-4 transition-transform duration-300 group-hover:-translate-y-0.5 group-hover:translate-x-0.5" />
+          </Link>
         </div>
 
         {/* Featured Experience */}
@@ -83,17 +83,14 @@ export default function AdventureInspiration() {
               className="absolute inset-0 h-full w-full object-cover transition-transform duration-700 group-hover:scale-105"
             />
 
-            {/* Overlay */}
             <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
 
-            {/* Top Badge */}
             <div className="absolute left-5 top-5">
               <span className="rounded-full bg-white/90 px-4 py-2 text-xs font-semibold text-gray-900 shadow-lg backdrop-blur-md">
                 Featured Experience
               </span>
             </div>
 
-            {/* Content */}
             <div className="absolute bottom-0 left-0 right-0 p-6 text-white sm:p-8">
               <div className="flex items-center gap-2 text-sm text-green-300">
                 <MapPin className="h-4 w-4" />
@@ -148,6 +145,7 @@ export default function AdventureInspiration() {
                 <div className="mt-3 flex items-center gap-3 text-xs text-gray-200">
                   <span>{adventures[1].duration}</span>
                   <span>•</span>
+
                   <span className="flex items-center gap-1">
                     <Star className="h-3.5 w-3.5 fill-yellow-400 text-yellow-400" />
                     {adventures[1].rating}
@@ -174,24 +172,6 @@ export default function AdventureInspiration() {
                   your plans into memorable experiences.
                 </p>
               </div>
-
-              {/* <div className="relative mt-6 flex items-center justify-between border-t border-green-200 pt-4 dark:border-green-900">
-                <div>
-                  <p className="text-2xl font-bold text-green-700 dark:text-green-400">
-                    10K+
-                  </p>
-                  <p className="text-xs text-muted-foreground">
-                    Adventure Lovers
-                  </p>
-                </div>
-
-                <button
-                  type="button"
-                  className="flex h-10 w-10 items-center justify-center rounded-full bg-green-600 text-white transition-all duration-300 hover:scale-110 hover:bg-green-700"
-                >
-                  <ArrowUpRight className="h-5 w-5" />
-                </button>
-              </div> */}
             </div>
           </div>
         </div>

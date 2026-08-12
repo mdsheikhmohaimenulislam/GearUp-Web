@@ -1,3 +1,4 @@
+
 import Navbar from "@/components/shared/Navbar";
 import { getMe } from "@/server/getMe";
 import React from "react";
@@ -9,6 +10,7 @@ const DashboardLayout = async ({ children }: { children: React.ReactNode }) => {
     <div>
       <Navbar user={user} />
       {children}
+
     </div>
   );
 };

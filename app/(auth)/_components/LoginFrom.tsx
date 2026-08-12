@@ -37,14 +37,12 @@ type LoginValues = z.infer<typeof loginSchema>;
 
 export default function LoginForm() {
   const [loading, setLoading] = useState(false);
-  const [showPassword, setShowPassword] =
-    useState(false);
+  const [showPassword, setShowPassword] = useState(false);
 
   const router = useRouter();
   const searchParams = useSearchParams();
 
-  const redirectTo =
-    searchParams.get("redirect");
+  const redirectTo = searchParams.get("redirect");
 
   /*
    * IMPORTANT:
@@ -52,8 +50,7 @@ export default function LoginForm() {
    * Browser/client component থেকে environment variable
    * access করতে হলে NEXT_PUBLIC_ prefix লাগবে।
    */
-  const googleClientId =
-    process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID;
+  const googleClientId = process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID;
 
   const form = useForm<LoginValues>({
     resolver: zodResolver(loginSchema),
@@ -64,69 +61,48 @@ export default function LoginForm() {
     },
   });
 
-  const onSubmit = async (
-    values: LoginValues,
-  ) => {
+  const onSubmit = async (values: LoginValues) => {
     try {
       setLoading(true);
 
       const result = await loginAction(values);
 
       if (!result.success) {
-        toast.error(
-          result.message ||
-            "Login failed",
-        );
+        toast.error(result.message || "Login failed");
         return;
       }
 
-      toast.success(
-        result.message ||
-          "Login successful",
-      );
+      toast.success(result.message || "Login successful");
 
       if (redirectTo) {
         router.replace(redirectTo);
         return;
       }
 
-      const token =
-        result.data.accessToken;
+      const token = result.data.accessToken;
 
-      const decoded: JwtPayload =
-        jwtDecode<JwtPayload>(token);
+      const decoded: JwtPayload = jwtDecode<JwtPayload>(token);
 
       switch (decoded.role) {
         case "CUSTOMER":
-          router.replace(
-            "/customerDashboard",
-          );
+          router.replace("/customerDashboard");
           break;
 
         case "PROVIDER":
-          router.replace(
-            "/providerDashboard",
-          );
+          router.replace("/providerDashboard");
           break;
 
         case "ADMIN":
-          router.replace(
-            "/adminDashboard",
-          );
+          router.replace("/adminDashboard");
           break;
 
         default:
           router.replace("/");
       }
     } catch (error) {
-      console.error(
-        "Login error:",
-        error,
-      );
+      console.error("Login error:", error);
 
-      toast.error(
-        "Something went wrong!",
-      );
+      toast.error("Something went wrong!");
     } finally {
       setLoading(false);
     }
@@ -135,217 +111,193 @@ export default function LoginForm() {
   return (
     <div className="min-h-screen bg-background">
       <div className="grid min-h-screen lg:grid-cols-2">
-
         {/* ================= LEFT SIDE ================= */}
+<div
+  className="
+    relative hidden min-h-screen overflow-hidden
+    lg:flex lg:flex-col
+    bg-slate-950
+    p-8
+    text-white
+    xl:p-10
+  "
+>
+  {/* Background Image */}
+<div
+  className="absolute inset-0 bg-cover bg-center"
+  style={{
+    backgroundImage:
+      "url('https://i.ibb.co.com/n8zv326q/scott-goodwill-y8-Ngwq34-Ak-unsplash.jpg')",
+  }}
+/>
 
+  {/* Dark Overlay */}
+  <div
+    className="
+      absolute inset-0
+      bg-gradient-to-b
+      from-black/60
+      via-black/35
+      to-black/85
+    "
+  />
+
+  {/* Green Tint */}
+  <div
+    className="
+      absolute inset-0
+      bg-gradient-to-br
+      from-green-950/30
+      via-transparent
+      to-green-950/40
+    "
+  />
+
+  {/* ================= CONTENT ================= */}
+  <div className="relative z-10 flex h-full flex-col">
+
+    {/* ================= LOGO ================= */}
+    <div>
+      <Link
+        href="/"
+        className="inline-flex items-center gap-3"
+      >
         <div
           className="
-            relative
-            hidden
-            overflow-hidden
-            bg-gradient-to-br
-            from-green-600
-            via-emerald-600
-            to-teal-700
-            p-10
-            text-white
-            lg:flex
-            lg:flex-col
-            lg:justify-between
+            flex h-11 w-11 items-center justify-center
+            rounded-xl
+            bg-white/10
+            ring-1 ring-white/20
+            backdrop-blur-md
           "
         >
-          <div
-            className="
-              absolute
-              inset-0
-              bg-[radial-gradient(circle_at_top_left,rgba(255,255,255,0.15),transparent_30%),radial-gradient(circle_at_bottom_right,rgba(255,255,255,0.12),transparent_35%)]
-            "
-          />
+          <ShieldCheck className="h-5 w-5" />
+        </div>
 
-          {/* Logo */}
-
-          <div className="relative z-10">
-            <Link
-              href="/"
-              className="inline-flex items-center gap-3"
-            >
-              <div
-                className="
-                  flex
-                  h-12
-                  w-12
-                  items-center
-                  justify-center
-                  rounded-2xl
-                  bg-white/15
-                  backdrop-blur
-                "
-              >
-                <ShieldCheck className="h-6 w-6" />
-              </div>
-
-              <div>
-                <p className="text-xl font-bold tracking-tight">
-                  GearUp
-                </p>
-
-                <p className="text-sm text-white/80">
-                  Adventure starts here
-                </p>
-              </div>
-            </Link>
+        <div>
+          <div className="text-xl font-bold tracking-tight">
+            GearUp
           </div>
 
-          {/* Hero */}
-
-          <div className="relative z-10 max-w-xl">
-            <p
-              className="
-                text-sm
-                font-semibold
-                uppercase
-                tracking-[0.2em]
-                text-white/80
-              "
-            >
-              Rent. Explore. Repeat.
-            </p>
-
-            <h1
-              className="
-                mt-5
-                text-5xl
-                font-bold
-                leading-tight
-                tracking-tight
-              "
-            >
-              Premium gear for every outdoor adventure.
-            </h1>
-
-            <p
-              className="
-                mt-6
-                text-lg
-                leading-8
-                text-white/85
-              "
-            >
-              Manage rentals, discover quality
-              equipment, and connect with trusted
-              providers from one simple platform.
-            </p>
-
-            <div className="mt-10 grid gap-4 sm:grid-cols-2">
-
-              <div
-                className="
-                  rounded-2xl
-                  border
-                  border-white/15
-                  bg-white/10
-                  p-5
-                  backdrop-blur-md
-                "
-              >
-                <div
-                  className="
-                    flex
-                    h-11
-                    w-11
-                    items-center
-                    justify-center
-                    rounded-xl
-                    bg-white/15
-                  "
-                >
-                  <CheckCircle2 className="h-5 w-5" />
-                </div>
-
-                <h3 className="mt-4 font-semibold">
-                  Easy Rentals
-                </h3>
-
-                <p className="mt-1 text-sm text-white/75">
-                  Simple and convenient booking experience.
-                </p>
-              </div>
-
-              <div
-                className="
-                  rounded-2xl
-                  border
-                  border-white/15
-                  bg-white/10
-                  p-5
-                  backdrop-blur-md
-                "
-              >
-                <div
-                  className="
-                    flex
-                    h-11
-                    w-11
-                    items-center
-                    justify-center
-                    rounded-xl
-                    bg-white/15
-                  "
-                >
-                  <Zap className="h-5 w-5" />
-                </div>
-
-                <h3 className="mt-4 font-semibold">
-                  Fast Access
-                </h3>
-
-                <p className="mt-1 text-sm text-white/75">
-                  Get gear quickly when you need it.
-                </p>
-              </div>
-            </div>
-
-            <div
-              className="
-                mt-8
-                flex
-                flex-wrap
-                gap-3
-                text-sm
-                font-medium
-                text-white/90
-              "
-            >
-              <span className="rounded-full border border-white/15 bg-white/10 px-4 py-2 backdrop-blur">
-                Secure
-              </span>
-
-              <span className="rounded-full border border-white/15 bg-white/10 px-4 py-2 backdrop-blur">
-                Reliable
-              </span>
-
-              <span className="rounded-full border border-white/15 bg-white/10 px-4 py-2 backdrop-blur">
-                Trusted
-              </span>
-            </div>
-          </div>
-
-          <div
-            className="
-              relative
-              z-10
-              flex
-              items-center
-              gap-3
-              text-sm
-              text-white/75
-            "
-          >
-            <ShieldCheck className="h-4 w-4" />
-
-            Trusted by outdoor lovers and gear providers.
+          <div className="text-xs  text-white font-extrabold">
+            Outdoor gear marketplace
           </div>
         </div>
+      </Link>
+    </div>
+
+    {/* ================= HERO ================= */}
+    <div
+      className="
+        mt-20
+        max-w-2xl
+        xl:mt-24
+      "
+    >
+      <div
+        className="
+          mb-5 inline-flex items-center
+          rounded-full
+          border border-white/20
+          bg-white/10
+          px-4 py-2
+          text-sm text-white/90
+          backdrop-blur-md
+        "
+      >
+        <span className="mr-2 h-2 w-2 rounded-full bg-green-400" />
+        Adventure starts here
+      </div>
+
+      <h1
+        className="
+          max-w-2xl
+          text-5xl font-bold
+          leading-[1.05]
+          tracking-tight
+          xl:text-6xl
+        "
+      >
+        Find your gear.
+        <br />
+
+        <span className="text-green-400">
+          Start your adventure.
+        </span>
+      </h1>
+
+      <p
+        className="
+          mt-5
+          max-w-xl
+          text-lg
+     font-extrabold
+          leading-8
+          text-white
+        "
+      >
+        Discover quality outdoor gear from trusted
+        providers and make your next adventure
+        unforgettable.
+      </p>
+
+      {/* Trust Row */}
+      <div className="mt-7 flex items-center gap-6">
+        <div className="flex items-center gap-2">
+          <CheckCircle2 className="h-5 w-5 text-green-400" />
+
+          <span className="text-sm font-extrabold text-white">
+            Trusted gear
+          </span>
+        </div>
+
+        <div className="h-4 w-px bg-white/20" />
+
+        <div className="flex items-center gap-2">
+          <ShieldCheck className="h-5 w-5 text-green-400" />
+
+          <span className="text-sm font-extrabold text-white">
+            Secure platform
+          </span>
+        </div>
+      </div>
+    </div>
+
+    {/* ================= BOTTOM ================= */}
+    <div
+      className="
+        mt-auto
+        flex items-end justify-between
+        gap-6
+        pt-12
+      "
+    >
+      <div>
+        <p className="text-sm font-extrabold text-green-500 ">
+          Rent. Explore. Repeat.
+        </p>
+
+        <p className="mt-1 text-xs text-white font-extrabold">
+          GearUp — built for people who love the outdoors.
+        </p>
+      </div>
+
+      <div className="hidden xl:block">
+        <div
+          className="
+            flex h-12 w-12 items-center justify-center
+            rounded-full
+            border border-white/20
+            bg-white/10
+            backdrop-blur-md
+          "
+        >
+          <ArrowRight className="h-5 w-5 -rotate-45" />
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
 
         {/* ================= RIGHT SIDE ================= */}
 
@@ -361,7 +313,6 @@ export default function LoginForm() {
           "
         >
           <div className="w-full max-w-md">
-
             <div
               className="
                 rounded-3xl
@@ -371,7 +322,6 @@ export default function LoginForm() {
                 shadow-2xl
               "
             >
-
               {/* Header */}
 
               <div className="text-center">
@@ -405,18 +355,13 @@ export default function LoginForm() {
               {/* ================= NORMAL LOGIN ================= */}
 
               <form
-                onSubmit={form.handleSubmit(
-                  onSubmit,
-                )}
+                onSubmit={form.handleSubmit(onSubmit)}
                 className="mt-8 space-y-5"
               >
-
                 {/* Email */}
 
                 <div className="space-y-2">
-                  <label className="text-sm font-medium">
-                    Email Address
-                  </label>
+                  <label className="text-sm font-medium">Email Address</label>
 
                   <div className="relative">
                     <Mail
@@ -446,19 +391,14 @@ export default function LoginForm() {
                   </div>
 
                   <p className="text-xs text-red-500">
-                    {
-                      form.formState.errors
-                        .email?.message
-                    }
+                    {form.formState.errors.email?.message}
                   </p>
                 </div>
 
                 {/* Password */}
 
                 <div className="space-y-2">
-                  <label className="text-sm font-medium">
-                    Password
-                  </label>
+                  <label className="text-sm font-medium">Password</label>
 
                   <div className="relative">
                     <Lock
@@ -474,11 +414,7 @@ export default function LoginForm() {
                     />
 
                     <Input
-                      type={
-                        showPassword
-                          ? "text"
-                          : "password"
-                      }
+                      type={showPassword ? "text" : "password"}
                       placeholder="Enter your password"
                       className="
                         h-12
@@ -488,18 +424,12 @@ export default function LoginForm() {
                         pr-10
                         focus-visible:ring-green-500
                       "
-                      {...form.register(
-                        "password",
-                      )}
+                      {...form.register("password")}
                     />
 
                     <button
                       type="button"
-                      onClick={() =>
-                        setShowPassword(
-                          !showPassword,
-                        )
-                      }
+                      onClick={() => setShowPassword(!showPassword)}
                       className="
                         absolute
                         right-3
@@ -518,10 +448,7 @@ export default function LoginForm() {
                   </div>
 
                   <p className="text-xs text-red-500">
-                    {
-                      form.formState.errors
-                        .password?.message
-                    }
+                    {form.formState.errors.password?.message}
                   </p>
                 </div>
 
@@ -549,7 +476,6 @@ export default function LoginForm() {
                   ) : (
                     <span className="inline-flex items-center gap-2">
                       Login
-
                       <ArrowRight
                         className="
                           h-4
@@ -585,9 +511,7 @@ export default function LoginForm() {
               <div className="my-6 flex items-center gap-3">
                 <div className="h-px flex-1 bg-border" />
 
-                <span className="text-xs text-muted-foreground">
-                  OR
-                </span>
+                <span className="text-xs text-muted-foreground">OR</span>
 
                 <div className="h-px flex-1 bg-border" />
               </div>
@@ -595,9 +519,7 @@ export default function LoginForm() {
               {/* ================= GOOGLE LOGIN ================= */}
 
               {googleClientId ? (
-                <GoogleAutoLoginCard
-                  clientId={googleClientId}
-                />
+                <GoogleAutoLoginCard clientId={googleClientId} />
               ) : (
                 <div className="rounded-xl border border-red-500/30 bg-red-500/5 p-4 text-center text-sm text-red-500">
                   Google login is not configured.
@@ -606,10 +528,7 @@ export default function LoginForm() {
 
               {/* Demo Account */}
 
-              <FillDemoAccount
-                form={form}
-                onLogin={onSubmit}
-              />
+              <FillDemoAccount form={form} onLogin={onSubmit} />
             </div>
           </div>
         </div>
